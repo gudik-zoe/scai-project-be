@@ -9,6 +9,8 @@ import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.luv2code.exception.error.handling.CustomeException;
+import com.luv2code.springboot.cruddemo.entity.Account;
 import com.luv2code.springboot.cruddemo.entity.Message;
 import com.luv2code.springboot.cruddemo.entity.Post;
 
@@ -49,6 +51,12 @@ public class MessagesDAOHibernateImpl implements MessagesDAO {
 	@Override
 	public List<Message> getMessagesReceivedFrom(int accountId, int senderId) {
 		Session currentSession = entityManager.unwrap(Session.class);
+		
+		Account theAccount = currentSession.get(Account.class, senderId);
+		if(theAccount == null) {
+			throw new CustomeException("this account doesn't exist");
+		}else {
+			
 		Query<Message> theQuery = currentSession
 				.createQuery(
 						"from Message where (id_sender=" + senderId + "and id_receiver=" + accountId
@@ -57,6 +65,7 @@ public class MessagesDAOHibernateImpl implements MessagesDAO {
 		List<Message> theMessages = theQuery.getResultList();
 
 		return theMessages;
+		}
 	}
 
 	@Override
