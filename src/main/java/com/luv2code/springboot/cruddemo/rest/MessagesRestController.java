@@ -76,7 +76,7 @@ public class MessagesRestController {
 	private void messageSeen(@RequestBody int user2Id , @RequestHeader("Authorization") String authHeader) {
 		IdExtractor idExtractor = new IdExtractor(authHeader);
 		
-		messageService.messageSeen(idExtractor.getIdFromToken() , user2Id);
+		 messageService.messageSeen(idExtractor.getIdFromToken() , user2Id);
 
 	}
 	@ExceptionHandler

@@ -34,12 +34,9 @@ public class Post {
 	private String image;
 	
 	
-	@Column(name = "is_public")
-	private boolean isPublic;
+	@Column(name = "status")
+	private Integer status;
 
-	@Column(name = "description")
-	private String description;
-	
 	
 	@Column(name = "post_creator_id")
 	private int postCreatorId;
@@ -70,14 +67,13 @@ public class Post {
 
 	}
 
-	public Post(String text, Integer postOriginalId, String image, String description, int postCreatorId, Integer postedOn,
-			String extraText, Date date, boolean isPublic , List<PostLike> postLikes, List<Comment> comments) {
+	public Post(String text, Integer postOriginalId, String image, int postCreatorId, Integer postedOn,
+			String extraText, Date date, Integer status , List<PostLike> postLikes, List<Comment> comments) {
 		this.text = text;
 		this.postOriginalId = postOriginalId;
 		this.image = image;
-		this.description = description;
 		this.postCreatorId = postCreatorId;
-		this.isPublic = isPublic;
+		this.status = status;
 		this.postedOn = postedOn;
 		this.extraText = extraText;
 		this.date = date;
@@ -109,12 +105,13 @@ public class Post {
 		this.extraText = extraText;
 	}
 
-	public boolean getIsPublic() {
-		return isPublic;
+
+	public Integer getStatus() {
+		return status;
 	}
 
-	public void setIsPublic(boolean isPublic) {
-		this.isPublic = isPublic;
+	public void setStatus(Integer status) {
+		this.status = status;
 	}
 
 	public Integer getPostedOn() {
@@ -147,14 +144,6 @@ public class Post {
 
 	public void setImage(String image) {
 		this.image = image;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
 	}
 
 	public int getPostCreatorId() {

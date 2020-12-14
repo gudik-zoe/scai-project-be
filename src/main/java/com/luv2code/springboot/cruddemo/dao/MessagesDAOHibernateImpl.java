@@ -39,12 +39,7 @@ public class MessagesDAOHibernateImpl implements MessagesDAO {
 	public Message sendMessage(Message theMessage) {
 		Session currentSession = entityManager.unwrap(Session.class);
 		currentSession.save(theMessage);
-//		Query<Message> theQuery = currentSession.createQuery("from Message where id_sender="
-//				+ theMessage.getIdReceiver() + "and id_receiver=" + theMessage.getIdSender(), Message.class);
-//		List<Message> theMessages = theQuery.getResultList();
-//		for(Message message:theMessages) {
-//			message.setSeen(true);
-//		}
+
 		return theMessage;
 	}
 
@@ -86,13 +81,14 @@ public class MessagesDAOHibernateImpl implements MessagesDAO {
 	public void messageSeen(int user1Id, int user2Id) {
 		Session currentSession = entityManager.unwrap(Session.class);
 		Query<Message> theQuery = currentSession
-				.createQuery("from Message where id_sender=" + user2Id + "and id_receiver=" + user1Id, Message.class);
+				.createQuery("from Message where id_sender=" + user2Id + "and id_receiver=" + user1Id + " and seen = " + false , Message.class);
 		List<Message> theMessages = theQuery.getResultList();
-
+		
 		for (Message message : theMessages) {
 			message.setSeen(true);
 			currentSession.update(message);
 		}
+		
 
 	}
 

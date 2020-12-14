@@ -15,7 +15,7 @@ public interface PostService {
 	
 	public Post postOnWall(int accountId , Post thePost);
 	
-	public Post resharePost (int accountId , int idPost , String extraText , boolean isPublic);
+	public Post resharePost (int accountId , int idPost , String extraText , Integer status);
 	
 	public Post updatePost(Post post);
 	

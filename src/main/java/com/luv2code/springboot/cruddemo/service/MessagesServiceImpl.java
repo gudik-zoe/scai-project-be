@@ -46,7 +46,7 @@ public class MessagesServiceImpl implements MessagesService {
 	@Override
 	@Transactional
 	public void messageSeen(int user1Id , int user2Id) {
-		messagesDAO.messageSeen(user1Id , user2Id);
+		 messagesDAO.messageSeen(user1Id , user2Id);
 		
 	}
 

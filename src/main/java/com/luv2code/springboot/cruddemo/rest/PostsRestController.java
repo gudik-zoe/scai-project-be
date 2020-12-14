@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,7 +24,6 @@ import org.springframework.web.multipart.MultipartFile;
 import com.luv2code.exception.error.handling.CustomeException;
 import com.luv2code.exception.error.handling.ErrorResponse;
 import com.luv2code.springboot.cruddemo.entity.Post;
-import com.luv2code.springboot.cruddemo.entity.Relationship;
 import com.luv2code.springboot.cruddemo.service.PostService;
 import com.luv2code.springboot.cruddemo.service.RelationshipService;
 import com.luv2code.springboot.cruddemo.service.StorageService;
@@ -67,7 +65,7 @@ public class PostsRestController {
 	@GetMapping("/posts/accountId/{accountId}")
 	public List<Post> getPostsByAccountId(@PathVariable int accountId , @RequestHeader("Authorization") String authHeader ) {
 		IdExtractor idExtractor = new IdExtractor(authHeader);
-		return postService.findPostByAccountId(accountId , idExtractor.getIdFromToken());
+			return postService.findPostByAccountId(accountId , idExtractor.getIdFromToken());
 
 	}
 
@@ -80,22 +78,25 @@ public class PostsRestController {
 	@PostMapping("/posts/accountId")
 	public Post addPost(@RequestPart(value = "image", required = false) MultipartFile image,
 			@RequestPart(value = "text", required = true) String text,
-			@RequestPart(value = "isPublic", required = true) String isPublic,
+			@RequestPart(value = "postOption", required = true) String postOption,
 			@RequestHeader("Authorization") String authHeader) throws Exception {
+		System.out.println(postOption);
 		IdExtractor idExtractor = new IdExtractor(authHeader);
 		Post thePost = new Post();
 		thePost.setDate(new Date(System.currentTimeMillis()));
 		thePost.setText(text);
+		if(postOption.equals("public")) {
+			thePost.setStatus(0);
+		}else if(postOption.equals("just-friends")) {
+			thePost.setStatus(1);
+		}else {
+			thePost.setStatus(2);
+		}
 		if (image != null) {
 			ImageUrl theImageUrl = storageService.pushImage(image);
 			thePost.setImage(theImageUrl.getImageUrl());
 		} else {
 			thePost.setImage(null);
-			if(isPublic.equals("true")) {
-				thePost.setIsPublic(true);
-			}else {
-				thePost.setIsPublic(false);
-			}
 		}
 			return postService.savePost(idExtractor.getIdFromToken(), thePost);
 	}
@@ -106,8 +107,8 @@ public class PostsRestController {
 			@RequestPart(value = "text", required = true) String text,
 			@RequestHeader("Authorization") String authHeader) throws Exception, CustomeException {
 		IdExtractor idExtractor = new IdExtractor(authHeader);
-		Relationship theRelation = relationshipService.getStatus(idExtractor.getIdFromToken(), postedOn);
-		if (theRelation == null) {
+		Integer theRelationshipStatus = relationshipService.getStatus(idExtractor.getIdFromToken(), postedOn);
+		if (theRelationshipStatus != 1) {
 			throw new CustomeException("cannot add a post on a user's wall that is not ur friend");
 		} else {
 
@@ -115,7 +116,7 @@ public class PostsRestController {
 			thePost.setPostedOn(postedOn);
 			thePost.setText(text);
 			thePost.setDate(new Date(System.currentTimeMillis()));
-			if (image != null || theRelation.getStatus() != 1) {
+			if (image != null || theRelationshipStatus != 1) {
 				ImageUrl theImage = storageService.pushImage(image);
 				thePost.setImage(theImage.getImageUrl());
 			} else {
@@ -128,20 +129,25 @@ public class PostsRestController {
 	@PostMapping("/post/resharePost/{idPost}")
 	public Post resharePost(@RequestHeader("Authorization") String authHeader, @PathVariable int idPost,
 			@RequestPart(value = "extraText", required = true) String extraText , 
-			@RequestPart(value = "isPublic", required = true) String isPublic) {
+			@RequestPart(value = "postOption", required = true) String postOption) {
 		Session currentSession = entityManager.unwrap(Session.class);
 		IdExtractor idExtractor = new IdExtractor(authHeader);
 		Post thePostWeWantToShare = currentSession.get(Post.class, idPost);
-		boolean postIsPublic = true;
-		if(isPublic.equals("false")) {
-			postIsPublic = false;
+		Integer postIsPublic = null;
+		if(postOption.equals("public")) {
+			postIsPublic = 0;
+		}else if(postOption.equals("just-friends")) {
+			postIsPublic = 1;
+		}
+		else {
+			postIsPublic = 2;
 		}
 		if (thePostWeWantToShare == null) {
 			throw new CustomeException("post dosen't exist");
 		} else {
-			Relationship theRelationship = relationshipService.getStatus(idExtractor.getIdFromToken(),
+			Integer theRelationshipStatus = relationshipService.getStatus(idExtractor.getIdFromToken(),
 					thePostWeWantToShare.getPostCreatorId());
-			if (theRelationship == null || theRelationship.getStatus() != 1) {
+			if (theRelationshipStatus == null || theRelationshipStatus != 1) {
 				throw new CustomeException("cannot like a user's post that is not ur friend");
 			} else if (extraText.isBlank()) {
 				throw new CustomeException("you should enter yout own text");

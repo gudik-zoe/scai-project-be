@@ -18,7 +18,7 @@ public interface PostsDAO {
 
 	public Post updatePost(Post post);
 
-	public Post resharePost(int accountId, int idPost, String extraText , boolean isPublic);
+	public Post resharePost(int accountId, int idPost, String extraText , Integer status);
 
 	public Post postOnWall(int accountId, Post thePost);
 

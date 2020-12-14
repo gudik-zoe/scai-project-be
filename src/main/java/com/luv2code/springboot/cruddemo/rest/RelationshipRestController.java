@@ -64,7 +64,7 @@ public class RelationshipRestController {
 	}
 	
 	@GetMapping("relation/getStatus/{user2Id}")
-	public Relationship getStatus(@RequestHeader("Authorization") String authHeader ,@PathVariable int user2Id ) {
+	public Integer getStatus(@RequestHeader("Authorization") String authHeader ,@PathVariable int user2Id ) {
 		IdExtractor idExtractor = new IdExtractor(authHeader);
 		return relationshipService.getStatus(idExtractor.getIdFromToken(), user2Id);
 	}

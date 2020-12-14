@@ -56,7 +56,7 @@ public class RelationshipServiceImpl implements RelationshipService {
 	}
 
 	@Override
-	public Relationship getStatus(int user1Id, int user2Id) {
+	public Integer getStatus(int user1Id, int user2Id) {
 		return relationshipDAO.getStatus(user1Id ,user2Id );
 	}
 

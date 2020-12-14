@@ -20,6 +20,7 @@ import com.luv2code.springboot.cruddemo.entity.Notification;
 import com.luv2code.springboot.cruddemo.entity.Post;
 import com.luv2code.springboot.cruddemo.service.AccountService;
 import com.luv2code.springboot.cruddemo.service.NotificationService;
+import com.luv2code.springboot.cruddemo.service.RelationshipService;
 import com.luv2code.utility.AccountBasicData;
 
 @Repository
@@ -32,6 +33,9 @@ public class PostsDAOHibernateImpl implements PostsDAO {
 
 	@Autowired
 	private AccountService accountservice;
+
+	@Autowired
+	private RelationshipService relatopnshipService;
 
 	@Autowired
 	public PostsDAOHibernateImpl(EntityManager theEntityManager) {
@@ -61,14 +65,14 @@ public class PostsDAOHibernateImpl implements PostsDAO {
 
 			for (Integer id : ids) {
 
-				theQuery = currentSession.createQuery("from Post where posted_on =" + null + " and is_public =" + 1
-						+ " and post_creator_id = " + id + " order by date DESC", Post.class);
+				theQuery = currentSession.createQuery("from Post where posted_on =" + null + " and post_creator_id = "
+						+ id + " and status != " + 2 + " order by date DESC", Post.class);
 				thePosts.addAll(theQuery.getResultList());
 
 			}
 
 		} else {
-			theQuery = currentSession.createQuery("from Post where posted_on =" + null + "and is_public =" + 1
+			theQuery = currentSession.createQuery("from Post where posted_on =" + null + "and status !=" + 2
 					+ " and post_creator_id = " + accountId + " order by date desc", Post.class);
 			thePosts = theQuery.getResultList();
 		}
@@ -76,18 +80,30 @@ public class PostsDAOHibernateImpl implements PostsDAO {
 	}
 
 	@Override
-	public List<Post> findPostByAccountId(int accountId , int loggedInUserId) {
+	public List<Post> findPostByAccountId(int accountId, int loggedInUserId) {
 		Session currentSession = entityManager.unwrap(Session.class);
-		Integer isPublic = null;
-			if(accountId == loggedInUserId) {
-				isPublic = 0;
-			}else {
-				isPublic = 1;
-			}
-		Query<Post> theQuery = currentSession.createQuery("from Post where post_creator_id=" + accountId
-				+ " and is_public = " + isPublic + "or posted_on = " + accountId + " order by id_post DESC", Post.class);
-		List<Post> thePosts = theQuery.getResultList();
-		return thePosts;
+		if (accountId == loggedInUserId) {
+			Query<Post> theQuery = currentSession
+					.createQuery("from Post where post_creator_id=" + accountId + " order by id_post DESC", Post.class);
+			List<Post> thePosts = theQuery.getResultList();
+
+			return thePosts;
+
+		}
+		Integer RelationshipStatus = relatopnshipService.getStatus(accountId, loggedInUserId);
+		if (RelationshipStatus == 1) {
+			Query<Post> theQuery = currentSession.createQuery(
+					"from Post where post_creator_id=" + accountId + " and status != " + 2 + "order by id_post DESC",
+					Post.class);
+			List<Post> thePosts = theQuery.getResultList();
+			return thePosts;
+		} else {
+			Query<Post> theQuery = currentSession.createQuery("from Post where post_creator_id=" + accountId
+					+ " and status = " + 0 + " order by id_post DESC", Post.class);
+			List<Post> thePosts = theQuery.getResultList();
+			return thePosts;
+
+		}
 	}
 
 	public Post findPostByPostId(int theId) {
@@ -147,13 +163,13 @@ public class PostsDAOHibernateImpl implements PostsDAO {
 	}
 
 	@Override
-	public Post resharePost(int accountId, int idPost, String extraText , boolean isPublic) {
+	public Post resharePost(int accountId, int idPost, String extraText, Integer status) {
 		Session currentSession = entityManager.unwrap(Session.class);
 		Post theOriginalPost = currentSession.get(Post.class, idPost);
 		Post resharedPost = new Post();
 		resharedPost.setPostCreatorId(accountId);
 		resharedPost.setPostOriginalId(idPost);
-		resharedPost.setIsPublic(isPublic);
+		resharedPost.setStatus(status);
 		resharedPost.setDate(new Date(System.currentTimeMillis()));
 		resharedPost.setExtraText(extraText);
 		currentSession.save(resharedPost);

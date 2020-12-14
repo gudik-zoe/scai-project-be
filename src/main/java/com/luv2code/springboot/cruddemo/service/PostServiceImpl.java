@@ -61,9 +61,9 @@ public class PostServiceImpl implements PostService {
 
 	@Override
 	@Transactional
-	public Post resharePost(int accountId, int idPost, String extraText , boolean isPublic) {
+	public Post resharePost(int accountId, int idPost, String extraText , Integer status) {
 
-		return postsDAO.resharePost(accountId, idPost,  extraText , isPublic);
+		return postsDAO.resharePost(accountId, idPost,  extraText , status);
 
 	}
 

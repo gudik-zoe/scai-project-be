@@ -50,9 +50,9 @@ public class CommentLikesRestController {
 		IdExtractor idExtractor = new IdExtractor(authHeader);
 		Session currentSession = entityManager.unwrap(Session.class);
 		Comment theLikedComment = currentSession.get(Comment.class, commentId);
-		Relationship theRelationship = relationshipService.getStatus(idExtractor.getIdFromToken(),
+		Integer theRelationshipStatus = relationshipService.getStatus(idExtractor.getIdFromToken(),
 				theLikedComment.getCommentCreatorId());
-		if (theRelationship == null || theRelationship.getStatus() != 1) {
+		if (theRelationshipStatus == null || theRelationshipStatus != 1) {
 			throw new CustomeException("cannot like a user's comment that is not ur friend");
 		} else if (idExtractor.getIdFromToken() == theLikedComment.getCommentCreatorId()) {
 			throw new CustomeException("cannot like your own comment");

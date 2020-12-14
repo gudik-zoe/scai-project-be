@@ -51,21 +51,21 @@ public class RelationshipDAOHibernateImpl implements RelationshipDAO {
 	}
 
 	@Override
-	public Relationship getStatus(int user1Id, int user2Id) {
+	public Integer getStatus(int user1Id, int user2Id) {
 		Session currentSession = entityManager.unwrap(Session.class);
 		if(user1Id == user2Id) {
 			Relationship selfRelationship = new Relationship();
 			selfRelationship.setStatus(1);
-			return selfRelationship;
+			return selfRelationship.getStatus();
 		}
 		Query<Relationship> theQuery = currentSession
 				.createQuery("from Relationship where (user_one_id=" + user1Id + "and user_two_id=" + user2Id + " )or ("
 						+ "user_one_id= " + user2Id + "and user_two_id=" + user1Id + ")", Relationship.class);
 		try {
 			Relationship theRelation = theQuery.getSingleResult();
-			return theRelation;
+			return theRelation.getStatus();
 		} catch (Exception e) {
-			return null;
+			return 0;
 		}
 
 	}

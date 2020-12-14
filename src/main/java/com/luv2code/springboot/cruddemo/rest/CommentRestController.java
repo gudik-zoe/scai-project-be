@@ -66,10 +66,10 @@ public class CommentRestController {
 		if (theRequestedPost == null) {
 			throw new CustomeException("this post doesn't exist");
 		} else {
-			Relationship theRelationship = relationshipService.getStatus(idExtractor.getIdFromToken(),
+			Integer theRelationshipStatus = relationshipService.getStatus(idExtractor.getIdFromToken(),
 					theRequestedPost.getPostCreatorId());
 			
-			if (theRelationship == null || theRelationship.getStatus() != 1) {
+			if (theRelationshipStatus == null || theRelationshipStatus != 1) {
 
 				throw new CustomeException("cannot comment on a user's post that is not ur friend");
 

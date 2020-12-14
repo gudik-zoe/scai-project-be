@@ -52,9 +52,9 @@ public class PostLikesRestController {
 		if (thelikedPost == null) {
 			throw new CustomeException("cannot add a like to a post that doesn't exist");
 		} else {
-			Relationship theRelationship = relationshipService.getStatus(idExtractor.getIdFromToken(),
+			Integer theRelationshipStatus = relationshipService.getStatus(idExtractor.getIdFromToken(),
 					thelikedPost.getPostCreatorId());
-			if (theRelationship == null || theRelationship.getStatus() != 1) {
+			if (theRelationshipStatus == null || theRelationshipStatus != 1) {
 
 				throw new CustomeException("cannot like a user's post that is not ur friend");
 
