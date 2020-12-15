@@ -49,6 +49,7 @@ public interface AccountService {
 	
 	public ResponseEntity<Account> login (Account user);
 	
-	public List<AccountBasicData> getMutualFriends(int loggedInAccountId , int otherAccountId);
+	public List<String> getAccountPhotos(int accountId);
 
+	
 }

@@ -51,6 +51,7 @@ public interface AccountDAO {
 
 	public List<AccountBasicData> getAllUsers();
 
-	public List<AccountBasicData> getMutualFriends(int loggedInAccountId, int otherAccountId);
+	public List<String> getAccountPhotos(int accountId);
+
 
 }

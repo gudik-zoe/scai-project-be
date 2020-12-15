@@ -202,11 +202,14 @@ public class AccountRestController {
 		}
 	}
 	
-	@GetMapping("account/mutualFriends/{otherAccountId}")
-	public List<AccountBasicData> getMutualFriends(@RequestHeader("Authorization") String authHeader, @PathVariable int otherAccountId){
-		System.out.println("here");
-		IdExtractor idExtractor = new IdExtractor(authHeader);
-		return accountService.getMutualFriends(idExtractor.getIdFromToken(), otherAccountId);
+	@GetMapping("account/mutualFriends/{accountId}")
+	public List<AccountBasicData> getARandomAccountFriends(@PathVariable int accountId){
+		return accountService.getMyFriends(accountId);
+	}
+	
+	@GetMapping("account/photos/{accountId}")
+	public List<String> getAccountPhotos(@PathVariable int accountId){
+		return accountService.getAccountPhotos(accountId);
 	}
 
 

@@ -39,7 +39,7 @@ public class AccountServiceImpl implements AccountService {
 		return accountDAO.findById(accountId);
 	}
 
-	@Override 
+	@Override
 	@Transactional
 	public Account save(Account account) throws CustomeException {
 		return accountDAO.save(account);
@@ -69,14 +69,14 @@ public class AccountServiceImpl implements AccountService {
 	@Override
 	@Transactional
 	public ImageUrl updateAccountCoverPhoto(int accountId, MultipartFile photo) throws Exception {
-		 return accountDAO.updateAccountCoverPhoto(accountId , photo);
-		
+		return accountDAO.updateAccountCoverPhoto(accountId, photo);
+
 	}
 
 	@Override
 	@Transactional
 	public int getAccountByPostId(int postId) {
-		return  accountDAO.getAccountByPostId(postId);
+		return accountDAO.getAccountByPostId(postId);
 	}
 
 	@Override
@@ -87,8 +87,8 @@ public class AccountServiceImpl implements AccountService {
 
 	@Override
 	@Transactional
-	public Account updateAccount(Account account , int idAccount)throws AccountException {
-		return accountDAO.updateAccount(account , idAccount);
+	public Account updateAccount(Account account, int idAccount) throws AccountException {
+		return accountDAO.updateAccount(account, idAccount);
 	}
 
 	@Override
@@ -99,16 +99,15 @@ public class AccountServiceImpl implements AccountService {
 
 	@Override
 	@Transactional
-	public Account updateEmail(int accountId ,String email , String password) {
-		return accountDAO.updateEmail(accountId , email , password);
+	public Account updateEmail(int accountId, String email, String password) {
+		return accountDAO.updateEmail(accountId, email, password);
 	}
 
 	@Override
 	@Transactional
-	public Account updatePassword(int accountId , String oldPassword , String newPassword) {
-		return accountDAO.updatePassword(accountId , oldPassword , newPassword);
+	public Account updatePassword(int accountId, String oldPassword, String newPassword) {
+		return accountDAO.updatePassword(accountId, oldPassword, newPassword);
 	}
-
 
 	@Override
 	@Transactional
@@ -136,9 +135,8 @@ public class AccountServiceImpl implements AccountService {
 
 	@Override
 	@Transactional
-	public List<AccountBasicData> getMutualFriends(int loggedInAccountId, int otherAccountId) {
-		return accountDAO.getMutualFriends(loggedInAccountId, otherAccountId);
+	public List<String> getAccountPhotos(int accountId) {
+		return accountDAO.getAccountPhotos(accountId);
 	}
-
 
 }

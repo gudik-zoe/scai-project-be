@@ -44,7 +44,6 @@ public class AccountDAOHibernateImpl implements AccountDAO {
 	@Autowired
 	public AccountDAOHibernateImpl(EntityManager theEntityManager, StorageService theStorageService,
 			RelationshipService theRelationshipService) {
-
 		entityManager = theEntityManager;
 		storageService = theStorageService;
 		relationshipService = theRelationshipService;
@@ -131,23 +130,6 @@ public class AccountDAOHibernateImpl implements AccountDAO {
 
 	}
 	
-//	@Override
-//	public List<AccountBasicData> getMyFriends(int accountId) {
-//		Session currentSession = entityManager.unwrap(Session.class);
-//		Query<Account> theQuery = currentSession.createQuery("from Account where id_account != " + accountId,
-//				Account.class);
-//		List<Account> theAccounts = theQuery.getResultList();
-//		List<AccountBasicData> myFriends = new ArrayList<AccountBasicData>();
-//		for (Account account : theAccounts) {
-//			if (relationshipService.checkRelation(accountId, account.getIdAccount()) != null) {
-//				AccountBasicData Friend = new AccountBasicData(account.getFirstName(), account.getLastName(),
-//						account.getProfilePhoto(), account.getIdAccount(), account.getCoverPhoto());
-//				myFriends.add(Friend);
-//			}
-//		}
-//		return myFriends;
-//
-//	}
 
 	@Override
 	public AccountData findById(int accountId) {
@@ -309,21 +291,24 @@ public class AccountDAOHibernateImpl implements AccountDAO {
 	}
 	
 	@Override
-	public List<AccountBasicData> getMutualFriends(int loggedInAccountId, int otherAccountId) {
-		List<AccountBasicData> loggedInAccountFriends  = getMyFriends(loggedInAccountId);
-		List<AccountBasicData> theOtherAccountFriends  = getMyFriends(otherAccountId);
-		List<AccountBasicData> mutualFriends = new ArrayList<AccountBasicData>();
-			for(AccountBasicData account:loggedInAccountFriends) {
-				for(AccountBasicData account2:theOtherAccountFriends) {
-					if(account.getIdAccount() == account2.getIdAccount()) {
-						System.out.println(account.getFirstName());
-						mutualFriends.add(account);
-					}
-				}
+	public List<String> getAccountPhotos(int accountId) {
+		Session currentSession = entityManager.unwrap(Session.class);
+		Query<Post> theQuery = currentSession.createQuery("from Post where post_creator_id = " + accountId + " and status != " + 2, Post.class);
+		List<Post> myPosts = theQuery.getResultList();
+		List<String> myPhotos = new ArrayList<String>();
+		Account theAccount = currentSession.get(Account.class, accountId);
+		myPhotos.add(theAccount.getCoverPhoto());
+		myPhotos.add(theAccount.getProfilePhoto());
+		for(Post post:myPosts) {
+			if(post.getImage() != null) {
+				myPhotos.add(post.getImage());
 			}
-		return mutualFriends;
+		}
+		return myPhotos;
 	}
 
+	
+	
 
 	@ExceptionHandler
 	public ResponseEntity<ErrorResponse> handleCustomeException(CustomeException exc) {
@@ -338,6 +323,9 @@ public class AccountDAOHibernateImpl implements AccountDAO {
 				System.currentTimeMillis());
 		return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
 	}
+
+	
+	
 
 
 }
