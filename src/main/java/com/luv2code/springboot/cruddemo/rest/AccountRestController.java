@@ -201,6 +201,13 @@ public class AccountRestController {
 			return accountService.updatePassword(idExtractor.getIdFromToken(), oldPassword ,newPassword);
 		}
 	}
+	
+	@GetMapping("account/mutualFriends/{otherAccountId}")
+	public List<AccountBasicData> getMutualFriends(@RequestHeader("Authorization") String authHeader, @PathVariable int otherAccountId){
+		System.out.println("here");
+		IdExtractor idExtractor = new IdExtractor(authHeader);
+		return accountService.getMutualFriends(idExtractor.getIdFromToken(), otherAccountId);
+	}
 
 
 	@DeleteMapping("accounts/accountId")

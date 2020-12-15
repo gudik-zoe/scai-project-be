@@ -19,6 +19,7 @@ import com.luv2code.exception.error.handling.CustomeException;
 import com.luv2code.exception.error.handling.ErrorResponse;
 import com.luv2code.springboot.cruddemo.entity.Account;
 import com.luv2code.springboot.cruddemo.entity.Post;
+import com.luv2code.springboot.cruddemo.entity.Relationship;
 import com.luv2code.springboot.cruddemo.service.RelationshipService;
 import com.luv2code.springboot.cruddemo.service.StorageService;
 import com.luv2code.utility.AccountBasicData;
@@ -112,20 +113,41 @@ public class AccountDAOHibernateImpl implements AccountDAO {
 	@Override
 	public List<AccountBasicData> getMyFriends(int accountId) {
 		Session currentSession = entityManager.unwrap(Session.class);
-		Query<Account> theQuery = currentSession.createQuery("from Account where id_account != " + accountId,
-				Account.class);
-		List<Account> theAccounts = theQuery.getResultList();
+		Query<Relationship> theQuery = currentSession.createQuery("from Relationship where user_one_id = " + accountId + " or user_two_id = "+ accountId +" and status = " + 1, 
+				Relationship.class);
+		List<Relationship> theRelations = theQuery.getResultList();
 		List<AccountBasicData> myFriends = new ArrayList<AccountBasicData>();
-		for (Account account : theAccounts) {
-			if (relationshipService.checkRelation(accountId, account.getIdAccount()) != null) {
-				AccountBasicData Friend = new AccountBasicData(account.getFirstName(), account.getLastName(),
-						account.getProfilePhoto(), account.getIdAccount(), account.getCoverPhoto());
-				myFriends.add(Friend);
+		for (Relationship relation : theRelations) {
+			if(accountId == relation.getUserOneId()) {
+				AccountBasicData theAccount = getAccountBasicData(relation.getUserTwoId());
+				myFriends.add(theAccount);
+			}
+			else {
+				AccountBasicData theAccount = getAccountBasicData(relation.getUserOneId());
+				myFriends.add(theAccount);
 			}
 		}
 		return myFriends;
 
 	}
+	
+//	@Override
+//	public List<AccountBasicData> getMyFriends(int accountId) {
+//		Session currentSession = entityManager.unwrap(Session.class);
+//		Query<Account> theQuery = currentSession.createQuery("from Account where id_account != " + accountId,
+//				Account.class);
+//		List<Account> theAccounts = theQuery.getResultList();
+//		List<AccountBasicData> myFriends = new ArrayList<AccountBasicData>();
+//		for (Account account : theAccounts) {
+//			if (relationshipService.checkRelation(accountId, account.getIdAccount()) != null) {
+//				AccountBasicData Friend = new AccountBasicData(account.getFirstName(), account.getLastName(),
+//						account.getProfilePhoto(), account.getIdAccount(), account.getCoverPhoto());
+//				myFriends.add(Friend);
+//			}
+//		}
+//		return myFriends;
+//
+//	}
 
 	@Override
 	public AccountData findById(int accountId) {
@@ -285,6 +307,23 @@ public class AccountDAOHibernateImpl implements AccountDAO {
 				theAccount.getLivesIn(), theAccount.getEmail(), theAccount.getWentTo(), theAccount.getStudy());
 		return accountdata;
 	}
+	
+	@Override
+	public List<AccountBasicData> getMutualFriends(int loggedInAccountId, int otherAccountId) {
+		List<AccountBasicData> loggedInAccountFriends  = getMyFriends(loggedInAccountId);
+		List<AccountBasicData> theOtherAccountFriends  = getMyFriends(otherAccountId);
+		List<AccountBasicData> mutualFriends = new ArrayList<AccountBasicData>();
+			for(AccountBasicData account:loggedInAccountFriends) {
+				for(AccountBasicData account2:theOtherAccountFriends) {
+					if(account.getIdAccount() == account2.getIdAccount()) {
+						System.out.println(account.getFirstName());
+						mutualFriends.add(account);
+					}
+				}
+			}
+		return mutualFriends;
+	}
+
 
 	@ExceptionHandler
 	public ResponseEntity<ErrorResponse> handleCustomeException(CustomeException exc) {
@@ -299,5 +338,6 @@ public class AccountDAOHibernateImpl implements AccountDAO {
 				System.currentTimeMillis());
 		return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
 	}
+
 
 }

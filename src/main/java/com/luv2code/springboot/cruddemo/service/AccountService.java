@@ -16,6 +16,7 @@ import com.luv2code.utility.ImageUrl;
 public interface AccountService {
 
 	public List<AccountBasicData> getAllUsers();
+	
 	public List<AccountBasicData> getPeopleYouMayKnow(int accountId);
 	
 	public List<AccountBasicData> getMyFriends(int accountId);
@@ -47,5 +48,7 @@ public interface AccountService {
 	public Account updatePassword(int accountId , String oldPassword , String newPassword);
 	
 	public ResponseEntity<Account> login (Account user);
+	
+	public List<AccountBasicData> getMutualFriends(int loggedInAccountId , int otherAccountId);
 
 }

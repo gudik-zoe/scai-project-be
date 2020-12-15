@@ -134,5 +134,11 @@ public class AccountServiceImpl implements AccountService {
 		return accountDAO.getAllUsers();
 	}
 
+	@Override
+	@Transactional
+	public List<AccountBasicData> getMutualFriends(int loggedInAccountId, int otherAccountId) {
+		return accountDAO.getMutualFriends(loggedInAccountId, otherAccountId);
+	}
+
 
 }

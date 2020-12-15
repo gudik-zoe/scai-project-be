@@ -51,4 +51,6 @@ public interface AccountDAO {
 
 	public List<AccountBasicData> getAllUsers();
 
+	public List<AccountBasicData> getMutualFriends(int loggedInAccountId, int otherAccountId);
+
 }
