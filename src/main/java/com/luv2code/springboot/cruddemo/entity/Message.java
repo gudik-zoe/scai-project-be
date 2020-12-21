@@ -27,6 +27,8 @@ public class Message {
 
 	@Column(name = "message")
 	private String message;
+	
+
 
 
 	@Column(name = "date")
@@ -39,7 +41,7 @@ public class Message {
 
 	}
 
-	public Message(int idSender, int idReceiver, String message, Date date, boolean seen) {
+	public Message(int idSender, int idReceiver, String message, Date date, boolean seen ) {
 		this.idSender = idSender;
 		this.idReceiver = idReceiver;
 		this.message = message;
@@ -54,6 +56,8 @@ public class Message {
 	public void setDate(Date date) {
 		this.date = date;
 	}
+
+
 
 	public int getIdMessages() {
 		return idMessages;

@@ -47,4 +47,12 @@ private NotificationsDAO notificationsDAO;
 		
 	}
 
+
+	@Override
+	@Transactional
+	public void allNotificationSeen(int accountId) {
+		notificationsDAO.allNotificationSeen(accountId);
+		
+	}
+
 }

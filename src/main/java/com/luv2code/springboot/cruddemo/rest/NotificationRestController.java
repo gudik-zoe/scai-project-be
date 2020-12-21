@@ -68,6 +68,12 @@ public class NotificationRestController {
 		notificationService.notificationHasBeenSeen(notId);
 	}
 	
+	@PutMapping("/notification/allNotification/seen")
+	public void notHasBeenSeen(@RequestHeader("Authorization") String authHeader) {
+		IdExtractor idExtractor = new IdExtractor(authHeader);
+		notificationService.allNotificationSeen(idExtractor.getIdFromToken());
+	}
+	
 	@ExceptionHandler
 	public ResponseEntity<ErrorResponse> handleCustomeException(CustomeException exc) {
 		ErrorResponse error = new ErrorResponse(HttpStatus.NOT_FOUND.value(), exc.getMessage(),

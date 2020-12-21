@@ -40,12 +40,10 @@ public class NotificationsDAOHibernateImpl implements NotificationsDAO {
 	public Notification addNotification(Notification theNotification) {
 		Session currentSession = entityManager.unwrap(Session.class);
 
-	
-			currentSession.save(theNotification);
+		currentSession.save(theNotification);
 
-			return theNotification;
-		}
-	
+		return theNotification;
+	}
 
 	@Override
 	public void deleteNotification() {
@@ -81,6 +79,19 @@ public class NotificationsDAOHibernateImpl implements NotificationsDAO {
 		ErrorResponse error = new ErrorResponse(HttpStatus.BAD_REQUEST.value(), "Unknown error occured",
 				System.currentTimeMillis());
 		return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+	}
+
+	@Override
+	public void allNotificationSeen(int accountId) {
+		Session currentSession = entityManager.unwrap(Session.class);
+		Query<Notification> theQuery = currentSession.createQuery("from Notification where not_receiver =" + accountId,
+				Notification.class);
+		List<Notification> theNots = theQuery.getResultList();
+		for (Notification not : theNots) {
+			not.setSeen(true);
+			currentSession.update(not);
+		}
+
 	}
 
 }

@@ -16,14 +16,18 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.luv2code.exception.error.handling.CustomeException;
 import com.luv2code.exception.error.handling.ErrorResponse;
 import com.luv2code.springboot.cruddemo.entity.Account;
 import com.luv2code.springboot.cruddemo.entity.Message;
 import com.luv2code.springboot.cruddemo.service.MessagesService;
+import com.luv2code.springboot.cruddemo.service.StorageService;
 import com.luv2code.utility.IdExtractor;
+import com.luv2code.utility.ImageUrl;
 
 @RestController
 @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -31,11 +35,13 @@ public class MessagesRestController {
 
 	private MessagesService messageService;
 	private EntityManager entityManager;
+	private StorageService storageService;
 
 	@Autowired
-	public MessagesRestController(MessagesService theMessagesService, EntityManager theEntityManager) {
+	public MessagesRestController(MessagesService theMessagesService, EntityManager theEntityManager , StorageService theStorageService) {
 		this.messageService = theMessagesService;
 		this.entityManager = theEntityManager;
+		this.storageService = theStorageService;
 	}
 
 	@GetMapping("/messages/myMessages")
@@ -77,6 +83,13 @@ public class MessagesRestController {
 		IdExtractor idExtractor = new IdExtractor(authHeader);
 		
 		 messageService.messageSeen(idExtractor.getIdFromToken() , user2Id);
+
+	}
+	
+	@PostMapping("/messages/uploadImage")
+	private ImageUrl uploadImage(@RequestBody MultipartFile image) throws Exception {
+		System.out.println(image);
+		return storageService.pushImage(image);
 
 	}
 	@ExceptionHandler

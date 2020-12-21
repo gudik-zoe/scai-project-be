@@ -14,7 +14,9 @@ import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import com.luv2code.springboot.cruddemo.entity.Message;
 import com.luv2code.springboot.cruddemo.service.MessagesService;
+import com.luv2code.springboot.cruddemo.service.StorageService;
 import com.luv2code.utility.IdExtractor;
+import com.luv2code.utility.ImageUrl;
 
 public class ChatWebSocketHandler extends TextWebSocketHandler {
 
@@ -23,6 +25,9 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
 
 	@Autowired
 	private MessagesService messageService;
+	
+	@Autowired
+	private StorageService storageService;
 
 	@Override
 	public void afterConnectionEstablished(WebSocketSession session) throws Exception {
@@ -32,7 +37,7 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
 
 	@Override
 	protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
-
+		
 		if (message.getPayload().contains("Bearer ")) {
 
 			try {
@@ -55,7 +60,9 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
 				obj.append("idSender", senderId);
 				int idReceiver = obj.getInt("idReceiver");
 				String messageText = obj.getString("message");
-//				String date = obj.getString("date");
+				
+				
+
 				TextMessage newMessage = new TextMessage(obj.toString());
 
 				if (webSocketSessions.containsKey(idReceiver)) {
@@ -63,7 +70,7 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
 				}
 				session.sendMessage(newMessage);
 
-				Message theMessage = new Message(senderId, idReceiver, messageText, new Date(System.currentTimeMillis()), false);
+				Message theMessage = new Message(senderId, idReceiver, messageText, new Date(System.currentTimeMillis()), false  );
 				messageService.sendMessage(theMessage);
 
 			} catch (JSONException e) {

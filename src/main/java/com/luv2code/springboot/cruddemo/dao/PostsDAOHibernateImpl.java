@@ -72,9 +72,13 @@ public class PostsDAOHibernateImpl implements PostsDAO {
 			}
 
 		} else {
-			theQuery = currentSession.createQuery("from Post where posted_on =" + null + "and status !=" + 2
+			theQuery = currentSession.createQuery("from Post where posted_on = " + null + " and status !=" + 2
 					+ " and post_creator_id = " + accountId + " order by date desc", Post.class);
-			thePosts = theQuery.getResultList();
+			try {
+				thePosts = theQuery.getResultList();
+			} catch (Exception e) {
+				return null;
+			}
 		}
 		return thePosts;
 	}
@@ -84,7 +88,7 @@ public class PostsDAOHibernateImpl implements PostsDAO {
 		Session currentSession = entityManager.unwrap(Session.class);
 		if (accountId == loggedInUserId) {
 			Query<Post> theQuery = currentSession
-					.createQuery("from Post where post_creator_id=" + accountId + " order by id_post DESC", Post.class);
+					.createQuery("from Post where post_creator_id=" + accountId + " or posted_on = " + loggedInUserId +" order by id_post DESC", Post.class);
 			List<Post> thePosts = theQuery.getResultList();
 
 			return thePosts;
@@ -93,7 +97,7 @@ public class PostsDAOHibernateImpl implements PostsDAO {
 		Integer RelationshipStatus = relatopnshipService.getStatus(accountId, loggedInUserId);
 		if (RelationshipStatus == 1) {
 			Query<Post> theQuery = currentSession.createQuery(
-					"from Post where post_creator_id=" + accountId + " and status != " + 2 + "order by id_post DESC",
+					"from Post where post_creator_id=" + accountId +  " and status != " + 2 + " or posted_on = "+ accountId + "order by id_post DESC",
 					Post.class);
 			List<Post> thePosts = theQuery.getResultList();
 			return thePosts;
@@ -108,7 +112,6 @@ public class PostsDAOHibernateImpl implements PostsDAO {
 
 	public Post findPostByPostId(int theId) {
 		Session currentSession = entityManager.unwrap(Session.class);
-
 		Post thePost = currentSession.get(Post.class, theId);
 
 		return thePost;
@@ -130,6 +133,7 @@ public class PostsDAOHibernateImpl implements PostsDAO {
 		if (thePost.getPostedOn() != null) {
 			Account theRequestedAccount = currentSession.get(Account.class, thePost.getPostedOn());
 			if (theRequestedAccount != null) {
+				thePost.setStatus(1);
 				currentSession.save(thePost);
 				Notification WroteOnYourPost = new Notification(accountId, thePost.getPostedOn(), "posted on your wall",
 						new Date(System.currentTimeMillis()), thePost.getIdPost(), false);

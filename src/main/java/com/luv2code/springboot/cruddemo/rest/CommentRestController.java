@@ -75,7 +75,10 @@ public class CommentRestController {
 
 			} else if (commentText.equals("") || commentText.isEmpty() || theRequestedPost == null) {
 				throw new CustomeException("cannot add an empty comment");
-			} else {
+			}else if (theRequestedPost.getStatus() == 2 && theRequestedPost.getPostCreatorId() != idExtractor.getIdFromToken()) {
+				throw new CustomeException("cannot comment to a post that is private and not yours");
+			}
+			else {
 				return commentService.addComment(idExtractor.getIdFromToken(), commentText, theRequestedPost);
 			}
 		}

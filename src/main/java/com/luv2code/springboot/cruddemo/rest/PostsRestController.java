@@ -144,7 +144,10 @@ public class PostsRestController {
 		}
 		if (thePostWeWantToShare == null) {
 			throw new CustomeException("post dosen't exist");
-		} else {
+		}else if(thePostWeWantToShare.getStatus() == 2 && thePostWeWantToShare.getPostCreatorId() != idExtractor.getIdFromToken()) {
+			throw new CustomeException("cannot share a post that is private and not yours");
+		}
+		else {
 			Integer theRelationshipStatus = relationshipService.getStatus(idExtractor.getIdFromToken(),
 					thePostWeWantToShare.getPostCreatorId());
 			if (theRelationshipStatus == null || theRelationshipStatus != 1) {

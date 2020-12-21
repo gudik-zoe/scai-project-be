@@ -54,12 +54,13 @@ public class PostLikesRestController {
 		} else {
 			Integer theRelationshipStatus = relationshipService.getStatus(idExtractor.getIdFromToken(),
 					thelikedPost.getPostCreatorId());
-			if (theRelationshipStatus == null || theRelationshipStatus != 1) {
-
+			if (theRelationshipStatus == null || theRelationshipStatus != 1 ) {
 				throw new CustomeException("cannot like a user's post that is not ur friend");
-
+			}else if ( thelikedPost.getStatus() == 2 && idExtractor.getIdFromToken() !=  thelikedPost.getPostCreatorId() ) {
+				throw new CustomeException("cannot like a private post unles it's yours");
+			}else {		
+				return postLikesService.addLike(idExtractor.getIdFromToken(), thelikedPost);
 			}
-			return postLikesService.addLike(idExtractor.getIdFromToken(), thelikedPost);
 		}
 
 	}

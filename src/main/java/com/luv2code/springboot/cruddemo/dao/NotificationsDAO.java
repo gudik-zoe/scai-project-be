@@ -13,6 +13,8 @@ public interface NotificationsDAO {
 	public void deleteNotification();
 
 	public void notificationHasBeenSeen(int notId);
+
+	public void allNotificationSeen(int accountId);
 	
 
 }

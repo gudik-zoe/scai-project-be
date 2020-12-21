@@ -100,7 +100,7 @@ public class AccountDAOHibernateImpl implements AccountDAO {
 		List<Account> theAccounts = theQuery.getResultList();
 		List<AccountBasicData> peopleYouMayKnow = new ArrayList<AccountBasicData>();
 		for (Account account : theAccounts) {
-			if (relationshipService.checkRelation(accountId, account.getIdAccount()) == null) {
+			if (relationshipService.getStatus(accountId, account.getIdAccount()) == null || relationshipService.getStatus(accountId, account.getIdAccount()) !=  1) {
 				AccountBasicData personYouMayKnow = new AccountBasicData(account.getFirstName(), account.getLastName(),
 						account.getProfilePhoto(), account.getIdAccount(), account.getCoverPhoto());
 				peopleYouMayKnow.add(personYouMayKnow);
@@ -112,7 +112,7 @@ public class AccountDAOHibernateImpl implements AccountDAO {
 	@Override
 	public List<AccountBasicData> getMyFriends(int accountId) {
 		Session currentSession = entityManager.unwrap(Session.class);
-		Query<Relationship> theQuery = currentSession.createQuery("from Relationship where user_one_id = " + accountId + " or user_two_id = "+ accountId +" and status = " + 1, 
+		Query<Relationship> theQuery = currentSession.createQuery("from Relationship where user_one_id = " + accountId + " and status = " + 1 + " or  user_two_id = "+ accountId + " and status = " + 1 , 
 				Relationship.class);
 		List<Relationship> theRelations = theQuery.getResultList();
 		List<AccountBasicData> myFriends = new ArrayList<AccountBasicData>();
@@ -300,10 +300,10 @@ public class AccountDAOHibernateImpl implements AccountDAO {
 		myPhotos.add(theAccount.getCoverPhoto());
 		myPhotos.add(theAccount.getProfilePhoto());
 		for(Post post:myPosts) {
-			if(post.getImage() != null) {
+			if(post.getImage() != null ) {
 				myPhotos.add(post.getImage());
 			}
-		}
+		}	
 		return myPhotos;
 	}
 

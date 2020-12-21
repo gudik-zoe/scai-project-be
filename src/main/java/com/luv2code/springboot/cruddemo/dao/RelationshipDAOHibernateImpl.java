@@ -65,7 +65,7 @@ public class RelationshipDAOHibernateImpl implements RelationshipDAO {
 			Relationship theRelation = theQuery.getSingleResult();
 			return theRelation.getStatus();
 		} catch (Exception e) {
-			return 0;
+			return null;
 		}
 
 	}
@@ -74,8 +74,8 @@ public class RelationshipDAOHibernateImpl implements RelationshipDAO {
 	public Relationship checkRelation(int user1Id, int user2Id) {
 		Session currentSession = entityManager.unwrap(Session.class);
 		Query<Relationship> theQuery = currentSession.createQuery("from Relationship where (user_one_id=" + user1Id
-				+ "and user_two_id=" + user2Id + " and status = " + 1 + " )or (" + "user_one_id= " + user2Id
-				+ "and user_two_id=" + user1Id + " and status = " + 1 + ")", Relationship.class);
+				+ "and user_two_id=" + user2Id + " )or (" + "user_one_id= " + user2Id
+				+ "and user_two_id=" + user1Id + ")", Relationship.class);
 		try {
 			Relationship theRelation = theQuery.getSingleResult();
 			return theRelation;
