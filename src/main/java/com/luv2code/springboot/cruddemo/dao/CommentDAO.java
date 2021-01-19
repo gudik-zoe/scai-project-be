@@ -15,8 +15,8 @@ public interface CommentDAO {
 
 	public Comment addComment(int accountId,   String comment ,Post post);
 
-	public void deleteComment(int theId);
+	public void deleteComment(int commentId , int accountId);
 
-	public Comment updateComment(int commentId , String CommentText);
+	public Comment updateComment(int commentId , String CommentText , int accountId);
 
 }

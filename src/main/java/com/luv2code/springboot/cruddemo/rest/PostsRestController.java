@@ -80,7 +80,6 @@ public class PostsRestController {
 			@RequestPart(value = "text", required = true) String text,
 			@RequestPart(value = "postOption", required = true) String postOption,
 			@RequestHeader("Authorization") String authHeader) throws Exception {
-		System.out.println(postOption);
 		IdExtractor idExtractor = new IdExtractor(authHeader);
 		Post thePost = new Post();
 		thePost.setDate(new Date(System.currentTimeMillis()));
@@ -144,7 +143,12 @@ public class PostsRestController {
 		}
 		if (thePostWeWantToShare == null) {
 			throw new CustomeException("post dosen't exist");
-		}else if(thePostWeWantToShare.getStatus() == 2 && thePostWeWantToShare.getPostCreatorId() != idExtractor.getIdFromToken()) {
+		}
+		 if(thePostWeWantToShare.getPageCreatorId() != null && !extraText.isBlank()) {
+			System.out.println("sharing a page's post");
+			 return postService.resharePost(idExtractor.getIdFromToken(), idPost, extraText , postIsPublic);
+		}
+		else if(thePostWeWantToShare.getStatus() == 2 && thePostWeWantToShare.getPostCreatorId() != idExtractor.getIdFromToken()) {
 			throw new CustomeException("cannot share a post that is private and not yours");
 		}
 		else {
@@ -198,26 +202,23 @@ public class PostsRestController {
 		Post theRequestedPost = currentSession.get(Post.class, postId);
 		if (theRequestedPost == null) {
 			throw new CustomeException("this post doesn't exist");
-		} else if (theRequestedPost.getPostCreatorId() != idExtractor.getIdFromToken()) {
-			throw new CustomeException("you cannot delete a post that is not yours");
 		} else {
-			postService.deletePostById(postId);
-
+			postService.deletePostById( idExtractor.getIdFromToken() , postId);
 		}
 	}
 
-	@ExceptionHandler
-	public ResponseEntity<ErrorResponse> handleCustomeException(CustomeException exc) {
-		ErrorResponse error = new ErrorResponse(HttpStatus.NOT_FOUND.value(), exc.getMessage(),
-				System.currentTimeMillis());
-		return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
-	}
-
-	@ExceptionHandler
-	public ResponseEntity<ErrorResponse> handleException(Exception exc) {
-		ErrorResponse error = new ErrorResponse(HttpStatus.BAD_REQUEST.value(), "unknown error occured",
-				System.currentTimeMillis());
-		return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
-	}
+//	@ExceptionHandler
+//	public ResponseEntity<ErrorResponse> handleCustomeException(CustomeException exc) {
+//		ErrorResponse error = new ErrorResponse(HttpStatus.NOT_FOUND.value(), exc.getMessage(),
+//				System.currentTimeMillis());
+//		return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+//	}
+//
+//	@ExceptionHandler
+//	public ResponseEntity<ErrorResponse> handleException(Exception exc) {
+//		ErrorResponse error = new ErrorResponse(HttpStatus.BAD_REQUEST.value(), "unknown error occured",
+//				System.currentTimeMillis());
+//		return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+//	}
 
 }

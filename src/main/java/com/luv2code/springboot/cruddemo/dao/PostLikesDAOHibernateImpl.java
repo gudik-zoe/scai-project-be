@@ -9,12 +9,20 @@ import javax.persistence.EntityManager;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import com.luv2code.exception.error.handling.CustomeException;
+import com.luv2code.exception.error.handling.ErrorResponse;
 import com.luv2code.springboot.cruddemo.entity.Notification;
+import com.luv2code.springboot.cruddemo.entity.Page;
+import com.luv2code.springboot.cruddemo.entity.PageLike;
 import com.luv2code.springboot.cruddemo.entity.Post;
 import com.luv2code.springboot.cruddemo.entity.PostLike;
 import com.luv2code.springboot.cruddemo.service.NotificationService;
+import com.luv2code.springboot.cruddemo.service.PageService;
 
 @Repository
 public class PostLikesDAOHibernateImpl implements PostLikesDAO {
@@ -25,8 +33,13 @@ public class PostLikesDAOHibernateImpl implements PostLikesDAO {
 	private NotificationService notificationService;
 
 	@Autowired
-	public PostLikesDAOHibernateImpl(EntityManager theEntityManager) {
+	private PageService pageService;
+
+	@Autowired
+	public PostLikesDAOHibernateImpl(EntityManager theEntityManager, PageService thePageService) {
 		entityManager = theEntityManager;
+		pageService = thePageService;
+
 	}
 
 	@Override
@@ -41,7 +54,6 @@ public class PostLikesDAOHibernateImpl implements PostLikesDAO {
 	@Override
 	public PostLike addLike(int accountId, Post post) {
 		Session currentSession = entityManager.unwrap(Session.class);
-
 		Query<PostLike> theQuery = currentSession.createQuery(
 				"from PostLike where related_post_id=" + post.getIdPost() + "and post_like_creator_id = " + accountId,
 				PostLike.class);
@@ -53,17 +65,24 @@ public class PostLikesDAOHibernateImpl implements PostLikesDAO {
 			currentSession.delete(theLike);
 			return null;
 		} catch (Exception e) {
+			if (post.getPageCreatorId() != null) {
+				if (pageService.checkIfPageLikedByAccount(accountId, post.getPageCreatorId())) {
+					theNewLike.setPostLikeCreatorId(accountId);
+					theNewLike.setRelatedPostId(post.getIdPost());
+					currentSession.save(theNewLike);
+				} else {
+					throw new CustomeException("cannot like a page's post that u didn't follow");
+				}
+			}
 			theNewLike.setPostLikeCreatorId(accountId);
 			theNewLike.setRelatedPostId(post.getIdPost());
 			currentSession.save(theNewLike);
-			if (accountId != post.getPostCreatorId()) {
+			if (post.getPageCreatorId() == null && accountId != post.getPostCreatorId()) {
 				Notification likeNotification = new Notification(accountId, post.getPostCreatorId(), "liked your post",
 						new Date(System.currentTimeMillis()), post.getIdPost(), false);
 				notificationService.addNotification(likeNotification);
 			}
-
 		}
-
 		return theNewLike;
 
 	}
@@ -81,6 +100,20 @@ public class PostLikesDAOHibernateImpl implements PostLikesDAO {
 		}
 
 		return likers;
+	}
+
+	@ExceptionHandler
+	public ResponseEntity<ErrorResponse> handleException(Exception exc) {
+		ErrorResponse error = new ErrorResponse(HttpStatus.BAD_REQUEST.value(), "unknown error occured",
+				System.currentTimeMillis());
+		return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+	}
+
+	@ExceptionHandler
+	public ResponseEntity<ErrorResponse> handleCustomeException(CustomeException exc) {
+		ErrorResponse error = new ErrorResponse(HttpStatus.UNAUTHORIZED.value(), exc.getMessage(),
+				System.currentTimeMillis());
+		return new ResponseEntity<>(error, HttpStatus.UNAUTHORIZED);
 	}
 
 }

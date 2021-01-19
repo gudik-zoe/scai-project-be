@@ -2,10 +2,9 @@ package com.luv2code.springboot.cruddemo.dao;
 
 import java.util.List;
 
-import org.springframework.web.multipart.MultipartFile;
 
 import com.luv2code.springboot.cruddemo.entity.Message;
-import com.luv2code.utility.ImageUrl;
+
 
 public interface MessagesDAO {
 	

@@ -15,5 +15,7 @@ public interface NotificationService {
 	public void notificationHasBeenSeen(int notId);
 	
 	public void allNotificationSeen(int accountId);
+	
+	public List<Notification> loadMore(int accountId , Integer notId);
 
 }

@@ -20,7 +20,6 @@ import com.luv2code.exception.error.handling.CustomeException;
 import com.luv2code.exception.error.handling.ErrorResponse;
 import com.luv2code.springboot.cruddemo.entity.Post;
 import com.luv2code.springboot.cruddemo.entity.PostLike;
-import com.luv2code.springboot.cruddemo.entity.Relationship;
 import com.luv2code.springboot.cruddemo.service.PostLikesService;
 import com.luv2code.springboot.cruddemo.service.RelationshipService;
 import com.luv2code.utility.IdExtractor;
@@ -51,13 +50,16 @@ public class PostLikesRestController {
 		Post thelikedPost = currentSession.get(Post.class, idPost);
 		if (thelikedPost == null) {
 			throw new CustomeException("cannot add a like to a post that doesn't exist");
-		} else {
+		}if(thelikedPost.getPageCreatorId() != null) {
+			return postLikesService.addLike(idExtractor.getIdFromToken(), thelikedPost);
+		}
+		else {
 			Integer theRelationshipStatus = relationshipService.getStatus(idExtractor.getIdFromToken(),
 					thelikedPost.getPostCreatorId());
 			if (theRelationshipStatus == null || theRelationshipStatus != 1 ) {
 				throw new CustomeException("cannot like a user's post that is not ur friend");
 			}else if ( thelikedPost.getStatus() == 2 && idExtractor.getIdFromToken() !=  thelikedPost.getPostCreatorId() ) {
-				throw new CustomeException("cannot like a private post unles it's yours");
+				throw new CustomeException("cannot like a private post unless it's yours");
 			}else {		
 				return postLikesService.addLike(idExtractor.getIdFromToken(), thelikedPost);
 			}

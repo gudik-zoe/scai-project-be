@@ -48,15 +48,15 @@ public class CommentServiceImpl implements CommentService {
 
 	@Override
 	@Transactional
-	public void deleteComment(int theId) {
-		commentDAO.deleteComment(theId);
+	public void deleteComment(int commentId , int accountId) {
+		commentDAO.deleteComment(commentId , accountId);
 
 	}
 
 	@Override
 	@Transactional
-	public Comment updateComment(int commentId , String commentText) {
-		return commentDAO.updateComment(commentId , commentText);
+	public Comment updateComment(int commentId , String commentText , int accountId) {
+		return commentDAO.updateComment(commentId , commentText , accountId);
 	}
 
 	

@@ -49,12 +49,15 @@ public class CommentLikesRestController {
 			@PathVariable int commentId) {
 		IdExtractor idExtractor = new IdExtractor(authHeader);
 		Session currentSession = entityManager.unwrap(Session.class);
-		Comment theLikedComment = currentSession.get(Comment.class, commentId);
+		Comment theCommentToLike = currentSession.get(Comment.class, commentId);
+		if(theCommentToLike.getPageCreatorId() != null) {
+			return commentLikesService.addLike(idExtractor.getIdFromToken(), commentId);
+		}
 		Integer theRelationshipStatus = relationshipService.getStatus(idExtractor.getIdFromToken(),
-				theLikedComment.getCommentCreatorId());
+				theCommentToLike.getCommentCreatorId());
 		if (theRelationshipStatus == null || theRelationshipStatus != 1) {
 			throw new CustomeException("cannot like a user's comment that is not ur friend");
-		} else if (idExtractor.getIdFromToken() == theLikedComment.getCommentCreatorId()) {
+		} else if (idExtractor.getIdFromToken() == theCommentToLike.getCommentCreatorId()) {
 			throw new CustomeException("cannot like your own comment");
 		} else {
 			return commentLikesService.addLike(idExtractor.getIdFromToken(), commentId);

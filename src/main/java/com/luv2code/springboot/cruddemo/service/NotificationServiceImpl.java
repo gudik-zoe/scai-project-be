@@ -55,4 +55,11 @@ private NotificationsDAO notificationsDAO;
 		
 	}
 
+
+	@Override
+	@Transactional
+	public List<Notification> loadMore(int accountId , Integer notId) {
+		return notificationsDAO.loadMore(accountId , notId);
+	}
+
 }

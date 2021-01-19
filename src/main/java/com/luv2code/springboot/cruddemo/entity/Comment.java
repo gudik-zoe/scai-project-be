@@ -6,6 +6,7 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -30,9 +31,12 @@ public class Comment {
 	private Date date;
 
 	@Column(name = "comment_creator_id")
-	private int commentCreatorId;
+	private Integer commentCreatorId;
 
-	@OneToMany(cascade = { CascadeType.ALL })
+	@Column(name = "page_Creator_id")
+	private Integer pageCreatorId;
+
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "related_comment_id", referencedColumnName = "id_comment", insertable = false, updatable = false, nullable = false)
 	private List<CommentLike> commentLike;
 
@@ -40,12 +44,12 @@ public class Comment {
 
 	}
 
-	public Comment(String text, int relatedPostId, int commentCreatorId , Date date) {
+	public Comment(String text, int relatedPostId, Date date, Integer commentCreatorId, Integer pageCreatorId) {
 		this.text = text;
 		this.relatedPostId = relatedPostId;
-		this.commentCreatorId = commentCreatorId;
 		this.date = date;
-
+		this.commentCreatorId = commentCreatorId;
+		this.pageCreatorId = pageCreatorId;
 	}
 
 	public int getIdComment() {
@@ -72,11 +76,11 @@ public class Comment {
 		this.relatedPostId = relatedPostId;
 	}
 
-	public int getCommentCreatorId() {
+	public Integer getCommentCreatorId() {
 		return commentCreatorId;
 	}
 
-	public void setCommentCreatorId(int commentCreatorId) {
+	public void setCommentCreatorId(Integer commentCreatorId) {
 		this.commentCreatorId = commentCreatorId;
 	}
 
@@ -96,5 +100,12 @@ public class Comment {
 		this.date = date;
 	}
 
-	
+	public Integer getPageCreatorId() {
+		return pageCreatorId;
+	}
+
+	public void setPageCreatorId(Integer pageCreatorId) {
+		this.pageCreatorId = pageCreatorId;
+	}
+
 }

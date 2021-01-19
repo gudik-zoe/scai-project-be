@@ -36,10 +36,14 @@ public class Post {
 	
 	@Column(name = "status")
 	private Integer status;
+	
+	
+	@Column(name = "page_creator_id")
+	private Integer pageCreatorId;
 
 	
 	@Column(name = "post_creator_id")
-	private int postCreatorId;
+	private Integer postCreatorId;
 
 	@Column(name = "posted_on")
 	private Integer postedOn;
@@ -67,8 +71,8 @@ public class Post {
 
 	}
 
-	public Post(String text, Integer postOriginalId, String image, int postCreatorId, Integer postedOn,
-			String extraText, Date date, Integer status , List<PostLike> postLikes, List<Comment> comments) {
+	public Post(String text, Integer postOriginalId, String image, Integer postCreatorId, Integer postedOn,
+			String extraText, Date date, Integer status , List<PostLike> postLikes, Integer pageCreatorId ,List<Comment> comments) {
 		this.text = text;
 		this.postOriginalId = postOriginalId;
 		this.image = image;
@@ -79,6 +83,7 @@ public class Post {
 		this.date = date;
 		this.postLikes = postLikes;
 		this.comments = comments;
+		this.pageCreatorId = pageCreatorId;
 	}
 
 	public int getIdPost() {
@@ -105,6 +110,13 @@ public class Post {
 		this.extraText = extraText;
 	}
 
+	public Integer getPageCreatorId() {
+		return pageCreatorId;
+	}
+
+	public void setPageCreatorId(Integer pageCreatorId) {
+		this.pageCreatorId = pageCreatorId;
+	}
 
 	public Integer getStatus() {
 		return status;
@@ -146,11 +158,11 @@ public class Post {
 		this.image = image;
 	}
 
-	public int getPostCreatorId() {
+	public Integer getPostCreatorId() {
 		return postCreatorId;
 	}
 
-	public void setPostCreatorId(int postCreatorId) {
+	public void setPostCreatorId(Integer postCreatorId) {
 		this.postCreatorId = postCreatorId;
 	}
 

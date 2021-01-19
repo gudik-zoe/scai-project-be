@@ -23,7 +23,7 @@ public class Account {
 	private int idAccount;
 
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JoinColumn(name = "post_creator_id")
+	@JoinColumn(name = "post_creator_id" , referencedColumnName = "id_account", insertable = false, updatable = false, nullable = false)
 	private List<Post> posts;
 
 	@OneToMany(cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
@@ -49,6 +49,22 @@ public class Account {
 	@OneToMany(cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
 	@JoinColumn(name = "not_creator", referencedColumnName = "id_account", insertable = false, updatable = false, nullable = false)
 	private List<Notification> notification;
+	
+	@OneToMany(cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
+	@JoinColumn(name = "page_creator_id", referencedColumnName = "id_account", insertable = false, updatable = false, nullable = false)
+	private List<Page> page;
+	
+	@OneToMany(cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
+	@JoinColumn(name = "page_like_creator_id", referencedColumnName = "id_account", insertable = false, updatable = false, nullable = false)
+	private List<PageLike> pageLike;
+	
+	@OneToMany(cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
+	@JoinColumn(name = "event_creator_id", referencedColumnName = "id_account", insertable = false, updatable = false, nullable = false)
+	private List<Event> events;
+	
+	@OneToMany(cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
+	@JoinColumn(name = "event_react_creator_id", referencedColumnName = "id_account", insertable = false, updatable = false, nullable = false)
+	private List<EventReact> eventReact;
 
 	@Column(name = "first_name")
 	private String firstName;
@@ -79,6 +95,14 @@ public class Account {
 
 	@Column(name = "cover_photo")
 	private String coverPhoto;
+
+	public List<Page> getPage() {
+		return page;
+	}
+
+	public void setPage(List<Page> page) {
+		this.page = page;
+	}
 
 	public Account() {
 

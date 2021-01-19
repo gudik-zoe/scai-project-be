@@ -10,8 +10,10 @@ import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.luv2code.exception.error.handling.CustomeException;
 import com.luv2code.springboot.cruddemo.entity.Comment;
 import com.luv2code.springboot.cruddemo.entity.Notification;
+import com.luv2code.springboot.cruddemo.entity.Page;
 import com.luv2code.springboot.cruddemo.entity.Post;
 import com.luv2code.springboot.cruddemo.service.NotificationService;
 
@@ -57,34 +59,52 @@ public class CommentDAOHibernateImpl implements CommentDAO {
 	@Override
 	public Comment addComment(int accountId, String commentText, Post post) {
 		Session currentSession = entityManager.unwrap(Session.class);
-
-		Comment theComment = new Comment(commentText, post.getIdPost(), accountId , new Date(System.currentTimeMillis()));
+		Comment theComment = new Comment(commentText, post.getIdPost(), new Date(System.currentTimeMillis()), accountId,
+				null);
 		currentSession.save(theComment);
-		if (theComment.getCommentCreatorId() != post.getPostCreatorId()) {
-			Notification addCommentNot = new Notification(accountId, post.getPostCreatorId(), "commented on your post",  new Date(System.currentTimeMillis()),
-					post.getIdPost(), false);
+		if (post.getPageCreatorId() == null && !theComment.getCommentCreatorId().equals(post.getPostCreatorId())) {
+			Notification addCommentNot = new Notification(accountId, post.getPostCreatorId(), "commented on your post",
+					new Date(System.currentTimeMillis()), post.getIdPost(), false);
 			notificationService.addNotification(addCommentNot);
 		}
 		return theComment;
 	}
 
 	@Override
-	public void deleteComment(int theId) {
+	public void deleteComment(int commentId , int accountId) {
 		Session currentSession = entityManager.unwrap(Session.class);
-
-		Comment theComment = currentSession.get(Comment.class, theId);
-
-		currentSession.delete(theComment);
-
+		Comment theComment = currentSession.get(Comment.class, commentId);
+		if(theComment.getPageCreatorId() != null) {
+			Page thePage = currentSession.get(Page.class, theComment.getPageCreatorId());
+			if(thePage.getPageCreatorId() == accountId) {
+				currentSession.delete(theComment);
+			}else {
+				throw new CustomeException("cannot delete comment");
+			}
+		}else {
+			currentSession.delete(theComment);
+		}
 	}
 
 	@Override
-	public Comment updateComment(int commentId, String commentText) {
+	public Comment updateComment(int commentId, String commentText, int accountId) {
 		Session currentSession = entityManager.unwrap(Session.class);
 		Comment theComment = currentSession.get(Comment.class, commentId);
-		theComment.setText(commentText);
-		currentSession.update(theComment);
-		return theComment;
+		if (theComment.getPageCreatorId() != null) {
+			Page thePage = currentSession.get(Page.class, theComment.getPageCreatorId());
+			if (thePage.getPageCreatorId() != accountId) {
+				throw new CustomeException("cannot update a comment");
+			} else {
+				theComment.setText(commentText);
+				currentSession.update(theComment);
+				return theComment;
+			}
+		} else {
+			theComment.setText(commentText);
+			currentSession.update(theComment);
+			return theComment;
+		}
+
 	}
 
 }

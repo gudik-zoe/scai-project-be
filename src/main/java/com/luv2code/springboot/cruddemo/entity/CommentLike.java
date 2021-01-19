@@ -20,16 +20,22 @@ public class CommentLike {
 	private int relatedCommentId;
 
 	@Column(name = "comment_like_creator_id")
-	private int commentLikeCreatorId;
+	private Integer commentLikeCreatorId;
+	
+	@Column(name = "page_creator_id")
+	private Integer pageCreatorId;
 
 	public CommentLike() {
 
 	}
 
-	public CommentLike(int relatedCommentId, int commentLikeCreatorId) {
+
+	public CommentLike(int relatedCommentId, Integer commentLikeCreatorId, Integer pageCreatorId) {
 		this.relatedCommentId = relatedCommentId;
 		this.commentLikeCreatorId = commentLikeCreatorId;
+		this.pageCreatorId = pageCreatorId;
 	}
+
 
 	public int getIdCommentLike() {
 		return idCommentLike;
@@ -47,12 +53,24 @@ public class CommentLike {
 		this.relatedCommentId = relatedCommentId;
 	}
 
-	public int getCommentLikeCreatorId() {
+	public Integer getCommentLikeCreatorId() {
 		return commentLikeCreatorId;
 	}
 
-	public void setCommentLikeCreatorId(int commentLikeCreatorId) {
+	public void setCommentLikeCreatorId(Integer commentLikeCreatorId) {
 		this.commentLikeCreatorId = commentLikeCreatorId;
 	}
+
+
+	public Integer getPageCreatorId() {
+		return pageCreatorId;
+	}
+
+
+	public void setPageCreatorId(Integer pageCreatorId) {
+		this.pageCreatorId = pageCreatorId;
+	}
+	
+	
 
 }

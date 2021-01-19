@@ -15,9 +15,9 @@ public interface CommentService {
 	
 	public Comment addComment(int accountId, String comment , Post post);
 	
-	public Comment updateComment(int commentId , String commentText);
+	public Comment updateComment(int commentId , String commentText , int accountId);
 	
-	public void deleteComment(int theId);
+	public void deleteComment(int commentId , int accountId);
 	
 	
 

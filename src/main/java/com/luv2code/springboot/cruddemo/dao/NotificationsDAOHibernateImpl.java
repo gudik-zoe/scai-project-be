@@ -1,5 +1,6 @@
 package com.luv2code.springboot.cruddemo.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -15,7 +16,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import com.luv2code.exception.error.handling.CustomeException;
 import com.luv2code.exception.error.handling.ErrorResponse;
 import com.luv2code.springboot.cruddemo.entity.Notification;
-import com.luv2code.springboot.cruddemo.entity.Post;
 
 @Repository
 public class NotificationsDAOHibernateImpl implements NotificationsDAO {
@@ -29,9 +29,10 @@ public class NotificationsDAOHibernateImpl implements NotificationsDAO {
 	@Override
 	public List<Notification> getMyNotification(int accountId) {
 		Session currentSession = entityManager.unwrap(Session.class);
-		Query<Notification> theQuery = currentSession.createQuery(
-				"from Notification where not_receiver=" + accountId + " order by id_notification DESC",
-				Notification.class);
+		Query<Notification> theQuery = currentSession
+				.createQuery("from Notification where not_receiver=" + accountId + " order by date DESC",
+						Notification.class)
+				.setMaxResults(5);
 		List<Notification> theNotificationList = theQuery.getResultList();
 		return theNotificationList;
 	}
@@ -60,7 +61,7 @@ public class NotificationsDAOHibernateImpl implements NotificationsDAO {
 		try {
 			theNot = theQuery.getSingleResult();
 		} catch (Exception e) {
-			throw new CustomeException("this  notification doesn't exist");
+			throw new CustomeException("this notification doesn't exist");
 		}
 		theNot.setSeen(true);
 		currentSession.saveOrUpdate(theNot);
@@ -92,6 +93,20 @@ public class NotificationsDAOHibernateImpl implements NotificationsDAO {
 			currentSession.update(not);
 		}
 
+	}
+
+	@Override
+	public List<Notification> loadMore(int accountId, Integer notId) {
+		Session currentSession = entityManager.unwrap(Session.class);
+		List<Notification> theRestNots = new ArrayList<Notification>();
+		Query<Notification> theQuery = currentSession.createQuery("from Notification where not_receiver = " + accountId
+				+ " and id_notification < " + notId + " order by date desc ", Notification.class).setMaxResults(5);
+			theRestNots = theQuery.getResultList();
+			if(theRestNots.size() == 0) {
+				return null;
+			}else {
+				return theRestNots;
+			}
 	}
 
 }

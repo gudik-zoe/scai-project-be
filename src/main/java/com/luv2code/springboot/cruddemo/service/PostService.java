@@ -19,7 +19,7 @@ public interface PostService {
 	
 	public Post updatePost(Post post);
 	
-	public void deletePostById (int theId);
+	public void deletePostById (int accountId , int postId);
 
 	public List<Post> getHomePagePosts(int accountId);
 	

@@ -12,7 +12,7 @@ public interface PostsDAO {
 
 	public Post findPostByPostId(int theId);
 
-	public void deletePostById(int theId);
+	public void deletePostById(int accountId , int postId);
 
 	public List<Post> getHomePagePosts(int accountId);
 

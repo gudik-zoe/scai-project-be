@@ -50,6 +50,15 @@ public class NotificationRestController {
 			return notificationService.getMyNotification(idExtractor.getIdFromToken());
 		}
 	}
+	
+	@PostMapping("/loadMore")
+	public List<Notification> loadMore( @RequestHeader("Authorization") String authHeader , @RequestBody Integer ids){
+		IdExtractor idExtractor = new IdExtractor(authHeader);
+		
+		Session currentSession = entityManager.unwrap(Session.class);
+	
+		return notificationService.loadMore(idExtractor.getIdFromToken(), ids);
+	}
 
 	@PostMapping("/notification/addNotification")
 	public Notification addNotification(@RequestBody Notification theNotification) {

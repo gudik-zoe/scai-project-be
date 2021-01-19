@@ -33,10 +33,8 @@ public class PostServiceImpl implements PostService {
 
 	@Override
 	@Transactional
-	public void deletePostById(int theId) {
-
-		postsDAO.deletePostById(theId);
-
+	public void deletePostById(int accountId , int postId) {
+		postsDAO.deletePostById(accountId , postId);
 	}
 
 	@Override

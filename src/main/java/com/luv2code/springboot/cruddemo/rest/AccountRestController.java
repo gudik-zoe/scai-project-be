@@ -29,7 +29,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.luv2code.exception.error.handling.CustomeException;
 import com.luv2code.exception.error.handling.ErrorResponse;
-import com.luv2code.springboot.cruddemo.UserRepository;
 import com.luv2code.springboot.cruddemo.entity.Account;
 import com.luv2code.springboot.cruddemo.entity.Post;
 import com.luv2code.springboot.cruddemo.service.AccountService;
@@ -60,8 +59,6 @@ public class AccountRestController {
 		this.storageService = theStorageService;
 	}
 
-	@Autowired
-	UserRepository userRepo;
 
 	@PostMapping("/login")
 	public ResponseEntity<Account> login(@RequestBody Account user) throws AccountException {

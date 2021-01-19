@@ -51,7 +51,7 @@ public class AccountDAOHibernateImpl implements AccountDAO {
 	}
 
 	@Override
-	public ResponseEntity<Account> login(Account user) throws CustomeException{
+	public ResponseEntity<Account> login(Account user) throws CustomeException {
 		Session currentSession = entityManager.unwrap(Session.class);
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 		String selectQuery = "FROM Account as account WHERE account.email = :emailParam";
@@ -59,8 +59,8 @@ public class AccountDAOHibernateImpl implements AccountDAO {
 		theQuery.setParameter("emailParam", user.getEmail());
 		Account theResult;
 		try {
-		 theResult =  theQuery.getSingleResult();
-		}catch (Exception e) {
+			theResult = theQuery.getSingleResult();
+		} catch (Exception e) {
 			throw new CustomeException("invalid credentials");
 		}
 		boolean check = encoder.matches(user.getPassword(), theResult.getPassword());
@@ -75,7 +75,7 @@ public class AccountDAOHibernateImpl implements AccountDAO {
 					.signWith(SignatureAlgorithm.HS512, "ciao").compact();
 			headers.add("Authorization", "Bearer " + token);
 			return ResponseEntity.ok().headers(headers).build();
-			}
+		}
 	}
 
 	@Override
@@ -100,7 +100,8 @@ public class AccountDAOHibernateImpl implements AccountDAO {
 		List<Account> theAccounts = theQuery.getResultList();
 		List<AccountBasicData> peopleYouMayKnow = new ArrayList<AccountBasicData>();
 		for (Account account : theAccounts) {
-			if (relationshipService.getStatus(accountId, account.getIdAccount()) == null || relationshipService.getStatus(accountId, account.getIdAccount()) !=  1) {
+			if (relationshipService.getStatus(accountId, account.getIdAccount()) == null
+					|| relationshipService.getStatus(accountId, account.getIdAccount()) != 1) {
 				AccountBasicData personYouMayKnow = new AccountBasicData(account.getFirstName(), account.getLastName(),
 						account.getProfilePhoto(), account.getIdAccount(), account.getCoverPhoto());
 				peopleYouMayKnow.add(personYouMayKnow);
@@ -112,16 +113,15 @@ public class AccountDAOHibernateImpl implements AccountDAO {
 	@Override
 	public List<AccountBasicData> getMyFriends(int accountId) {
 		Session currentSession = entityManager.unwrap(Session.class);
-		Query<Relationship> theQuery = currentSession.createQuery("from Relationship where user_one_id = " + accountId + " and status = " + 1 + " or  user_two_id = "+ accountId + " and status = " + 1 , 
-				Relationship.class);
+		Query<Relationship> theQuery = currentSession.createQuery("from Relationship where user_one_id = " + accountId
+				+ " and status = " + 1 + " or  user_two_id = " + accountId + " and status = " + 1, Relationship.class);
 		List<Relationship> theRelations = theQuery.getResultList();
 		List<AccountBasicData> myFriends = new ArrayList<AccountBasicData>();
 		for (Relationship relation : theRelations) {
-			if(accountId == relation.getUserOneId()) {
+			if (accountId == relation.getUserOneId()) {
 				AccountBasicData theAccount = getAccountBasicData(relation.getUserTwoId());
 				myFriends.add(theAccount);
-			}
-			else {
+			} else {
 				AccountBasicData theAccount = getAccountBasicData(relation.getUserOneId());
 				myFriends.add(theAccount);
 			}
@@ -129,7 +129,6 @@ public class AccountDAOHibernateImpl implements AccountDAO {
 		return myFriends;
 
 	}
-	
 
 	@Override
 	public AccountData findById(int accountId) {
@@ -248,12 +247,12 @@ public class AccountDAOHibernateImpl implements AccountDAO {
 	}
 
 	@Override
-	public Account updateEmail(int accountId, String newEmail , String password) {
+	public Account updateEmail(int accountId, String newEmail, String password) {
 		Session currentSession = entityManager.unwrap(Session.class);
 		Account theAccount = currentSession.get(Account.class, accountId);
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 		boolean check = encoder.matches(password, theAccount.getPassword());
-		if(!check) {
+		if (!check) {
 			throw new CustomeException("invalid password");
 		}
 		if (checkIfEmailIsNotTaken(newEmail) && check && !newEmail.equals(theAccount.getEmail())) {
@@ -266,16 +265,16 @@ public class AccountDAOHibernateImpl implements AccountDAO {
 	}
 
 	@Override
-	public Account updatePassword(int accountId, String oldPassword , String newPassword) {
+	public Account updatePassword(int accountId, String oldPassword, String newPassword) {
 		Session currentSession = entityManager.unwrap(Session.class);
 		Account theAccount = currentSession.get(Account.class, accountId);
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 		boolean check = encoder.matches(oldPassword, theAccount.getPassword());
-		if(check && !oldPassword.equals(newPassword)) {
+		if (check && !oldPassword.equals(newPassword)) {
 			theAccount.setPassword(encoder.encode(newPassword));
-			currentSession.update(theAccount);			
+			currentSession.update(theAccount);
 			return theAccount;
-		}else {
+		} else {
 			throw new CustomeException("incorrect password or u didn't make any changes to ur currentPassword");
 		}
 	}
@@ -289,26 +288,24 @@ public class AccountDAOHibernateImpl implements AccountDAO {
 				theAccount.getLivesIn(), theAccount.getEmail(), theAccount.getWentTo(), theAccount.getStudy());
 		return accountdata;
 	}
-	
+
 	@Override
 	public List<String> getAccountPhotos(int accountId) {
 		Session currentSession = entityManager.unwrap(Session.class);
-		Query<Post> theQuery = currentSession.createQuery("from Post where post_creator_id = " + accountId + " and status != " + 2, Post.class);
+		Query<Post> theQuery = currentSession
+				.createQuery("from Post where post_creator_id = " + accountId + " and status != " + 2, Post.class);
 		List<Post> myPosts = theQuery.getResultList();
 		List<String> myPhotos = new ArrayList<String>();
 		Account theAccount = currentSession.get(Account.class, accountId);
 		myPhotos.add(theAccount.getCoverPhoto());
 		myPhotos.add(theAccount.getProfilePhoto());
-		for(Post post:myPosts) {
-			if(post.getImage() != null ) {
+		for (Post post : myPosts) {
+			if (post.getImage() != null) {
 				myPhotos.add(post.getImage());
 			}
-		}	
+		}
 		return myPhotos;
 	}
-
-	
-	
 
 	@ExceptionHandler
 	public ResponseEntity<ErrorResponse> handleCustomeException(CustomeException exc) {
@@ -323,9 +320,5 @@ public class AccountDAOHibernateImpl implements AccountDAO {
 				System.currentTimeMillis());
 		return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
 	}
-
-	
-	
-
 
 }

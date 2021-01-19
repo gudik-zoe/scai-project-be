@@ -25,6 +25,7 @@ import com.luv2code.springboot.cruddemo.entity.Comment;
 import com.luv2code.springboot.cruddemo.entity.Post;
 import com.luv2code.springboot.cruddemo.entity.Relationship;
 import com.luv2code.springboot.cruddemo.service.CommentService;
+import com.luv2code.springboot.cruddemo.service.PageService;
 import com.luv2code.springboot.cruddemo.service.RelationshipService;
 import com.luv2code.utility.IdExtractor;
 
@@ -37,13 +38,16 @@ public class CommentRestController {
 	private EntityManager entityManager;
 
 	private RelationshipService relationshipService;
+	
+	private PageService pageService;
 
 	@Autowired
 	public CommentRestController(CommentService theCommentService, EntityManager theEntityManager,
-			RelationshipService theRelationshipService) {
+			RelationshipService theRelationshipService , PageService  thePageService) {
 		commentService = theCommentService;
 		entityManager = theEntityManager;
 		relationshipService = theRelationshipService;
+		pageService = thePageService;
 	}
 
 	@GetMapping("/comments")
@@ -65,15 +69,20 @@ public class CommentRestController {
 		Post theRequestedPost = currentSession.get(Post.class, postId);
 		if (theRequestedPost == null) {
 			throw new CustomeException("this post doesn't exist");
-		} else {
+		} 
+		if(theRequestedPost.getPageCreatorId() != null) {
+				if(pageService.checkIfPageLikedByAccount(idExtractor.getIdFromToken(), theRequestedPost.getPageCreatorId())) {
+					return commentService.addComment(idExtractor.getIdFromToken(), commentText, theRequestedPost);
+				}else {
+					throw new CustomeException("cannot comment on a page's post that u didn't follow");
+				}
+		}
+		else {
 			Integer theRelationshipStatus = relationshipService.getStatus(idExtractor.getIdFromToken(),
 					theRequestedPost.getPostCreatorId());
-			
 			if (theRelationshipStatus == null || theRelationshipStatus != 1) {
-
 				throw new CustomeException("cannot comment on a user's post that is not ur friend");
-
-			} else if (commentText.equals("") || commentText.isEmpty() || theRequestedPost == null) {
+			} else if (commentText.equals("") || commentText == null) {
 				throw new CustomeException("cannot add an empty comment");
 			}else if (theRequestedPost.getStatus() == 2 && theRequestedPost.getPostCreatorId() != idExtractor.getIdFromToken()) {
 				throw new CustomeException("cannot comment to a post that is private and not yours");
@@ -92,14 +101,18 @@ public class CommentRestController {
 		Comment theOriginalComment = currentSession.get(Comment.class, commentId);
 		if (theOriginalComment == null) {
 			throw new CustomeException("this comment doesn't exist");
-		} else if (newCommentText.equals("") || newCommentText.isEmpty()) {
+		} 
+		if(theOriginalComment.getPageCreatorId() != null &&  newCommentText.equals("") || newCommentText != null) {
+			return commentService.updateComment(commentId, newCommentText , idExtractor.getIdFromToken());
+		}
+		else if (newCommentText.equals("") || newCommentText == null) {
 			throw new CustomeException("cannot add an empty comment");
 		} else if (idExtractor.getIdFromToken() != theOriginalComment.getCommentCreatorId()) {
 			throw new CustomeException("cannot update a comment that is not yours");
 		} else if (newCommentText.equals(theOriginalComment.getText())) {
 			throw new CustomeException("nothing  was changed");
 		} else {
-			return commentService.updateComment(commentId, newCommentText);
+			return commentService.updateComment(commentId, newCommentText , idExtractor.getIdFromToken());
 		}
 	}
 
@@ -110,10 +123,13 @@ public class CommentRestController {
 		Comment theOriginalComment = currentSession.get(Comment.class, commentId);
 		if (theOriginalComment == null) {
 			throw new CustomeException("this comment doesn't exist");
-		} else if (idExtractor.getIdFromToken() != theOriginalComment.getCommentCreatorId()) {
+		}else if (theOriginalComment.getPageCreatorId() != null) {
+			commentService.deleteComment(commentId , idExtractor.getIdFromToken());
+		}
+		else if (idExtractor.getIdFromToken() != theOriginalComment.getCommentCreatorId()) {
 			throw new CustomeException("cannot delete a comment that is not yours");
 		} else {
-			commentService.deleteComment(commentId);
+			commentService.deleteComment(commentId , idExtractor.getIdFromToken());
 		}
 	}
 
