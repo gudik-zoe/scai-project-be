@@ -1,6 +1,5 @@
 package com.luv2code.springboot.cruddemo.entity;
 
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -26,11 +25,11 @@ public class Event {
 	@Column(name = "name")
 	private String name;
 
-	@Column(name = "when")
-	private Date when;
+	@Column(name = "time")
+	private String time;
 
-	@Column(name = "where")
-	private String where;
+	@Column(name = "location")
+	private String location;
 
 	@Column(name = "cover_photo")
 	private String coverPhoto;
@@ -40,23 +39,22 @@ public class Event {
 
 	@Column(name = "description")
 	private String description;
-	
-	
+
 	@OneToMany(cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
 	@JoinColumn(name = "related_event_id", referencedColumnName = "id_event", insertable = false, updatable = false, nullable = false)
 	private List<EventReact> eventFollower;
 
-	public Event(String name, Date when, String where, String coverPhoto, int eventCreatorId, String description) {
+	public Event() {
+
+	}
+
+	public Event(String name, String time, String location, String coverPhoto, int eventCreatorId, String description) {
 		this.name = name;
-		this.when = when;
-		this.where = where;
+		this.time = time;
+		this.location = location;
 		this.coverPhoto = coverPhoto;
 		this.eventCreatorId = eventCreatorId;
 		this.description = description;
-	}
-
-	public Event() {
-
 	}
 
 	public int getIdEvent() {
@@ -75,20 +73,20 @@ public class Event {
 		this.name = name;
 	}
 
-	public Date getWhen() {
-		return when;
+	public String getTime() {
+		return time;
 	}
 
-	public void setWhen(Date when) {
-		this.when = when;
+	public void setTime(String time) {
+		this.time = time;
 	}
 
-	public String getWhere() {
-		return where;
+	public String getLocation() {
+		return location;
 	}
 
-	public void setWhere(String where) {
-		this.where = where;
+	public void setLocation(String place) {
+		this.location = place;
 	}
 
 	public String getCoverPhoto() {
@@ -122,7 +120,5 @@ public class Event {
 	public void setEventFollower(List<EventReact> eventFollower) {
 		this.eventFollower = eventFollower;
 	}
-	
-	
 
 }

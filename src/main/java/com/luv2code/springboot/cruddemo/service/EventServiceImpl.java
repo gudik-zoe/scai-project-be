@@ -2,19 +2,16 @@ package com.luv2code.springboot.cruddemo.service;
 
 import java.util.List;
 
-import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 
-import org.hibernate.Session;
-import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.luv2code.springboot.cruddemo.dao.EventDAO;
 import com.luv2code.springboot.cruddemo.entity.Event;
 import com.luv2code.springboot.cruddemo.entity.EventReact;
-import com.luv2code.springboot.cruddemo.entity.Page;
 import com.luv2code.utility.ReactToEvent;
+import com.luv2code.utility.UpdateEvent;
 
 @Service
 @Transactional
@@ -30,7 +27,6 @@ public class EventServiceImpl implements EventService{
 	
 	
 	@Override
-
 	public List<Event> getEvents() {
 		return eventDAO.getEvents();
 			
@@ -58,6 +54,19 @@ public class EventServiceImpl implements EventService{
 	@Override
 	public Event getEventById(int eventId) {
 		return eventDAO.getEventById(eventId);
+	}
+
+
+	@Override
+	public Event createEvent(Event event) {
+		return eventDAO.createEvent(event);
+	}
+
+
+	@Override
+	public Event updateEvent(UpdateEvent newEvent , Event originalEvent) throws Exception {
+		return eventDAO.updateEvent(newEvent , originalEvent);
+		
 	}
 	
 	

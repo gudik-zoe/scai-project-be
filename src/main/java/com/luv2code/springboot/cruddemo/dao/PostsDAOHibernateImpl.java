@@ -160,7 +160,7 @@ public class PostsDAOHibernateImpl implements PostsDAO {
 	@Override
 	public Post updatePost(Post updatedPost) {
 		Session currentSession = entityManager.unwrap(Session.class);
-		Post theOldPost = currentSession.get(Post.class, updatedPost.getIdPost());
+//		Post theOldPost = currentSession.get(Post.class, updatedPost.getIdPost());
 		currentSession.update(updatedPost);
 		return updatedPost;
 	}

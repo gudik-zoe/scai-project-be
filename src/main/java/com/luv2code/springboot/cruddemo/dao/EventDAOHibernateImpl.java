@@ -6,24 +6,28 @@ import javax.persistence.EntityManager;
 
 import org.hibernate.Session;
 import org.hibernate.query.Query;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import com.luv2code.exception.error.handling.CustomeException;
-import com.luv2code.exception.error.handling.ErrorResponse;
 import com.luv2code.springboot.cruddemo.entity.Event;
 import com.luv2code.springboot.cruddemo.entity.EventReact;
+import com.luv2code.springboot.cruddemo.service.StorageService;
+import com.luv2code.utility.ImageUrl;
 import com.luv2code.utility.ReactToEvent;
+import com.luv2code.utility.UpdateEvent;
 
 @Repository
 public class EventDAOHibernateImpl implements EventDAO {
 
 	private EntityManager entityManager;
-
-	public EventDAOHibernateImpl(EntityManager theEntityManager) {
+	
+	private StorageService storageService;
+	
+	@Autowired
+	public EventDAOHibernateImpl(EntityManager theEntityManager , StorageService theStorageService) {
 		entityManager = theEntityManager;
+		storageService = theStorageService;
 	}
 
 	@Override
@@ -102,18 +106,29 @@ public class EventDAOHibernateImpl implements EventDAO {
 
 	}
 
-	@ExceptionHandler
-	public ResponseEntity<ErrorResponse> handleCustomeException(CustomeException exc) {
-		ErrorResponse error = new ErrorResponse(HttpStatus.NOT_FOUND.value(), exc.getMessage(),
-				System.currentTimeMillis());
-		return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+	@Override
+	public Event createEvent(Event event) {
+		Session currentSession = entityManager.unwrap(Session.class);
+			currentSession.save(event);
+			return event;
 	}
 
-	@ExceptionHandler
-	public ResponseEntity<ErrorResponse> handleException(Exception exc) {
-		ErrorResponse error = new ErrorResponse(HttpStatus.BAD_REQUEST.value(), "Unknown error occured",
-				System.currentTimeMillis());
-		return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+	@Override
+	public Event updateEvent(UpdateEvent newEvent , Event originalEvent) throws Exception {
+		Session currentSession = entityManager.unwrap(Session.class);
+		if(newEvent.getEventPhoto() != null) {
+			ImageUrl image = storageService.pushImage(newEvent.getEventPhoto());
+			originalEvent.setCoverPhoto(image.getImageUrl());
+		}	
+		originalEvent.setDescription(newEvent.getDescription());
+		originalEvent.setName(newEvent.getName());
+		originalEvent.setLocation(newEvent.getLocation());
+		originalEvent.setTime(newEvent.getTime());
+		currentSession.update(originalEvent);
+		return originalEvent;
+		 
 	}
+
+
 
 }
