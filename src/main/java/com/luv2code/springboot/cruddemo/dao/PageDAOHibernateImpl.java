@@ -3,22 +3,12 @@ package com.luv2code.springboot.cruddemo.dao;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import javax.persistence.EntityManager;
-
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-
 import com.luv2code.exception.error.handling.CustomeException;
-import com.luv2code.exception.error.handling.ErrorResponse;
-import com.luv2code.springboot.cruddemo.entity.Comment;
-import com.luv2code.springboot.cruddemo.entity.CommentLike;
-import com.luv2code.springboot.cruddemo.entity.Notification;
 import com.luv2code.springboot.cruddemo.entity.Page;
 import com.luv2code.springboot.cruddemo.entity.PageLike;
 import com.luv2code.springboot.cruddemo.entity.Post;
@@ -41,11 +31,17 @@ public class PageDAOHibernateImpl implements PageDAO {
 	}
 
 	@Override
-	public List<Page> getPages() {
+	public List<PageBasicData> getPages() {
 		Session currentSession = entityManager.unwrap(Session.class);
 		Query<Page> theQuery = currentSession.createQuery("from Page", Page.class);
 		List<Page> pages = theQuery.getResultList();
-		return pages;
+		List<PageBasicData> thePagesBasicData = new ArrayList<PageBasicData>();
+		for (Page page : pages) {
+			PageBasicData thePage = new PageBasicData(page.getIdPage(), page.getName(), page.getProfilePhoto(),
+					page.getCoverPhoto(), page.getPageCreatorId(), page.getPageLike());
+			thePagesBasicData.add(thePage);
+		}
+		return thePagesBasicData;
 	}
 
 	@Override
@@ -96,7 +92,7 @@ public class PageDAOHibernateImpl implements PageDAO {
 			throw new CustomeException("this page doesn't exist");
 		}
 		PageBasicData pageBasicData = new PageBasicData(thePage.getIdPage(), thePage.getName(),
-				thePage.getProfilePhoto(), thePage.getCoverPhoto(), thePage.getPageCreatorId());
+				thePage.getProfilePhoto(), thePage.getCoverPhoto(), thePage.getPageCreatorId(), thePage.getPageLike());
 		return pageBasicData;
 	}
 
@@ -150,55 +146,6 @@ public class PageDAOHibernateImpl implements PageDAO {
 	}
 
 	@Override
-	public Post editPost(Post post) {
-		Session currentSession = entityManager.unwrap(Session.class);
-		currentSession.update(post);
-		return post;
-	}
-
-	@Override
-	public Comment addCommentAsPage(int accountId, int postId, String commentText) {
-		Session currentSession = entityManager.unwrap(Session.class);
-		Post thePost = currentSession.get(Post.class, postId);
-		if (thePost == null) {
-			throw new CustomeException("there is no such post");
-		} else {
-			Page thePage = currentSession.get(Page.class, thePost.getPageCreatorId());
-			if (thePage.getPageCreatorId() == accountId && commentText != null || commentText != "") {
-				Comment pageComment = new Comment(commentText, postId, new Date(System.currentTimeMillis()), null,
-						thePage.getIdPage());
-				currentSession.save(pageComment);
-				return pageComment;
-			} else {
-				throw new CustomeException("cannot enter an empty comment ");
-			}
-		}
-	}
-
-	@Override
-	public CommentLike addLikeAsPage(int accountId, int pageId, int commentId) {
-		Session currentSession = entityManager.unwrap(Session.class);
-		Query<CommentLike> theQuery = currentSession.createQuery(
-				"from CommentLike where page_creator_id=" + pageId + "and related_comment_id = " + commentId,
-				CommentLike.class);
-		Comment theComment = currentSession.get(Comment.class, commentId);
-		try {
-			CommentLike theLikedComment = theQuery.getSingleResult();
-			currentSession.delete(theLikedComment);
-			return null;
-		} catch (Exception e) {
-			Page thePage = currentSession.get(Page.class, pageId);
-			if (thePage.getPageCreatorId() != accountId) {
-				throw new CustomeException("this is not your page");
-			} else {
-				CommentLike theCommentLike = new CommentLike(commentId, null, pageId);
-				currentSession.save(theCommentLike);
-				return theCommentLike;
-			}
-		}
-	}
-
-	@Override
 	public Page getPageFullData(int pageId, int accountId) {
 		Session currentSession = entityManager.unwrap(Session.class);
 		Page theRequestedPage = currentSession.get(Page.class, pageId);
@@ -226,41 +173,24 @@ public class PageDAOHibernateImpl implements PageDAO {
 		currentSession.update(theOldPage);
 		return theOldPage;
 	}
-	
+
 	@Override
 	public List<String> getPagePhotos(int pageId) {
 		Session currentSession = entityManager.unwrap(Session.class);
-		Query<Post> theQuery = currentSession.createQuery(
-				"from Post where page_creator_id=" + pageId , Post.class);
+		Query<Post> theQuery = currentSession.createQuery("from Post where page_creator_id=" + pageId, Post.class);
 		List<Post> posts = theQuery.getResultList();
-		List<String> photos  = new ArrayList<String>();
+		List<String> photos = new ArrayList<String>();
 		Page thePage = currentSession.get(Page.class, pageId);
-		for(Post post:posts) {
-			if(post.getImage() != null && !photos.contains(post.getImage())) {
+		for (Post post : posts) {
+			if (post.getImage() != null && !photos.contains(post.getImage())) {
 				photos.add(post.getImage());
 			}
 		}
 
 		photos.add(thePage.getProfilePhoto());
 		photos.add(thePage.getCoverPhoto());
-		
+
 		return photos;
 	}
-
-	@ExceptionHandler
-	public ResponseEntity<ErrorResponse> handleException(Exception exc) {
-		ErrorResponse error = new ErrorResponse(HttpStatus.BAD_REQUEST.value(), "unknown error occured",
-				System.currentTimeMillis());
-		return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
-	}
-
-	@ExceptionHandler
-	public ResponseEntity<ErrorResponse> handleCustomeException(CustomeException exc) {
-		ErrorResponse error = new ErrorResponse(HttpStatus.UNAUTHORIZED.value(), exc.getMessage(),
-				System.currentTimeMillis());
-		return new ResponseEntity<>(error, HttpStatus.UNAUTHORIZED);
-	}
-
-	
 
 }

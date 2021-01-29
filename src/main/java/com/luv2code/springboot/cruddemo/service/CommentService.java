@@ -13,7 +13,7 @@ public interface CommentService {
 	
 	public List<Comment> getAllComments();
 	
-	public Comment addComment(int accountId, String comment , Post post);
+	public Comment addComment(int accountId, String comment , Post post , boolean userComment);
 	
 	public Comment updateComment(int commentId , String commentText , int accountId);
 	

@@ -13,7 +13,7 @@ public interface CommentDAO {
 
 	public List<Comment> getAllComments();
 
-	public Comment addComment(int accountId,   String comment ,Post post);
+	public Comment addComment(int accountId,   String comment ,Post post , boolean userComment);
 
 	public void deleteComment(int commentId , int accountId);
 

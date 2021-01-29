@@ -1,6 +1,6 @@
 package com.luv2code.springboot.cruddemo.rest;
 
-import java.util.Currency;
+import java.text.ParseException;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -51,7 +51,7 @@ public class EventRestController {
 	}
 
 	@GetMapping("/events")
-	public List<Event> getEvents() {
+	public List<Event> getEvents() throws ParseException {
 		return eventService.getEvents();
 	}
 
@@ -108,9 +108,9 @@ public class EventRestController {
 		IdExtractor idExtractor = new IdExtractor(authHeader);
 		int idEvent = Integer.parseInt(eventId);
 		Event theOriginalEvent = currentSession.get(Event.class, idEvent);
-		if ( theOriginalEvent.getEventCreatorId() == idExtractor.getIdFromToken()) {
+		if (theOriginalEvent.getEventCreatorId() == idExtractor.getIdFromToken()) {
 			UpdateEvent newEvent = new UpdateEvent(idEvent, name, eventPhoto, when, where, description);
-			return eventService.updateEvent(newEvent ,theOriginalEvent );
+			return eventService.updateEvent(newEvent, theOriginalEvent);
 		} else {
 			throw new CustomeException("cannot update an event that is not yours or this event doesn't exist");
 		}

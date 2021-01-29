@@ -1,5 +1,6 @@
 package com.luv2code.springboot.cruddemo.service;
 
+import java.text.ParseException;
 import java.util.List;
 
 import com.luv2code.springboot.cruddemo.entity.Event;
@@ -9,7 +10,7 @@ import com.luv2code.utility.UpdateEvent;
 
 public interface EventService {
 
-	public List<Event> getEvents();
+	public List<Event> getEvents() throws ParseException;
 
 	public List<Event> getMyEvents(int accounId);
 

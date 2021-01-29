@@ -16,7 +16,6 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -28,18 +27,11 @@ import com.luv2code.exception.error.handling.CustomeException;
 import com.luv2code.exception.error.handling.ErrorResponse;
 import com.luv2code.exception.error.handling.StorageException;
 import com.luv2code.utility.ImageUrl;
-import com.luv2code.utility.StorageProperties;
+
 
 @Service
 public class StorageServiceImpl implements StorageService  {
 
-//	private final Path rootLocation;
-	
-	@Autowired
-	public StorageServiceImpl(StorageProperties properties ) {
-//		this.rootLocation = Paths.get(properties.getLocation());
-	
-	}
 
 	@Override
 	public void store(MultipartFile file) {

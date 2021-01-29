@@ -10,14 +10,14 @@ import org.hibernate.Session;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-
 import com.luv2code.exception.error.handling.CustomeException;
 import com.luv2code.springboot.cruddemo.entity.Comment;
 import com.luv2code.springboot.cruddemo.entity.CommentLike;
 import com.luv2code.springboot.cruddemo.entity.Notification;
-import com.luv2code.springboot.cruddemo.entity.Post;
+import com.luv2code.springboot.cruddemo.entity.Page;
 import com.luv2code.springboot.cruddemo.service.AccountService;
 import com.luv2code.springboot.cruddemo.service.NotificationService;
+import com.luv2code.springboot.cruddemo.service.PageService;
 import com.luv2code.utility.AccountBasicData;
 
 @Repository
@@ -29,12 +29,15 @@ public class CommentLikesDAOHibernateImpl implements CommentLikesDAO {
 
 	private NotificationService notificationService;
 
+	private PageService pageService;
+
 	@Autowired
 	public CommentLikesDAOHibernateImpl(EntityManager theEntityManager, AccountService theAccountService,
-			NotificationService theNotificationService) {
+			NotificationService theNotificationService, PageService thePageService) {
 		entityManager = theEntityManager;
 		accountService = theAccountService;
 		notificationService = theNotificationService;
+		pageService = thePageService;
 	}
 
 	@Override
@@ -48,39 +51,33 @@ public class CommentLikesDAOHibernateImpl implements CommentLikesDAO {
 	}
 
 	@Override
-	public CommentLike addLike(int accountId, int commentId) {
+	public CommentLike addLikeAsUser(int accountId, int commentId) {
 		Session currentSession = entityManager.unwrap(Session.class);
+		Comment theCommentToLike = currentSession.get(Comment.class, commentId);
+		if (theCommentToLike.getCommentCreatorId() != null && theCommentToLike.getCommentCreatorId() == accountId) {
+			throw new CustomeException("cannot like ur own comment");
+		} else if (theCommentToLike.getPageCreatorId() != null
+				&& !pageService.checkIfPageLikedByAccount(accountId, theCommentToLike.getPageCreatorId())) {
+			throw new CustomeException("cannot like a page's comment that you are not following");
+		}
+		Query<CommentLike> theQuery = currentSession.createQuery("from CommentLike where related_comment_id = "
+				+ commentId + " and comment_like_creator_id = " + accountId, CommentLike.class);
 
-		Query<CommentLike> theQuery = currentSession.createQuery("from CommentLike where related_comment_id="
-				+ commentId + " and comment_like_creator_id = " + accountId + " or page_creator_id != " + null,
-				CommentLike.class);
 		try {
 			CommentLike thecommentLike = theQuery.getSingleResult();
 			currentSession.delete(thecommentLike);
 			return null;
 		} catch (Exception e) {
-			CommentLike theNewLike = new CommentLike();
-			Comment theLikedComment = currentSession.get(Comment.class, commentId);
-			if (theLikedComment.getPageCreatorId() != null) {
-				CommentLike theLike = new CommentLike(commentId, accountId, null);
-				currentSession.save(theLike);
-				return theLike;
-			} else {
-
-				Post relatedPost = currentSession.get(Post.class, theLikedComment.getRelatedPostId());
-				if (theLikedComment.getCommentCreatorId() == accountId) {
-					throw new CustomeException("cannot like ur own comment");
-				} else {
-					theNewLike.setCommentLikeCreatorId(accountId);
-					theNewLike.setRelatedCommentId(commentId);
-					currentSession.save(theNewLike);
-					Notification theNotification = new Notification(accountId, theLikedComment.getCommentCreatorId(),
-							"liked your comment", new Date(System.currentTimeMillis()), relatedPost.getIdPost(), false);
-					notificationService.addNotification(theNotification);
-					return theNewLike;
-				}
-
+			CommentLike theNewLike = new CommentLike(commentId, accountId, null);
+			currentSession.save(theNewLike);
+			if (theCommentToLike.getPageCreatorId() == null) {
+				Notification theNotification = new Notification(accountId, theCommentToLike.getCommentCreatorId(),
+						"liked your comment", new Date(System.currentTimeMillis()), theCommentToLike.getRelatedPostId(),
+						false);
+				notificationService.addNotification(theNotification);
 			}
+			return theNewLike;
+
 		}
 
 	}
@@ -97,6 +94,28 @@ public class CommentLikesDAOHibernateImpl implements CommentLikesDAO {
 		}
 
 		return likers;
+	}
+
+	@Override
+	public CommentLike addLikeAsPage(int accountId, int pageId, int commentId) {
+		Session currentSession = entityManager.unwrap(Session.class);
+		Page thePage = currentSession.get(Page.class, pageId);
+		if (accountId == thePage.getPageCreatorId()) {
+			Query<CommentLike> theQuery = currentSession.createQuery(
+					"from CommentLike where page_creator_id=" + pageId + "and related_comment_id = " + commentId,
+					CommentLike.class);
+			try {
+				CommentLike theLikedComment = theQuery.getSingleResult();
+				currentSession.delete(theLikedComment);
+				return null;
+			} catch (Exception e) {
+				CommentLike theCommentLike = new CommentLike(commentId, null, pageId);
+				currentSession.save(theCommentLike);
+				return theCommentLike;
+			}
+		} else {
+			throw new CustomeException("page is not yours");
+		}
 	}
 
 }

@@ -20,8 +20,9 @@ import com.luv2code.exception.error.handling.CustomeException;
 import com.luv2code.exception.error.handling.ErrorResponse;
 import com.luv2code.springboot.cruddemo.entity.Comment;
 import com.luv2code.springboot.cruddemo.entity.CommentLike;
-import com.luv2code.springboot.cruddemo.entity.Relationship;
+import com.luv2code.springboot.cruddemo.entity.Post;
 import com.luv2code.springboot.cruddemo.service.CommentLikesService;
+import com.luv2code.springboot.cruddemo.service.PageService;
 import com.luv2code.springboot.cruddemo.service.RelationshipService;
 import com.luv2code.utility.AccountBasicData;
 import com.luv2code.utility.IdExtractor;
@@ -36,31 +37,29 @@ public class CommentLikesRestController {
 
 	private EntityManager entityManager;
 
+	private PageService pageService;
+
 	@Autowired
 	public CommentLikesRestController(CommentLikesService theCommentLikesService,
-			RelationshipService theRelationshipService, EntityManager theEntityManager) {
+			RelationshipService theRelationshipService, EntityManager theEntityManager, PageService thePageService) {
 		commentLikesService = theCommentLikesService;
 		relationshipService = theRelationshipService;
 		entityManager = theEntityManager;
+		pageService = thePageService;
 	}
 
-	@PostMapping("/commentLikes/idAccount/{commentId}")
-	public CommentLike addLikeToAComment(@RequestHeader("Authorization") String authHeader,
-			@PathVariable int commentId) {
+	@PostMapping("/commentLikes/idAccount/{commentId}/{userCommentLike}")
+	public CommentLike addLikeToAComment(@RequestHeader("Authorization") String authHeader, @PathVariable int commentId,
+			@PathVariable boolean userCommentLike) {
 		IdExtractor idExtractor = new IdExtractor(authHeader);
 		Session currentSession = entityManager.unwrap(Session.class);
 		Comment theCommentToLike = currentSession.get(Comment.class, commentId);
-		if(theCommentToLike.getPageCreatorId() != null) {
-			return commentLikesService.addLike(idExtractor.getIdFromToken(), commentId);
-		}
-		Integer theRelationshipStatus = relationshipService.getStatus(idExtractor.getIdFromToken(),
-				theCommentToLike.getCommentCreatorId());
-		if (theRelationshipStatus == null || theRelationshipStatus != 1) {
-			throw new CustomeException("cannot like a user's comment that is not ur friend");
-		} else if (idExtractor.getIdFromToken() == theCommentToLike.getCommentCreatorId()) {
-			throw new CustomeException("cannot like your own comment");
+		if (!userCommentLike) {
+			Post thePost = currentSession.get(Post.class, theCommentToLike.getRelatedPostId());
+			return commentLikesService.addLikeAsPage(idExtractor.getIdFromToken(), thePost.getPageCreatorId(),
+					commentId);
 		} else {
-			return commentLikesService.addLike(idExtractor.getIdFromToken(), commentId);
+			return commentLikesService.addLikeAsUser(idExtractor.getIdFromToken(), commentId);
 		}
 	}
 
@@ -75,7 +74,7 @@ public class CommentLikesRestController {
 
 		return commentLikesService.getCommentLikers(commentId);
 	}
-	
+
 	@ExceptionHandler
 	public ResponseEntity<ErrorResponse> handleException(CustomeException exc) {
 		ErrorResponse error = new ErrorResponse(HttpStatus.NOT_FOUND.value(), exc.getMessage(),

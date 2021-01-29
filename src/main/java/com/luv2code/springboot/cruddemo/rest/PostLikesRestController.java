@@ -43,28 +43,39 @@ public class PostLikesRestController {
 	}
 
 	@PostMapping("/postLikes/accountId/{idPost}")
-	private PostLike addLike(@RequestHeader("Authorization") String authHeader, @PathVariable int idPost
-			) throws Exception {
+	private PostLike addLike(@RequestHeader("Authorization") String authHeader, @PathVariable int idPost)
+			throws Exception {
 		IdExtractor idExtractor = new IdExtractor(authHeader);
 		Session currentSession = entityManager.unwrap(Session.class);
 		Post thelikedPost = currentSession.get(Post.class, idPost);
 		if (thelikedPost == null) {
 			throw new CustomeException("cannot add a like to a post that doesn't exist");
-		}if(thelikedPost.getPageCreatorId() != null) {
-			return postLikesService.addLike(idExtractor.getIdFromToken(), thelikedPost);
 		}
-		else {
+		if (thelikedPost.getPageCreatorId() != null) {
+			return postLikesService.addLike(idExtractor.getIdFromToken(), thelikedPost);
+		} else {
 			Integer theRelationshipStatus = relationshipService.getStatus(idExtractor.getIdFromToken(),
 					thelikedPost.getPostCreatorId());
-			if (theRelationshipStatus == null || theRelationshipStatus != 1 ) {
+			if (theRelationshipStatus == null || theRelationshipStatus != 1) {
 				throw new CustomeException("cannot like a user's post that is not ur friend");
-			}else if ( thelikedPost.getStatus() == 2 && idExtractor.getIdFromToken() !=  thelikedPost.getPostCreatorId() ) {
+			} else if (thelikedPost.getStatus() == 2
+					&& idExtractor.getIdFromToken() != thelikedPost.getPostCreatorId()) {
 				throw new CustomeException("cannot like a private post unless it's yours");
-			}else {		
+			} else {
 				return postLikesService.addLike(idExtractor.getIdFromToken(), thelikedPost);
 			}
 		}
 
+	}
+
+	@GetMapping("/postLikes/likers/{postId}")
+	private List<Integer> getLikersByPostId(@PathVariable int postId) {
+		return postLikesService.getPostLikers(postId);
+	}
+
+	@GetMapping("/postLikes/likesNumber/{postId}")
+	private int getPostLikes(@PathVariable int postId) {
+		return postLikesService.getPostLikesById(postId);
 	}
 
 	@ExceptionHandler
@@ -79,16 +90,6 @@ public class PostLikesRestController {
 		ErrorResponse error = new ErrorResponse(HttpStatus.BAD_REQUEST.value(), "Unknown error occured",
 				System.currentTimeMillis());
 		return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
-	}
-
-	@GetMapping("/postLikes/likers/{postId}")
-	private List<Integer> getLikersByPostId(@PathVariable int postId) {
-		return postLikesService.getPostLikers(postId);
-	}
-
-	@GetMapping("/postLikes/likesNumber/{postId}")
-	private int getPostLikes(@PathVariable int postId) {
-		return postLikesService.getPostLikesById(postId);
 	}
 
 }

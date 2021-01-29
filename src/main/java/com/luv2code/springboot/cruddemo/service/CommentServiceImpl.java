@@ -41,9 +41,9 @@ public class CommentServiceImpl implements CommentService {
 
 	@Override
 	@Transactional
-	public Comment addComment(int accountId,  String comment , Post post) {
+	public Comment addComment(int accountId,  String comment , Post post , boolean userComment) {
 	
-		return commentDAO.addComment(accountId  , comment ,post);
+		return commentDAO.addComment(accountId  , comment ,post , userComment);
 	}
 
 	@Override

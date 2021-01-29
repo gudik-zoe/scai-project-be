@@ -10,37 +10,40 @@ import com.luv2code.springboot.cruddemo.dao.CommentLikesDAO;
 import com.luv2code.springboot.cruddemo.entity.CommentLike;
 import com.luv2code.utility.AccountBasicData;
 
-
 @Service
+@Transactional
 public class CommentLikesServiceImpl implements CommentLikesService {
-	
-		private CommentLikesDAO commentLikesDAO;
-	
-		@Autowired
-		public CommentLikesServiceImpl (CommentLikesDAO theCommentLikesDAO) {
-			commentLikesDAO = theCommentLikesDAO;
-		}
-		
-		
+
+	private CommentLikesDAO commentLikesDAO;
+
+	@Autowired
+	public CommentLikesServiceImpl(CommentLikesDAO theCommentLikesDAO) {
+		commentLikesDAO = theCommentLikesDAO;
+	}
+
 	@Override
-	@Transactional
+
 	public int getCommentLikesById(int commentId) {
 		return commentLikesDAO.getCommentLikesById(commentId);
 	}
-	
 
 	@Override
-	@Transactional
-	public CommentLike addLike(int accountId, int commentId) {
-		return commentLikesDAO.addLike(accountId , commentId);
+
+	public CommentLike addLikeAsUser(int accountId, int commentId) {
+		return commentLikesDAO.addLikeAsUser(accountId, commentId);
 
 	}
-
 
 	@Override
 	public List<AccountBasicData> getCommentLikers(int commentId) {
 		return commentLikesDAO.getCommentLikers(commentId);
 	}
+
+	@Override
+	public CommentLike addLikeAsPage(int accountId, int pageId, int commentId) {
+		return commentLikesDAO.addLikeAsPage(accountId , pageId , commentId);
+	}
+
 
 
 }

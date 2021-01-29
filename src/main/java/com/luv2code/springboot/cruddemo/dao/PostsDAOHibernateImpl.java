@@ -9,6 +9,8 @@ import org.hibernate.Session;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.multipart.MultipartFile;
+
 import com.luv2code.exception.error.handling.CustomeException;
 import com.luv2code.springboot.cruddemo.entity.Account;
 import com.luv2code.springboot.cruddemo.entity.Notification;
@@ -18,6 +20,7 @@ import com.luv2code.springboot.cruddemo.service.AccountService;
 import com.luv2code.springboot.cruddemo.service.NotificationService;
 import com.luv2code.springboot.cruddemo.service.PageService;
 import com.luv2code.springboot.cruddemo.service.RelationshipService;
+import com.luv2code.springboot.cruddemo.service.StorageService;
 import com.luv2code.utility.AccountBasicData;
 
 @Repository
@@ -33,15 +36,18 @@ public class PostsDAOHibernateImpl implements PostsDAO {
 
 	private RelationshipService relatopnshipService;
 
+	private StorageService storageService;
+
 	@Autowired
 	public PostsDAOHibernateImpl(EntityManager theEntityManager, PageService thePageService,
 			NotificationService theNotificationService, AccountService theAccountService,
-			RelationshipService theRelationshipService) {
+			RelationshipService theRelationshipService, StorageService theStorageService) {
 		entityManager = theEntityManager;
 		pageService = thePageService;
 		notificationService = theNotificationService;
 		accountservice = theAccountService;
 		relatopnshipService = theRelationshipService;
+		storageService = theStorageService;
 
 	}
 
@@ -158,11 +164,21 @@ public class PostsDAOHibernateImpl implements PostsDAO {
 	}
 
 	@Override
-	public Post updatePost(Post updatedPost) {
+	public Post updatePost(Post post, MultipartFile image, boolean postWithImage, String newText) throws Exception {
 		Session currentSession = entityManager.unwrap(Session.class);
+		if (image != null) {
+			post.setImage(storageService.pushImage(image).getImageUrl());
+		} else if (!postWithImage && image == null) {
+			post.setImage(null);
+		}
+		if (!newText.trim().equals("")) {
+			post.setText(newText);
+		} else {
+			throw new CustomeException("cannot add an empty text");
+		}
 //		Post theOldPost = currentSession.get(Post.class, updatedPost.getIdPost());
-		currentSession.update(updatedPost);
-		return updatedPost;
+		currentSession.update(post);
+		return post;
 	}
 
 	@Override
@@ -203,19 +219,5 @@ public class PostsDAOHibernateImpl implements PostsDAO {
 		return resharedPost;
 
 	}
-
-//	@ExceptionHandler
-//	public ResponseEntity<ErrorResponse> handleException(Exception exc) {
-//		ErrorResponse error = new ErrorResponse(HttpStatus.BAD_REQUEST.value(), "unknown error occured",
-//				System.currentTimeMillis());
-//		return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
-//	}
-//
-//	@ExceptionHandler
-//	public ResponseEntity<ErrorResponse> handleCustomeException(CustomeException exc) {
-//		ErrorResponse error = new ErrorResponse(HttpStatus.UNAUTHORIZED.value(), exc.getMessage(),
-//				System.currentTimeMillis());
-//		return new ResponseEntity<>(error, HttpStatus.UNAUTHORIZED);
-//	}
 
 }

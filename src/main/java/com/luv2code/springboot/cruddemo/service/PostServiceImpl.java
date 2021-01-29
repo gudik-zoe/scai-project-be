@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.luv2code.springboot.cruddemo.dao.PostsDAO;
 import com.luv2code.springboot.cruddemo.entity.Post;
@@ -52,8 +53,8 @@ public class PostServiceImpl implements PostService {
 
 	@Override
 	@Transactional
-	public Post updatePost(Post post) {
-		return postsDAO.updatePost(post);
+	public Post updatePost(Post post , MultipartFile image , boolean postWithImage , String newText) throws Exception {
+		return postsDAO.updatePost(post , image , postWithImage , newText);
 
 	}
 

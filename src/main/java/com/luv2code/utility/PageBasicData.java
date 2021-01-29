@@ -1,28 +1,35 @@
 package com.luv2code.utility;
 
+import java.util.List;
+
+import com.luv2code.springboot.cruddemo.entity.PageLike;
+
 public class PageBasicData {
-	
-	
+
 	private int idPage;
-	
-	private String  name;
-	
+
+	private String name;
+
 	private String profilePhoto;
-	
+
 	private String coverPhoto;
-	
+
 	private int pageCreatorId;
-	
+
+	private List<PageLike> likers;
+
 	public PageBasicData() {
-		
+
 	}
 
-	public PageBasicData(int idPage, String name, String profilePhoto, String coverPhoto, int pageCreatorId) {
+	public PageBasicData(int idPage, String name, String profilePhoto, String coverPhoto, int pageCreatorId,
+			List<PageLike> likers) {
 		this.idPage = idPage;
 		this.name = name;
 		this.profilePhoto = profilePhoto;
 		this.coverPhoto = coverPhoto;
 		this.pageCreatorId = pageCreatorId;
+		this.likers = likers;
 	}
 
 	public int getIdPage() {
@@ -64,11 +71,13 @@ public class PageBasicData {
 	public void setPageCreatorId(int pageCreatorId) {
 		this.pageCreatorId = pageCreatorId;
 	}
-	
-	
-	
-	
 
-	
-	
+	public List<PageLike> getLikers() {
+		return likers;
+	}
+
+	public void setLikers(List<PageLike> likers) {
+		this.likers = likers;
+	}
+
 }

@@ -11,7 +11,9 @@ public interface CommentLikesService {
 	
 	public int getCommentLikesById(int commentId);
 	
-	public CommentLike addLike(int accountId , int commentId);
+	public CommentLike addLikeAsUser(int accountId , int commentId);
+	
+	public CommentLike addLikeAsPage(int accountId, int pageId, int commentId);
 
 	public List<AccountBasicData> getCommentLikers(int commentId);
 	

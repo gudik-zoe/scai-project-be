@@ -1,5 +1,6 @@
 package com.luv2code.springboot.cruddemo.service;
 
+import java.text.ParseException;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -27,7 +28,7 @@ public class EventServiceImpl implements EventService{
 	
 	
 	@Override
-	public List<Event> getEvents() {
+	public List<Event> getEvents() throws ParseException {
 		return eventDAO.getEvents();
 			
 	}

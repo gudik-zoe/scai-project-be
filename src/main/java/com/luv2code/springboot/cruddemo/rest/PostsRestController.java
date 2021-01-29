@@ -23,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.luv2code.exception.error.handling.CustomeException;
 import com.luv2code.exception.error.handling.ErrorResponse;
+import com.luv2code.springboot.cruddemo.entity.Page;
 import com.luv2code.springboot.cruddemo.entity.Post;
 import com.luv2code.springboot.cruddemo.service.PostService;
 import com.luv2code.springboot.cruddemo.service.RelationshipService;
@@ -63,9 +64,10 @@ public class PostsRestController {
 	}
 
 	@GetMapping("/posts/accountId/{accountId}")
-	public List<Post> getPostsByAccountId(@PathVariable int accountId , @RequestHeader("Authorization") String authHeader ) {
+	public List<Post> getPostsByAccountId(@PathVariable int accountId,
+			@RequestHeader("Authorization") String authHeader) {
 		IdExtractor idExtractor = new IdExtractor(authHeader);
-			return postService.findPostByAccountId(accountId , idExtractor.getIdFromToken());
+		return postService.findPostByAccountId(accountId, idExtractor.getIdFromToken());
 
 	}
 
@@ -84,11 +86,11 @@ public class PostsRestController {
 		Post thePost = new Post();
 		thePost.setDate(new Date(System.currentTimeMillis()));
 		thePost.setText(text);
-		if(postOption.equals("public")) {
+		if (postOption.equals("public")) {
 			thePost.setStatus(0);
-		}else if(postOption.equals("just-friends")) {
+		} else if (postOption.equals("just-friends")) {
 			thePost.setStatus(1);
-		}else {
+		} else {
 			thePost.setStatus(2);
 		}
 		if (image != null) {
@@ -97,7 +99,7 @@ public class PostsRestController {
 		} else {
 			thePost.setImage(null);
 		}
-			return postService.savePost(idExtractor.getIdFromToken(), thePost);
+		return postService.savePost(idExtractor.getIdFromToken(), thePost);
 	}
 
 	@PostMapping("/posts/postOnWall/{postedOn}")
@@ -127,31 +129,29 @@ public class PostsRestController {
 
 	@PostMapping("/post/resharePost/{idPost}")
 	public Post resharePost(@RequestHeader("Authorization") String authHeader, @PathVariable int idPost,
-			@RequestPart(value = "extraText", required = true) String extraText , 
+			@RequestPart(value = "extraText", required = true) String extraText,
 			@RequestPart(value = "postOption", required = true) String postOption) {
 		Session currentSession = entityManager.unwrap(Session.class);
 		IdExtractor idExtractor = new IdExtractor(authHeader);
 		Post thePostWeWantToShare = currentSession.get(Post.class, idPost);
 		Integer postIsPublic = null;
-		if(postOption.equals("public")) {
+		if (postOption.equals("public")) {
 			postIsPublic = 0;
-		}else if(postOption.equals("just-friends")) {
+		} else if (postOption.equals("just-friends")) {
 			postIsPublic = 1;
-		}
-		else {
+		} else {
 			postIsPublic = 2;
 		}
 		if (thePostWeWantToShare == null) {
 			throw new CustomeException("post dosen't exist");
 		}
-		 if(thePostWeWantToShare.getPageCreatorId() != null && !extraText.isBlank()) {
+		if (thePostWeWantToShare.getPageCreatorId() != null && !extraText.isBlank()) {
 			System.out.println("sharing a page's post");
-			 return postService.resharePost(idExtractor.getIdFromToken(), idPost, extraText , postIsPublic);
-		}
-		else if(thePostWeWantToShare.getStatus() == 2 && thePostWeWantToShare.getPostCreatorId() != idExtractor.getIdFromToken()) {
+			return postService.resharePost(idExtractor.getIdFromToken(), idPost, extraText, postIsPublic);
+		} else if (thePostWeWantToShare.getStatus() == 2
+				&& thePostWeWantToShare.getPostCreatorId() != idExtractor.getIdFromToken()) {
 			throw new CustomeException("cannot share a post that is private and not yours");
-		}
-		else {
+		} else {
 			Integer theRelationshipStatus = relationshipService.getStatus(idExtractor.getIdFromToken(),
 					thePostWeWantToShare.getPostCreatorId());
 			if (theRelationshipStatus == null || theRelationshipStatus != 1) {
@@ -159,7 +159,7 @@ public class PostsRestController {
 			} else if (extraText.isBlank()) {
 				throw new CustomeException("you should enter yout own text");
 			} else {
-				return postService.resharePost(idExtractor.getIdFromToken(), idPost, extraText , postIsPublic);
+				return postService.resharePost(idExtractor.getIdFromToken(), idPost, extraText, postIsPublic);
 			}
 		}
 	}
@@ -171,28 +171,25 @@ public class PostsRestController {
 			@RequestHeader("Authorization") String authHeader) throws Exception {
 		IdExtractor idExtractor = new IdExtractor(authHeader);
 		Session currentSession = entityManager.unwrap(Session.class);
-		Post theRequestedPost = currentSession.get(Post.class, postId);
+		Post theRequestedPost;
+		try {
+			theRequestedPost = currentSession.get(Post.class, postId);
+			if (theRequestedPost.getPostCreatorId() != null
+					&& theRequestedPost.getPostCreatorId() == idExtractor.getIdFromToken()) {
+				return postService.updatePost(theRequestedPost, image, postWithImage, newText);
+			} else if (theRequestedPost.getPostCreatorId() == null && theRequestedPost.getPageCreatorId() != null) {
+				Page page = currentSession.get(Page.class, theRequestedPost.getPageCreatorId());
+				if (page.getPageCreatorId() == idExtractor.getIdFromToken()) {
+					return postService.updatePost(theRequestedPost, image, postWithImage, newText);
+				} else {
+					throw new CustomeException("cannot update a page's post that is not yours");
+				}
+			}
+		} catch (Exception e) {
+			throw new CustomeException("post doesn't exist");
 
-		if (theRequestedPost == null) {
-			throw new CustomeException("you cannot update a post that doesn't exist");
-		} else if (idExtractor.getIdFromToken() != theRequestedPost.getPostCreatorId()) {
-			throw new CustomeException("you cannot update a post that is not yours");
-		} else if (newText == null || newText.equals("")) {
-			throw new CustomeException("cannot add a post without a text");
-		} else if (!postWithImage && image == null) {
-			theRequestedPost.setImage(null);
-		} else if (postWithImage && image != null) {
-			ImageUrl postImage = storageService.pushImage(image);
-			theRequestedPost.setImage(postImage.getImageUrl());
-		} else if (postWithImage && image == null) {
-			theRequestedPost.setImage(theRequestedPost.getImage());
 		}
-		if (newText.equals("null") && image == null) {
-			throw new CustomeException("cannot create a post without an image or a text");
-		} else {
-			theRequestedPost.setText(newText);
-			return postService.updatePost(theRequestedPost);
-		}
+		throw new CustomeException("uhnknown error occured");
 	}
 
 	@DeleteMapping("posts/{postId}")
@@ -203,22 +200,22 @@ public class PostsRestController {
 		if (theRequestedPost == null) {
 			throw new CustomeException("this post doesn't exist");
 		} else {
-			postService.deletePostById( idExtractor.getIdFromToken() , postId);
+			postService.deletePostById(idExtractor.getIdFromToken(), postId);
 		}
 	}
 
-//	@ExceptionHandler
-//	public ResponseEntity<ErrorResponse> handleCustomeException(CustomeException exc) {
-//		ErrorResponse error = new ErrorResponse(HttpStatus.NOT_FOUND.value(), exc.getMessage(),
-//				System.currentTimeMillis());
-//		return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
-//	}
-//
-//	@ExceptionHandler
-//	public ResponseEntity<ErrorResponse> handleException(Exception exc) {
-//		ErrorResponse error = new ErrorResponse(HttpStatus.BAD_REQUEST.value(), "unknown error occured",
-//				System.currentTimeMillis());
-//		return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
-//	}
+	@ExceptionHandler
+	public ResponseEntity<ErrorResponse> handleCustomeException(CustomeException exc) {
+		ErrorResponse error = new ErrorResponse(HttpStatus.NOT_FOUND.value(), exc.getMessage(),
+				System.currentTimeMillis());
+		return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+	}
+
+	@ExceptionHandler
+	public ResponseEntity<ErrorResponse> handleException(Exception exc) {
+		ErrorResponse error = new ErrorResponse(HttpStatus.BAD_REQUEST.value(), "unknown error occured",
+				System.currentTimeMillis());
+		return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+	}
 
 }

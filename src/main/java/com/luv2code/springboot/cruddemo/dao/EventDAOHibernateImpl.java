@@ -1,5 +1,9 @@
 package com.luv2code.springboot.cruddemo.dao;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -21,20 +25,26 @@ import com.luv2code.utility.UpdateEvent;
 public class EventDAOHibernateImpl implements EventDAO {
 
 	private EntityManager entityManager;
-	
+
 	private StorageService storageService;
-	
+
 	@Autowired
-	public EventDAOHibernateImpl(EntityManager theEntityManager , StorageService theStorageService) {
+	public EventDAOHibernateImpl(EntityManager theEntityManager, StorageService theStorageService) {
 		entityManager = theEntityManager;
 		storageService = theStorageService;
 	}
 
 	@Override
-	public List<Event> getEvents() {
+	public List<Event> getEvents() throws ParseException {
 		Session currentSession = entityManager.unwrap(Session.class);
 		Query<Event> theQuery = currentSession.createQuery("from Event", Event.class);
-		List<Event> events = theQuery.getResultList();
+		List<Event> events = new ArrayList<Event>();
+		events = theQuery.getResultList();
+		for (int i = 0; i < events.size(); i++) {
+			if (checkIfExpired(events.get(i))) {
+				events.remove(i);
+			}
+		}
 		return events;
 	}
 
@@ -85,7 +95,6 @@ public class EventDAOHibernateImpl implements EventDAO {
 		Session currentSession = entityManager.unwrap(Session.class);
 		Query<EventReact> theQuery = currentSession
 				.createQuery("from EventReact where event_react_creator_id = " + accountId, EventReact.class);
-
 		try {
 			List<EventReact> linkedEvents = theQuery.getResultList();
 			return linkedEvents;
@@ -109,26 +118,36 @@ public class EventDAOHibernateImpl implements EventDAO {
 	@Override
 	public Event createEvent(Event event) {
 		Session currentSession = entityManager.unwrap(Session.class);
-			currentSession.save(event);
-			return event;
+		currentSession.save(event);
+		return event;
 	}
 
 	@Override
-	public Event updateEvent(UpdateEvent newEvent , Event originalEvent) throws Exception {
+	public Event updateEvent(UpdateEvent newEvent, Event originalEvent) throws Exception {
 		Session currentSession = entityManager.unwrap(Session.class);
-		if(newEvent.getEventPhoto() != null) {
+		if (newEvent.getEventPhoto() != null) {
 			ImageUrl image = storageService.pushImage(newEvent.getEventPhoto());
 			originalEvent.setCoverPhoto(image.getImageUrl());
-		}	
+		}
 		originalEvent.setDescription(newEvent.getDescription());
 		originalEvent.setName(newEvent.getName());
 		originalEvent.setLocation(newEvent.getLocation());
 		originalEvent.setTime(newEvent.getTime());
 		currentSession.update(originalEvent);
 		return originalEvent;
-		 
+
 	}
 
-
+	public boolean checkIfExpired(Event event) throws ParseException {
+		Session currentSession = entityManager.unwrap(Session.class);
+		String jsDate = event.getTime() + ":00";
+		Date javaDate = new SimpleDateFormat("yy-MM-dd HH:mm:ss").parse(jsDate);
+		if (javaDate.getTime() - new Date(System.currentTimeMillis()).getTime() < 0) {
+				currentSession.delete(event);
+			return true;
+		} else {
+			return false;
+		}
+	}
 
 }

@@ -7,13 +7,11 @@ import javax.persistence.EntityManager;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+
 import org.springframework.stereotype.Repository;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import com.luv2code.exception.error.handling.CustomeException;
-import com.luv2code.exception.error.handling.ErrorResponse;
+
 import com.luv2code.springboot.cruddemo.entity.Relationship;
 
 @Repository
@@ -53,7 +51,7 @@ public class RelationshipDAOHibernateImpl implements RelationshipDAO {
 	@Override
 	public Integer getStatus(int user1Id, int user2Id) {
 		Session currentSession = entityManager.unwrap(Session.class);
-		if(user1Id == user2Id) {
+		if (user1Id == user2Id) {
 			Relationship selfRelationship = new Relationship();
 			selfRelationship.setStatus(1);
 			return selfRelationship.getStatus();
@@ -73,9 +71,9 @@ public class RelationshipDAOHibernateImpl implements RelationshipDAO {
 	@Override
 	public Relationship checkRelation(int user1Id, int user2Id) {
 		Session currentSession = entityManager.unwrap(Session.class);
-		Query<Relationship> theQuery = currentSession.createQuery("from Relationship where (user_one_id=" + user1Id
-				+ "and user_two_id=" + user2Id + " )or (" + "user_one_id= " + user2Id
-				+ "and user_two_id=" + user1Id + ")", Relationship.class);
+		Query<Relationship> theQuery = currentSession
+				.createQuery("from Relationship where (user_one_id=" + user1Id + "and user_two_id=" + user2Id + " )or ("
+						+ "user_one_id= " + user2Id + "and user_two_id=" + user1Id + ")", Relationship.class);
 		try {
 			Relationship theRelation = theQuery.getSingleResult();
 			return theRelation;
@@ -116,9 +114,11 @@ public class RelationshipDAOHibernateImpl implements RelationshipDAO {
 	public void cancelFriendRequest(int accountId, int userTwoId) {
 		Session currentSession = entityManager.unwrap(Session.class);
 		@SuppressWarnings("unchecked")
-		Query<Relationship> theQuery = currentSession.createQuery(
-				"from Relationship where (user_one_id=" + accountId + "and user_two_id=" + userTwoId + " )or ("
-						+ "user_one_id= " + userTwoId + "and user_two_id=" + accountId + ")" , Relationship.class);
+		Query<Relationship> theQuery = currentSession
+				.createQuery(
+						"from Relationship where (user_one_id=" + accountId + "and user_two_id=" + userTwoId + " )or ("
+								+ "user_one_id= " + userTwoId + "and user_two_id=" + accountId + ")",
+						Relationship.class);
 		Relationship theRelation;
 		try {
 			theRelation = theQuery.getSingleResult();
@@ -136,20 +136,6 @@ public class RelationshipDAOHibernateImpl implements RelationshipDAO {
 				+ "and  status=" + 1 + "or user_two_id=" + accountId + "and status =" + 1, Relationship.class);
 		List<Relationship> friends = theQuery.getResultList();
 		return friends;
-	}
-
-	@ExceptionHandler
-	public ResponseEntity<ErrorResponse> handleCustomeEsception(CustomeException exc) {
-		ErrorResponse error = new ErrorResponse(HttpStatus.NOT_FOUND.value(), exc.getMessage(),
-				System.currentTimeMillis());
-		return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
-	}
-
-	@ExceptionHandler
-	public ResponseEntity<ErrorResponse> handleException(Exception exc) {
-		ErrorResponse error = new ErrorResponse(HttpStatus.BAD_REQUEST.value(), "unknown error occured",
-				System.currentTimeMillis());
-		return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
 	}
 
 }

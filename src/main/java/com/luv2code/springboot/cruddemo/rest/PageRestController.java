@@ -93,30 +93,8 @@ public class PageRestController {
 		return pageService.addPost(idExtractor.getIdFromToken(), idPage, pageNewPost);
 	}
 
-	@PutMapping("/editPagePost/{postId}/{postWithImage}")
-	public Post editPost(@RequestPart(value = "image", required = false) MultipartFile image,
-			@RequestPart(value = "text", required = true) String newText, @PathVariable int postId,
-			@PathVariable Boolean postWithImage, @RequestHeader("Authorization") String authHeader) throws Exception {
-		Session currentSession = entityManager.unwrap(Session.class);
-		IdExtractor idExtractor = new IdExtractor(authHeader);
-		Post theRequestedPost = currentSession.get(Post.class, postId);
-		Page thePage = currentSession.get(Page.class, theRequestedPost.getPageCreatorId());
-		if (thePage.getPageCreatorId() != idExtractor.getIdFromToken()) {
-			throw new CustomeException("cannot edit a post in a page that is not yours");
-		} else {
-			theRequestedPost.setText(newText);
-			if (postWithImage && image != null) {
-				ImageUrl imageUrl = storageService.pushImage(image);
-				theRequestedPost.setImage(imageUrl.getImageUrl());
-			} else {
-				theRequestedPost.setImage(null);
-			}
-			return pageService.editPost(theRequestedPost);
-		}
-	}
-
 	@GetMapping("/pages")
-	public List<Page> getPages() {
+	public List<PageBasicData> getPages() {
 		return pageService.getPages();
 	}
 
@@ -148,29 +126,8 @@ public class PageRestController {
 		return pageService.getPagePosts(pageId);
 	}
 
-	@PostMapping("page/addComment/{postId}")
-	public Comment addCommentAsPage(@RequestHeader("Authorization") String authHeader, @PathVariable int postId,
-			@RequestBody String commentText) {
-		IdExtractor idExtractor = new IdExtractor(authHeader);
-		return pageService.addCommentAsPage(idExtractor.getIdFromToken(), postId, commentText);
-	}
-
-	@PostMapping("/page/addLikeToComment/{commentId}")
-	public CommentLike addCommentLikeAsPage(@RequestHeader("Authorization") String authHeader,
-			@PathVariable int commentId) {
-		Session currentSession = entityManager.unwrap(Session.class);
-		IdExtractor idExtractor = new IdExtractor(authHeader);
-		Comment theCommentToLike = currentSession.get(Comment.class, commentId);
-		if (theCommentToLike != null) {
-			Post thePost = currentSession.get(Post.class, theCommentToLike.getRelatedPostId());
-			return pageService.addLikeAsPage(idExtractor.getIdFromToken(), thePost.getPageCreatorId(), commentId);
-		} else {
-			throw new CustomeException("there is no such comment");
-		}
-	}
-
 	@PutMapping("updatePage")
-	public Page updatePage(@RequestHeader("Authorization") String authHeader , 
+	public Page updatePage(@RequestHeader("Authorization") String authHeader,
 			@RequestPart(value = "profilePhoto", required = false) MultipartFile profilePhoto,
 			@RequestPart(value = "coverPhoto", required = false) MultipartFile coverPhoto,
 			@RequestPart(value = "name", required = false) String name,
@@ -181,19 +138,17 @@ public class PageRestController {
 		int idPage = Integer.parseInt(pageId);
 		Page theRequestedPage = currentSession.get(Page.class, idPage);
 		if (theRequestedPage.getPageCreatorId() == idExtractor.getIdFromToken()) {
-			UpdatePage theNewPage = new UpdatePage(idPage , name , description , profilePhoto , coverPhoto);
-			return pageService.updatePage(theNewPage ,theRequestedPage );
+			UpdatePage theNewPage = new UpdatePage(idPage, name, description, profilePhoto, coverPhoto);
+			return pageService.updatePage(theNewPage, theRequestedPage);
 		} else {
 			throw new CustomeException("cannot update a page that is not yours");
 		}
 	}
-	
+
 	@GetMapping("pagePhotos/{pageId}")
-	public List<String> getPagePhotos(@PathVariable int pageId){
+	public List<String> getPagePhotos(@PathVariable int pageId) {
 		return pageService.getPagePhotos(pageId);
 	}
-
-	
 
 	@ExceptionHandler
 	public ResponseEntity<ErrorResponse> handleCustomeException(CustomeException exc) {

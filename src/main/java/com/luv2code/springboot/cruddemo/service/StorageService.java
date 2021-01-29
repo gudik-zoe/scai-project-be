@@ -5,7 +5,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.luv2code.utility.ImageUrl;
 
-public interface StorageService <T> {
+public interface StorageService  {
 
 //	public void init();
 

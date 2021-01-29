@@ -5,11 +5,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.luv2code.springboot.cruddemo.dao.MessagesDAO;
 import com.luv2code.springboot.cruddemo.entity.Message;
-import com.luv2code.utility.ImageUrl;
+
 @Service
 public class MessagesServiceImpl implements MessagesService {
 	

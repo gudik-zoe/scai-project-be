@@ -22,8 +22,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.luv2code.exception.error.handling.CustomeException;
 import com.luv2code.exception.error.handling.ErrorResponse;
 import com.luv2code.springboot.cruddemo.entity.Comment;
+import com.luv2code.springboot.cruddemo.entity.Page;
 import com.luv2code.springboot.cruddemo.entity.Post;
-import com.luv2code.springboot.cruddemo.entity.Relationship;
 import com.luv2code.springboot.cruddemo.service.CommentService;
 import com.luv2code.springboot.cruddemo.service.PageService;
 import com.luv2code.springboot.cruddemo.service.RelationshipService;
@@ -38,12 +38,12 @@ public class CommentRestController {
 	private EntityManager entityManager;
 
 	private RelationshipService relationshipService;
-	
+
 	private PageService pageService;
 
 	@Autowired
 	public CommentRestController(CommentService theCommentService, EntityManager theEntityManager,
-			RelationshipService theRelationshipService , PageService  thePageService) {
+			RelationshipService theRelationshipService, PageService thePageService) {
 		commentService = theCommentService;
 		entityManager = theEntityManager;
 		relationshipService = theRelationshipService;
@@ -61,34 +61,38 @@ public class CommentRestController {
 		return commentService.getCommentsByPostId(idPosts);
 	}
 
-	@PostMapping("comments/idAccount/{postId}")
+	@PostMapping("comments/idAccount/{postId}/{userComment}")
 	public Comment addComment(@RequestHeader("Authorization") String authHeader, @RequestBody String commentText,
-			@PathVariable int postId) {
+			@PathVariable int postId, @PathVariable boolean userComment) {
 		IdExtractor idExtractor = new IdExtractor(authHeader);
 		Session currentSession = entityManager.unwrap(Session.class);
 		Post theRequestedPost = currentSession.get(Post.class, postId);
 		if (theRequestedPost == null) {
 			throw new CustomeException("this post doesn't exist");
-		} 
-		if(theRequestedPost.getPageCreatorId() != null) {
-				if(pageService.checkIfPageLikedByAccount(idExtractor.getIdFromToken(), theRequestedPost.getPageCreatorId())) {
-					return commentService.addComment(idExtractor.getIdFromToken(), commentText, theRequestedPost);
-				}else {
-					throw new CustomeException("cannot comment on a page's post that u didn't follow");
-				}
 		}
-		else {
+		if (theRequestedPost.getPageCreatorId() != null) {
+			Page thePage = currentSession.get(Page.class, theRequestedPost.getPageCreatorId());
+			if (pageService.checkIfPageLikedByAccount(idExtractor.getIdFromToken(), theRequestedPost.getPageCreatorId())
+					|| thePage.getPageCreatorId() == idExtractor.getIdFromToken()
+					) {
+				return commentService.addComment(idExtractor.getIdFromToken(), commentText, theRequestedPost,
+						userComment);
+			} else {
+				throw new CustomeException("cannot comment on a page's post that u didn't follow");
+			}
+		} else {
 			Integer theRelationshipStatus = relationshipService.getStatus(idExtractor.getIdFromToken(),
 					theRequestedPost.getPostCreatorId());
 			if (theRelationshipStatus == null || theRelationshipStatus != 1) {
 				throw new CustomeException("cannot comment on a user's post that is not ur friend");
-			} else if (commentText.equals("") || commentText == null) {
+			} else if (commentText.equals("")) {
 				throw new CustomeException("cannot add an empty comment");
-			}else if (theRequestedPost.getStatus() == 2 && theRequestedPost.getPostCreatorId() != idExtractor.getIdFromToken()) {
+			} else if (theRequestedPost.getStatus() == 2
+					&& theRequestedPost.getPostCreatorId() != idExtractor.getIdFromToken()) {
 				throw new CustomeException("cannot comment to a post that is private and not yours");
-			}
-			else {
-				return commentService.addComment(idExtractor.getIdFromToken(), commentText, theRequestedPost);
+			} else {
+				return commentService.addComment(idExtractor.getIdFromToken(), commentText, theRequestedPost,
+						userComment);
 			}
 		}
 	}
@@ -101,18 +105,17 @@ public class CommentRestController {
 		Comment theOriginalComment = currentSession.get(Comment.class, commentId);
 		if (theOriginalComment == null) {
 			throw new CustomeException("this comment doesn't exist");
-		} 
-		if(theOriginalComment.getPageCreatorId() != null &&  newCommentText.equals("") || newCommentText != null) {
-			return commentService.updateComment(commentId, newCommentText , idExtractor.getIdFromToken());
 		}
-		else if (newCommentText.equals("") || newCommentText == null) {
+		if (theOriginalComment.getPageCreatorId() != null && newCommentText.equals("") || newCommentText != null) {
+			return commentService.updateComment(commentId, newCommentText, idExtractor.getIdFromToken());
+		} else if (newCommentText.equals(" ") || newCommentText == null) {
 			throw new CustomeException("cannot add an empty comment");
 		} else if (idExtractor.getIdFromToken() != theOriginalComment.getCommentCreatorId()) {
 			throw new CustomeException("cannot update a comment that is not yours");
 		} else if (newCommentText.equals(theOriginalComment.getText())) {
 			throw new CustomeException("nothing  was changed");
 		} else {
-			return commentService.updateComment(commentId, newCommentText , idExtractor.getIdFromToken());
+			return commentService.updateComment(commentId, newCommentText, idExtractor.getIdFromToken());
 		}
 	}
 
@@ -123,13 +126,12 @@ public class CommentRestController {
 		Comment theOriginalComment = currentSession.get(Comment.class, commentId);
 		if (theOriginalComment == null) {
 			throw new CustomeException("this comment doesn't exist");
-		}else if (theOriginalComment.getPageCreatorId() != null) {
-			commentService.deleteComment(commentId , idExtractor.getIdFromToken());
-		}
-		else if (idExtractor.getIdFromToken() != theOriginalComment.getCommentCreatorId()) {
+		} else if (theOriginalComment.getPageCreatorId() != null) {
+			commentService.deleteComment(commentId, idExtractor.getIdFromToken());
+		} else if (idExtractor.getIdFromToken() != theOriginalComment.getCommentCreatorId()) {
 			throw new CustomeException("cannot delete a comment that is not yours");
 		} else {
-			commentService.deleteComment(commentId , idExtractor.getIdFromToken());
+			commentService.deleteComment(commentId, idExtractor.getIdFromToken());
 		}
 	}
 

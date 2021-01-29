@@ -57,10 +57,16 @@ public class CommentDAOHibernateImpl implements CommentDAO {
 	}
 
 	@Override
-	public Comment addComment(int accountId, String commentText, Post post) {
+	public Comment addComment(int accountId, String commentText, Post post , boolean userComment) {
 		Session currentSession = entityManager.unwrap(Session.class);
-		Comment theComment = new Comment(commentText, post.getIdPost(), new Date(System.currentTimeMillis()), accountId,
-				null);
+		Comment theComment = new Comment();
+		if(userComment) {
+			 theComment = new Comment(commentText, post.getIdPost(), new Date(System.currentTimeMillis()), accountId,
+					null);
+		}else {
+			 theComment = new Comment(commentText, post.getIdPost(), new Date(System.currentTimeMillis()), null,
+					post.getPageCreatorId());
+		}
 		currentSession.save(theComment);
 		if (post.getPageCreatorId() == null && !theComment.getCommentCreatorId().equals(post.getPostCreatorId())) {
 			Notification addCommentNot = new Notification(accountId, post.getPostCreatorId(), "commented on your post",

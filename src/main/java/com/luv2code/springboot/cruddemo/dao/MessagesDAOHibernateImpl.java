@@ -12,19 +12,19 @@ import org.springframework.stereotype.Repository;
 import com.luv2code.exception.error.handling.CustomeException;
 import com.luv2code.springboot.cruddemo.entity.Account;
 import com.luv2code.springboot.cruddemo.entity.Message;
-import com.luv2code.springboot.cruddemo.service.StorageService;
+
 
 @Repository
 public class MessagesDAOHibernateImpl implements MessagesDAO {
 
 	private EntityManager entityManager;
 	
-	private StorageService storageService;
+	
 
 	@Autowired
-	public MessagesDAOHibernateImpl(EntityManager theEntityManager , StorageService theStorageService) {
+	public MessagesDAOHibernateImpl(EntityManager theEntityManager ) {
 		entityManager = theEntityManager;
-		storageService= theStorageService;
+		
 
 	}
 
