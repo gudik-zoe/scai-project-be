@@ -106,6 +106,8 @@ public class Notification {
 	public void setSeen(boolean seen) {
 		this.seen = seen;
 	}
+
+	
 	
 	
 

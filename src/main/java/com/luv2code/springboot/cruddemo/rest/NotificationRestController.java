@@ -24,6 +24,7 @@ import com.luv2code.springboot.cruddemo.entity.Account;
 import com.luv2code.springboot.cruddemo.entity.Notification;
 import com.luv2code.springboot.cruddemo.service.NotificationService;
 import com.luv2code.utility.IdExtractor;
+import com.luv2code.utility.NotificationDetails;
 
 @RestController
 @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -51,12 +52,15 @@ public class NotificationRestController {
 		}
 	}
 	
+	@GetMapping("notification/notificationDetails")
+	public NotificationDetails getMyNotsDetails(@RequestHeader("Authorization") String authHeader) {
+		IdExtractor idExtractor = new IdExtractor(authHeader);
+		return notificationService.getNotDetails(idExtractor.getIdFromToken());
+	}
+	
 	@PostMapping("/loadMore")
 	public List<Notification> loadMore( @RequestHeader("Authorization") String authHeader , @RequestBody Integer ids){
-		IdExtractor idExtractor = new IdExtractor(authHeader);
-		
-		Session currentSession = entityManager.unwrap(Session.class);
-	
+		IdExtractor idExtractor = new IdExtractor(authHeader);	
 		return notificationService.loadMore(idExtractor.getIdFromToken(), ids);
 	}
 

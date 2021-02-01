@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import com.luv2code.exception.error.handling.CustomeException;
 import com.luv2code.exception.error.handling.ErrorResponse;
 import com.luv2code.springboot.cruddemo.entity.Notification;
+import com.luv2code.utility.NotificationDetails;
 
 @Repository
 public class NotificationsDAOHibernateImpl implements NotificationsDAO {
@@ -68,19 +69,6 @@ public class NotificationsDAOHibernateImpl implements NotificationsDAO {
 
 	}
 
-	@ExceptionHandler
-	public ResponseEntity<ErrorResponse> handleCustomeException(CustomeException exc) {
-		ErrorResponse error = new ErrorResponse(HttpStatus.NOT_FOUND.value(), exc.getMessage(),
-				System.currentTimeMillis());
-		return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
-	}
-
-	@ExceptionHandler
-	public ResponseEntity<ErrorResponse> handleException(Exception exc) {
-		ErrorResponse error = new ErrorResponse(HttpStatus.BAD_REQUEST.value(), "Unknown error occured",
-				System.currentTimeMillis());
-		return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
-	}
 
 	@Override
 	public void allNotificationSeen(int accountId) {
@@ -101,12 +89,37 @@ public class NotificationsDAOHibernateImpl implements NotificationsDAO {
 		List<Notification> theRestNots = new ArrayList<Notification>();
 		Query<Notification> theQuery = currentSession.createQuery("from Notification where not_receiver = " + accountId
 				+ " and id_notification < " + notId + " order by date desc ", Notification.class).setMaxResults(5);
-			theRestNots = theQuery.getResultList();
-			if(theRestNots.size() == 0) {
-				return null;
-			}else {
-				return theRestNots;
+		theRestNots = theQuery.getResultList();
+		if (theRestNots.size() == 0) {
+			return null;
+		} else {
+			return theRestNots;
+		}
+	}
+
+	public Integer getAllMyNotsNumber(int accountId) {
+		Session currentSession = entityManager.unwrap(Session.class);
+		Query<Notification> theQuery = currentSession
+				.createQuery("from Notification where not_receiver = " + accountId, Notification.class);
+		List<Notification> theRestNots = theQuery.getResultList();
+		return theRestNots.size();
+	}
+
+	@Override
+	public NotificationDetails getNotDetails(int accountId) {
+		Session currentSession = entityManager.unwrap(Session.class);
+		Query<Notification> theQuery = currentSession
+				.createQuery("from Notification where not_receiver = " + accountId, Notification.class);
+		List<Notification> notifications = theQuery.getResultList();
+		Integer myNotsNumber = notifications.size();
+		Integer unseenNots = 0;
+		for(Notification notification:notifications) {
+			if(!notification.isSeen()) {
+				unseenNots++;
 			}
+		}
+		NotificationDetails notificationDetails = new NotificationDetails(unseenNots , myNotsNumber);
+		return notificationDetails;
 	}
 
 }
