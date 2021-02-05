@@ -51,13 +51,6 @@ public class PostsDAOHibernateImpl implements PostsDAO {
 
 	}
 
-	@Override
-	public List<Post> getAllPosts() {
-		Session currentSession = entityManager.unwrap(Session.class);
-		Query<Post> theQuery = currentSession.createQuery("from Post", Post.class);
-		List<Post> allPosts = theQuery.getResultList();
-		return allPosts;
-	}
 
 	@Override
 	public List<Post> getHomePagePosts(int accountId) {

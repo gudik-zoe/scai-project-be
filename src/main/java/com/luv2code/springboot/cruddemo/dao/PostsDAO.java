@@ -24,7 +24,6 @@ public interface PostsDAO {
 
 	public Post postOnWall(int accountId, Post thePost);
 
-	public List<Post> getAllPosts();
 
 
 }

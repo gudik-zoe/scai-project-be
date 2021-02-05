@@ -6,15 +6,19 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.luv2code.springboot.cruddemo.dao.RelationshipDAO;
+import com.luv2code.springboot.cruddemo.dao.RelationshipJpa;
 import com.luv2code.springboot.cruddemo.entity.Relationship;
 
 @Service
 public class RelationshipServiceImpl implements RelationshipService {
 
 	private RelationshipDAO relationshipDAO;
+	
+	private RelationshipJpa relationshipJpa;
 
-	public RelationshipServiceImpl(RelationshipDAO theRelationshipDAO) {
+	public RelationshipServiceImpl(RelationshipDAO theRelationshipDAO , RelationshipJpa theRelationshipJpa) {
 		relationshipDAO = theRelationshipDAO;
+		relationshipJpa = theRelationshipJpa;
 	}
 
 	@Override
@@ -48,16 +52,16 @@ public class RelationshipServiceImpl implements RelationshipService {
 
 	}
 
-	@Override
-	@Transactional
-	public List<Relationship> getMyFriends(int accountId) {
-
-		return relationshipDAO.getMyFriends(accountId);
-	}
 
 	@Override
 	public Integer getStatus(int user1Id, int user2Id) {
 		return relationshipDAO.getStatus(user1Id ,user2Id );
+	}
+
+	@Override
+	public List<Relationship> getMyFriends(int accountId) {
+		List<Relationship> friends = relationshipJpa.getFriends(accountId) ;
+		return friends;
 	}
 
 	

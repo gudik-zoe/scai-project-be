@@ -24,7 +24,8 @@ public interface PostService {
 
 	public List<Post> getHomePagePosts(int accountId);
 	
-	public List<Post> getAllPosts();
+	
+	public List<String> getAccountPhotos(int accountId);
 	
 	
 

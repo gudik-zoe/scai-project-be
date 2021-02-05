@@ -104,11 +104,17 @@ public class PageDAOHibernateImpl implements PageDAO {
 	}
 
 	@Override
-	public List<Page> getMyPages(int accountId) {
+	public List<PageBasicData> getMyPages(int accountId) {
 		Session currentSession = entityManager.unwrap(Session.class);
 		Query<Page> theQuery = currentSession.createQuery("from Page where page_creator_id = " + accountId, Page.class);
 		if (theQuery.getResultList() != null) {
-			return theQuery.getResultList();
+			List<Page> pages = theQuery.getResultList();
+			List<PageBasicData> myPages = new ArrayList<PageBasicData>();
+			for (Page page : pages) {
+				myPages.add(new PageBasicData(page.getIdPage(), page.getName(), page.getProfilePhoto(),
+						page.getCoverPhoto(), page.getPageCreatorId(), page.getPageLike()));
+			}
+			return myPages;
 		} else {
 			return null;
 		}

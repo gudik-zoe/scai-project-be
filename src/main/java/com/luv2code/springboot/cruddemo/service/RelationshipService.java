@@ -18,6 +18,8 @@ public interface RelationshipService {
 	
 	public List<Relationship> getMyFriends(int accountId);
 	
+//	public List<Relationship> getPeopleYouMayKnow(int accountId);
+	
 	public Integer getStatus(int user1Id , int user2Id);
 	
 	

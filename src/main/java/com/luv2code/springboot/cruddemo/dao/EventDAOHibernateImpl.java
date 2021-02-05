@@ -97,6 +97,11 @@ public class EventDAOHibernateImpl implements EventDAO {
 				.createQuery("from EventReact where event_react_creator_id = " + accountId, EventReact.class);
 		try {
 			List<EventReact> linkedEvents = theQuery.getResultList();
+			for (int i = 0; i < linkedEvents.size(); i++) {
+				if (checkIfExpired(currentSession.get(Event.class, linkedEvents.get(i).getRelatedEventId()))) {
+					linkedEvents.remove(i);
+				}
+			}
 			return linkedEvents;
 		} catch (Exception e) {
 			return null;
@@ -143,7 +148,7 @@ public class EventDAOHibernateImpl implements EventDAO {
 		String jsDate = event.getTime() + ":00";
 		Date javaDate = new SimpleDateFormat("yy-MM-dd HH:mm:ss").parse(jsDate);
 		if (javaDate.getTime() - new Date(System.currentTimeMillis()).getTime() < 0) {
-				currentSession.delete(event);
+			currentSession.delete(event);
 			return true;
 		} else {
 			return false;

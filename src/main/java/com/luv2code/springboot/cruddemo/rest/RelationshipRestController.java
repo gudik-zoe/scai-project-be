@@ -59,18 +59,18 @@ public class RelationshipRestController {
 		if (theRequestedAccount == null) {
 			throw new CustomeException("this account doesn't exist");
 		} else {
-		return relationshipService.checkRelation(idExtractor.getIdFromToken(), user2Id);
+			return relationshipService.checkRelation(idExtractor.getIdFromToken(), user2Id);
 		}
 	}
-	
+
 	@GetMapping("relation/getStatus/{user2Id}")
-	public Integer getStatus(@RequestHeader("Authorization") String authHeader ,@PathVariable int user2Id ) {
+	public Integer getStatus(@RequestHeader("Authorization") String authHeader, @PathVariable int user2Id) {
 		IdExtractor idExtractor = new IdExtractor(authHeader);
 		return relationshipService.getStatus(idExtractor.getIdFromToken(), user2Id);
 	}
-	
+
 	@GetMapping("/relation/getMyFriends")
-	public List<Relationship> getMyFriends(@RequestHeader("Authorization") String authHeader){
+	public List<Relationship> getMyFriends(@RequestHeader("Authorization") String authHeader) {
 		IdExtractor idExtractor = new IdExtractor(authHeader);
 		return relationshipService.getMyFriends(idExtractor.getIdFromToken());
 	}
@@ -82,36 +82,33 @@ public class RelationshipRestController {
 	}
 
 	@PutMapping("/relation/answerRequest/{relationshipId}/{status}")
-	public Relationship answerRequest(@PathVariable int relationshipId, @PathVariable int status ,@RequestHeader("Authorization") String authHeader ) {
+	public Relationship answerRequest(@PathVariable int relationshipId, @PathVariable int status,
+			@RequestHeader("Authorization") String authHeader) {
 		Session currentSession = entityManager.unwrap(Session.class);
 		IdExtractor idExtractor = new IdExtractor(authHeader);
 		Relationship theRequestedRelationship = currentSession.get(Relationship.class, relationshipId);
-		if(theRequestedRelationship == null) {
+		if (theRequestedRelationship == null) {
 			throw new CustomeException("this relationship doesn't exist");
-		}else if (idExtractor.getIdFromToken() != theRequestedRelationship.getUserTwoId() ) {
+		} else if (idExtractor.getIdFromToken() != theRequestedRelationship.getUserTwoId()) {
 			throw new CustomeException("cannot accept a friend request that is not yours");
-		}
-		else if (status != 0 && status != 1 && status != 2) {
+		} else if (status != 0 && status != 1 && status != 2) {
 			throw new CustomeException("insert a valid status");
 		}
 		return relationshipService.respondToFriendRequest(relationshipId, status);
-		}
-	
+	}
 
 	@DeleteMapping("/relation/deleteRequest/accountId/{userTwoId}")
 	public void cancelFriendRequest(@RequestHeader("Authorization") String authHeader, @PathVariable int userTwoId) {
 		Session currentSession = entityManager.unwrap(Session.class);
 		IdExtractor idExtractor = new IdExtractor(authHeader);
 		Account theRequestedUser = currentSession.get(Account.class, userTwoId);
-		if(theRequestedUser == null) {
+		if (theRequestedUser == null) {
 			throw new CustomeException("this user doesn't exist");
-		}else{	
+		} else {
 			relationshipService.cancelFriendRequest(idExtractor.getIdFromToken(), userTwoId);
 		}
 	}
-	
 
-	
 	@ExceptionHandler
 	public ResponseEntity<ErrorResponse> handleCustomeException(CustomeException exc) {
 		ErrorResponse error = new ErrorResponse(HttpStatus.NOT_FOUND.value(), exc.getMessage(),

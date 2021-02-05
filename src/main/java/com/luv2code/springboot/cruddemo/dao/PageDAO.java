@@ -19,7 +19,7 @@ public interface PageDAO {
 
 	public Page createPage(Page page);
 
-	public List<Page> getMyPages(int accountId);
+	public List<PageBasicData> getMyPages(int accountId);
 
 	public List<Post> getPagePosts(int pageId);
 

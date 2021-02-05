@@ -34,27 +34,17 @@ import com.luv2code.utility.ImageUrl;
 @RestController
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class PostsRestController {
-
+	@Autowired
 	private PostService postService;
-
+	@Autowired
 	private EntityManager entityManager;
-
+	@Autowired
 	private StorageService storageService;
-
+	@Autowired
 	private RelationshipService relationshipService;
 
-	@Autowired
-	public PostsRestController(PostService thePostService, EntityManager theEntityManager,
-			StorageService theStorageService, RelationshipService theRelationshipService) {
-		postService = thePostService;
-		entityManager = theEntityManager;
-		storageService = theStorageService;
-		relationshipService = theRelationshipService;
-	}
+	public PostsRestController() {
 
-	@GetMapping("/posts/allPosts")
-	public List<Post> getAllPosts() {
-		return postService.getAllPosts();
 	}
 
 	@GetMapping("/homePage/posts")

@@ -39,7 +39,7 @@ public class Page {
 	
 	
 
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToMany(cascade = CascadeType.ALL ,fetch = FetchType.LAZY )
 	@JoinColumn(name = "page_creator_id", referencedColumnName = "id_page", insertable = false, updatable = false, nullable = false)
 	private List<Post> posts;
 

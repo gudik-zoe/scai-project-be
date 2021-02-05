@@ -56,7 +56,7 @@ public class PageServiceImpl implements PageService {
 	}
 
 	@Override
-	public List<Page> getMyPages(int accountId) {
+	public List<PageBasicData> getMyPages(int accountId) {
 		return pageDAO.getMyPages(accountId);
 	}
 
