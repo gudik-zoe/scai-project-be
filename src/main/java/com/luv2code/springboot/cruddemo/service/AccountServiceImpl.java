@@ -18,9 +18,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.luv2code.exception.error.handling.CustomeException;
-import com.luv2code.springboot.cruddemo.dao.AccountRepoJpa;
 import com.luv2code.springboot.cruddemo.entity.Account;
 import com.luv2code.springboot.cruddemo.entity.Relationship;
+import com.luv2code.springboot.cruddemo.jpa.repositories.AccountJpaRepo;
 import com.luv2code.utility.AccountBasicData;
 import com.luv2code.utility.AccountData;
 import com.luv2code.utility.ImageUrl;
@@ -32,7 +32,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 public class AccountServiceImpl implements AccountService {
 
 	@Autowired
-	private AccountRepoJpa accountRepoJpa;
+	private AccountJpaRepo accountRepoJpa;
 
 	@Autowired
 	private StorageService storageService;
@@ -42,7 +42,8 @@ public class AccountServiceImpl implements AccountService {
 
 	@Autowired
 	private PostService postService;
-
+	
+	
 	public AccountServiceImpl() {
 
 	}

@@ -2,9 +2,6 @@ package com.luv2code.springboot.cruddemo.rest;
 
 import java.util.List;
 
-import javax.persistence.EntityManager;
-
-import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,32 +13,23 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.luv2code.exception.error.handling.CustomeException;
 import com.luv2code.exception.error.handling.ErrorResponse;
-import com.luv2code.springboot.cruddemo.entity.Account;
 import com.luv2code.springboot.cruddemo.entity.Message;
 import com.luv2code.springboot.cruddemo.service.MessagesService;
-import com.luv2code.springboot.cruddemo.service.StorageService;
 import com.luv2code.utility.IdExtractor;
-import com.luv2code.utility.ImageUrl;
 
 @RestController
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class MessagesRestController {
 
-	private MessagesService messageService;
-	private EntityManager entityManager;
-	private StorageService storageService;
-
 	@Autowired
-	public MessagesRestController(MessagesService theMessagesService, EntityManager theEntityManager , StorageService theStorageService) {
-		this.messageService = theMessagesService;
-		this.entityManager = theEntityManager;
-		this.storageService = theStorageService;
+	private MessagesService messageService;
+
+	public MessagesRestController() {
+
 	}
 
 	@GetMapping("/messages/myMessages")
@@ -51,59 +39,45 @@ public class MessagesRestController {
 	}
 
 	@GetMapping("/messages/receivedFrom/accountId/{senderId}")
-	private List<Message> getMessagesReceivedFrom(@RequestHeader("Authorization") String authHeader,
+	private List<Message> getConversation(@RequestHeader("Authorization") String authHeader,
 			@PathVariable int senderId) {
 		IdExtractor idExtractor = new IdExtractor(authHeader);
-		return messageService.getMessagesReceivedFrom(idExtractor.getIdFromToken(), senderId);
+		return messageService.getConversation(idExtractor.getIdFromToken(), senderId);
 	}
 
 	@PostMapping("/messages/sendMessage")
 	private Message sendMessage(@RequestBody Message theMessage) {
-		Session currentSession = entityManager.unwrap(Session.class);
-		Account sender = currentSession.get(Account.class, theMessage.getIdSender());
-		Account receiver = currentSession.get(Account.class, theMessage.getIdSender());
-		if (sender == null || receiver == null) {
-			throw new CustomeException("user not found");
-		} else if (theMessage.getMessage().isBlank()) {
-			throw new CustomeException("cannot send an empty message");
-		} else {
-			return messageService.sendMessage(theMessage);
-		}
+		return messageService.sendMessage(theMessage);
+
 	}
 
 	@GetMapping("/messages/unseenMessages/{account2Id}")
-	private Integer checkForUnseenMessages(@RequestHeader("Authorization") String authHeader , @PathVariable int account2Id) {
+	private Integer checkForUnseenMessages(@RequestHeader("Authorization") String authHeader,
+			@PathVariable int account2Id) {
 		IdExtractor idExtractor = new IdExtractor(authHeader);
-		return messageService.unSeenMessagesFrom(idExtractor.getIdFromToken() , account2Id);
+		return messageService.unSeenMessagesFrom(idExtractor.getIdFromToken(), account2Id);
 
 	}
-	
+
 	@PutMapping("/messages/seen")
-	private void messageSeen(@RequestBody int user2Id , @RequestHeader("Authorization") String authHeader) {
+	private void messageSeen(@RequestBody int user2Id, @RequestHeader("Authorization") String authHeader) {
 		IdExtractor idExtractor = new IdExtractor(authHeader);
-		
-		 messageService.messageSeen(idExtractor.getIdFromToken() , user2Id);
+		messageService.messageSeen(idExtractor.getIdFromToken(), user2Id);
 
 	}
-	
-	@PostMapping("/messages/uploadImage")
-	private ImageUrl uploadImage(@RequestBody MultipartFile image) throws Exception {
-		System.out.println(image);
-		return storageService.pushImage(image);
 
-	}
-	@ExceptionHandler
-	public ResponseEntity<ErrorResponse> handleCustomeException(CustomeException exc) {
-		ErrorResponse error = new ErrorResponse(HttpStatus.NOT_FOUND.value(), exc.getMessage(),
-				System.currentTimeMillis());
-		return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
-	}
-
-	@ExceptionHandler
-	public ResponseEntity<ErrorResponse> handleException(Exception exc) {
-		ErrorResponse error = new ErrorResponse(HttpStatus.BAD_REQUEST.value(), "unknown error occured",
-				System.currentTimeMillis());
-		return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
-	}
+//	@ExceptionHandler
+//	public ResponseEntity<ErrorResponse> handleCustomeException(CustomeException exc) {
+//		ErrorResponse error = new ErrorResponse(HttpStatus.NOT_FOUND.value(), exc.getMessage(),
+//				System.currentTimeMillis());
+//		return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+//	}
+//
+//	@ExceptionHandler
+//	public ResponseEntity<ErrorResponse> handleException(Exception exc) {
+//		ErrorResponse error = new ErrorResponse(HttpStatus.BAD_REQUEST.value(), "unknown error occured",
+//				System.currentTimeMillis());
+//		return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+//	}
 
 }

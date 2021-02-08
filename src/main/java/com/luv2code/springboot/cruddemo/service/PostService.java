@@ -12,13 +12,13 @@ public interface PostService {
 	
 	public Post findPostByPostId(int theId);
 	
-	public Post savePost(int theId , Post thePost);
+	public Post savePost(int accountId , String text , MultipartFile image , String postOption) throws Exception;
 	
-	public Post postOnWall(int accountId , Post thePost);
+	public Post postOnWall(int accountId, int postedOnUserId , MultipartFile image , String text) throws Exception;
 	
-	public Post resharePost (int accountId , int idPost , String extraText , Integer status);
+	public Post resharePost (int accountId , int idPost, String extraText, String postOption);
 	
-	public Post updatePost(Post post , MultipartFile image , boolean postWithImage , String newText) throws Exception;
+	public Post updatePost(int accountId , int postId, MultipartFile image, boolean postWithImage, String newText) throws Exception;
 	
 	public void deletePostById (int accountId , int postId);
 

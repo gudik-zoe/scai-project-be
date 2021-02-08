@@ -1,49 +1,70 @@
 package com.luv2code.springboot.cruddemo.service;
 
-import java.util.List;
+import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.luv2code.springboot.cruddemo.dao.CommentLikesDAO;
+import com.luv2code.springboot.cruddemo.entity.Comment;
 import com.luv2code.springboot.cruddemo.entity.CommentLike;
-import com.luv2code.utility.AccountBasicData;
+import com.luv2code.springboot.cruddemo.entity.Notification;
+import com.luv2code.springboot.cruddemo.entity.Post;
+import com.luv2code.springboot.cruddemo.jpa.repositories.CommentLikeJpaRepo;
 
 @Service
 @Transactional
 public class CommentLikesServiceImpl implements CommentLikesService {
 
-	private CommentLikesDAO commentLikesDAO;
+	@Autowired
+	private CommentService commentService;
 
 	@Autowired
-	public CommentLikesServiceImpl(CommentLikesDAO theCommentLikesDAO) {
-		commentLikesDAO = theCommentLikesDAO;
-	}
+	private NotificationService notificationService;
 
-	@Override
+	@Autowired
+	private PostService postService;
 
-	public int getCommentLikesById(int commentId) {
-		return commentLikesDAO.getCommentLikesById(commentId);
-	}
+	@Autowired
+	private CommentLikeJpaRepo commentLikeJpaRepo;
 
-	@Override
-
-	public CommentLike addLikeAsUser(int accountId, int commentId) {
-		return commentLikesDAO.addLikeAsUser(accountId, commentId);
+	public CommentLikesServiceImpl() {
 
 	}
 
 	@Override
-	public List<AccountBasicData> getCommentLikers(int commentId) {
-		return commentLikesDAO.getCommentLikers(commentId);
+	public CommentLike addCommentLike(int accountId, int commentId, boolean userCommentLike) {
+		Comment theCommentToLike = commentService.getCommentById(commentId);
+		if (userCommentLike) {
+			CommentLike commentLike = commentLikeJpaRepo.addUserLike(accountId, commentId);
+			if (commentLike != null) {
+				commentLikeJpaRepo.delete(commentLike);
+				return null;
+			} else {
+				CommentLike commentLikeToAdd = new CommentLike(commentId, accountId, null);
+				commentLikeJpaRepo.save(commentLikeToAdd);
+				if (theCommentToLike.getCommentCreatorId() != null) {
+					Notification theNotification = new Notification(accountId, theCommentToLike.getCommentCreatorId(),
+							"liked your comment", new Date(System.currentTimeMillis()),
+							theCommentToLike.getRelatedPostId(), false);
+					notificationService.addNotification(theNotification);
+				}
+				return commentLikeToAdd;
+			}
+		} else {
+			Post theRelatedPost = postService.findPostByPostId(theCommentToLike.getRelatedPostId());
+			CommentLike commentLike = commentLikeJpaRepo.addPageLike(theRelatedPost.getPageCreatorId(), commentId);
+			if (commentLike != null) {
+				commentLikeJpaRepo.delete(commentLike);
+				return null;
+			} else {
+				CommentLike commentLikeToAdd = new CommentLike(commentId, null, theRelatedPost.getPageCreatorId());
+				commentLikeJpaRepo.save(commentLikeToAdd);
+				return commentLikeToAdd;
+
+			}
+		}
+
 	}
-
-	@Override
-	public CommentLike addLikeAsPage(int accountId, int pageId, int commentId) {
-		return commentLikesDAO.addLikeAsPage(accountId , pageId , commentId);
-	}
-
-
 
 }

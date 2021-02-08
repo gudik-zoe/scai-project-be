@@ -2,9 +2,6 @@ package com.luv2code.springboot.cruddemo.rest;
 
 import java.util.List;
 
-import javax.persistence.EntityManager;
-
-import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,34 +21,23 @@ import com.luv2code.springboot.cruddemo.entity.Page;
 import com.luv2code.springboot.cruddemo.entity.PageLike;
 import com.luv2code.springboot.cruddemo.entity.Post;
 import com.luv2code.springboot.cruddemo.service.PageService;
-import com.luv2code.springboot.cruddemo.service.StorageService;
 import com.luv2code.utility.IdExtractor;
-import com.luv2code.utility.ImageUrl;
+
 import com.luv2code.utility.PageBasicData;
-import com.luv2code.utility.UpdatePage;
 
 @RestController
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class PageRestController {
-
+	@Autowired
 	private PageService pageService;
 
-	private EntityManager entityManager;
+	public PageRestController() {
 
-	private StorageService storageService;
-
-	@Autowired
-	public PageRestController(PageService thePageService, EntityManager theEntityManager,
-			StorageService theStorageService) {
-		pageService = thePageService;
-		storageService = theStorageService;
-		entityManager = theEntityManager;
 	}
 
 	@GetMapping("/pageFullData/{pageId}")
 	public Page getPageFullData(@RequestHeader("Authorization") String authHeader, @PathVariable int pageId) {
-		IdExtractor idExtractor = new IdExtractor(authHeader);
-		return pageService.getPageFullData(pageId, idExtractor.getIdFromToken());
+		return pageService.getPageFullData(pageId);
 	}
 
 	@PostMapping("/create/page")
@@ -61,12 +47,7 @@ public class PageRestController {
 			@RequestPart(value = "pageName", required = true) String pageName,
 			@RequestPart(value = "description", required = true) String description) throws Exception {
 		IdExtractor idExtractor = new IdExtractor(authHeader);
-		ImageUrl profile = storageService.pushImage(profilePhoto);
-		String proPhoto = profile.getImageUrl();
-		ImageUrl cover = storageService.pushImage(coverPhoto);
-		String coPhoto = cover.getImageUrl();
-		Page page = new Page(pageName, description, proPhoto, coPhoto, idExtractor.getIdFromToken());
-		return pageService.createPage(page);
+		return pageService.createPage(idExtractor.getIdFromToken(), profilePhoto, coverPhoto, pageName, description);
 	}
 
 	@PostMapping("/posts/pageId")
@@ -74,16 +55,8 @@ public class PageRestController {
 			@RequestPart(value = "image", required = false) MultipartFile image,
 			@RequestPart(value = "pageId", required = true) String pageId,
 			@RequestPart(value = "text", required = true) String text) throws Exception {
-
 		IdExtractor idExtractor = new IdExtractor(authHeader);
-		int idPage = Integer.parseInt(pageId);
-		Post pageNewPost = new Post();
-		if (image != null) {
-			ImageUrl postPhotoUrl = storageService.pushImage(image);
-			pageNewPost.setImage(postPhotoUrl.getImageUrl());
-		}
-		pageNewPost.setText(text);
-		return pageService.addPost(idExtractor.getIdFromToken(), idPage, pageNewPost);
+		return pageService.addPost(idExtractor.getIdFromToken(), pageId, image, text);
 	}
 
 	@GetMapping("/pages")
@@ -94,18 +67,12 @@ public class PageRestController {
 	@PostMapping("page/likePage/{idPage}")
 	public PageLike likePage(@RequestHeader("Authorization") String authHeader, @PathVariable int idPage) {
 		IdExtractor idExtractor = new IdExtractor(authHeader);
-		Session currentSession = entityManager.unwrap(Session.class);
-		Page theLikedPage = currentSession.get(Page.class, idPage);
-		if (theLikedPage == null && theLikedPage.getPageCreatorId() != idExtractor.getIdFromToken()) {
-			throw new CustomeException("this page doesn't exist or it's yours");
-		} else {
-			return pageService.likePage(idExtractor.getIdFromToken(), idPage);
-		}
+		return pageService.likePage(idExtractor.getIdFromToken(), idPage);
 	}
 
 	@GetMapping("pages/getPage/{idPage}")
 	public PageBasicData getPageById(@PathVariable int idPage) {
-		return pageService.getPageById(idPage);
+		return pageService.getPageBasicDataById(idPage);
 	}
 
 	@GetMapping("myPages")
@@ -114,10 +81,10 @@ public class PageRestController {
 		return pageService.getMyPages(idExtractor.getIdFromToken());
 	}
 
-	@GetMapping("page/posts/{pageId}")
-	public List<Post> getPagePosts(@PathVariable int pageId) {
-		return pageService.getPagePosts(pageId);
-	}
+//	@GetMapping("page/posts/{pageId}")
+//	public List<Post> getPagePosts(@PathVariable int pageId) {
+//		return pageService.getPagePosts(pageId);
+//	}
 
 	@PutMapping("updatePage")
 	public Page updatePage(@RequestHeader("Authorization") String authHeader,
@@ -126,16 +93,10 @@ public class PageRestController {
 			@RequestPart(value = "name", required = false) String name,
 			@RequestPart(value = "description", required = false) String description,
 			@RequestPart(value = "pageId", required = false) String pageId) throws Exception {
-		Session currentSession = entityManager.unwrap(Session.class);
 		IdExtractor idExtractor = new IdExtractor(authHeader);
-		int idPage = Integer.parseInt(pageId);
-		Page theRequestedPage = currentSession.get(Page.class, idPage);
-		if (theRequestedPage.getPageCreatorId() == idExtractor.getIdFromToken()) {
-			UpdatePage theNewPage = new UpdatePage(idPage, name, description, profilePhoto, coverPhoto);
-			return pageService.updatePage(theNewPage, theRequestedPage);
-		} else {
-			throw new CustomeException("cannot update a page that is not yours");
-		}
+		return pageService.updatePage(idExtractor.getIdFromToken(), pageId, profilePhoto, coverPhoto, name,
+				description);
+
 	}
 
 	@GetMapping("pagePhotos/{pageId}")

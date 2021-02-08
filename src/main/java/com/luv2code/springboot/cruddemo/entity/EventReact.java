@@ -66,5 +66,7 @@ public class EventReact {
 	public void setEventReactCreatorId(int eventReactCreatorId) {
 		this.eventReactCreatorId = eventReactCreatorId;
 	}
+	
+	
 
 }

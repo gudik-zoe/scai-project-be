@@ -2,11 +2,12 @@ package com.luv2code.springboot.cruddemo.service;
 
 import java.util.List;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import com.luv2code.springboot.cruddemo.entity.Page;
 import com.luv2code.springboot.cruddemo.entity.PageLike;
 import com.luv2code.springboot.cruddemo.entity.Post;
 import com.luv2code.utility.PageBasicData;
-import com.luv2code.utility.UpdatePage;
 
 public interface PageService {
 
@@ -16,21 +17,21 @@ public interface PageService {
 
 	public List<Integer> getMyLikedPages(int accountId);
 
-	public PageBasicData getPageById(int pageId);
+	public PageBasicData getPageBasicDataById(int pageId);
 
-	public Page createPage(Page page);
+	public Page createPage(int accountId, MultipartFile profilePhoto, MultipartFile coverPhoto, String pageName,
+			String description) throws Exception;
 
 	public List<PageBasicData> getMyPages(int accountId);
 
-	public List<Post> getPagePosts(int pageId);
+	public Post addPost(int accountId, String pageId, MultipartFile image, String text) throws Exception;
 
-	public Post addPost(int accountId, int pageId, Post thePost);
-
-	public Page getPageFullData(int pageId, int accountId);
+	public Page getPageFullData(int pageId);
 
 	public boolean checkIfPageLikedByAccount(int accountId, int pageId);
 
-	public Page updatePage(UpdatePage theNewPage, Page theOldPage) throws Exception;
+	public Page updatePage(int accountId, String pageId, MultipartFile profilePhoto, MultipartFile coverPhoto,
+			String name, String description) throws Exception;
 
 	public List<String> getPagePhotos(int pageId);
 

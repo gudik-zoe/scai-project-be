@@ -3,9 +3,6 @@ package com.luv2code.springboot.cruddemo.rest;
 import java.text.ParseException;
 import java.util.List;
 
-import javax.persistence.EntityManager;
-
-import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,28 +23,19 @@ import com.luv2code.exception.error.handling.ErrorResponse;
 import com.luv2code.springboot.cruddemo.entity.Event;
 import com.luv2code.springboot.cruddemo.entity.EventReact;
 import com.luv2code.springboot.cruddemo.service.EventService;
-import com.luv2code.springboot.cruddemo.service.StorageService;
 import com.luv2code.utility.IdExtractor;
-import com.luv2code.utility.ImageUrl;
+
 import com.luv2code.utility.ReactToEvent;
-import com.luv2code.utility.UpdateEvent;
 
 @RestController
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class EventRestController {
 
+	@Autowired
 	private EventService eventService;
 
-	private StorageService storageService;
+	public EventRestController() {
 
-	private EntityManager entityManager;
-
-	@Autowired
-	public EventRestController(EntityManager theEntityManager, EventService theEventService,
-			StorageService theStorageService) {
-		eventService = theEventService;
-		storageService = theStorageService;
-		entityManager = theEntityManager;
 	}
 
 	@GetMapping("/events")
@@ -65,13 +53,13 @@ public class EventRestController {
 	}
 
 	@GetMapping("/myEvents")
-	public List<Event> getMyEvents(@RequestHeader("Authorization") String authHeader) {
+	public List<Event> getMyEvents(@RequestHeader("Authorization") String authHeader) throws ParseException {
 		IdExtractor idExtractor = new IdExtractor(authHeader);
 		return eventService.getMyEvents(idExtractor.getIdFromToken());
 	}
 
 	@GetMapping("/linkedEvents")
-	public List<EventReact> getLinkedEvents(@RequestHeader("Authorization") String authHeader) {
+	public List<EventReact> getLinkedEvents(@RequestHeader("Authorization") String authHeader) throws ParseException {
 		IdExtractor idExtractor = new IdExtractor(authHeader);
 		return eventService.getLinkedEvents(idExtractor.getIdFromToken());
 	}
@@ -90,10 +78,7 @@ public class EventRestController {
 			@RequestPart(value = "where", required = true) String where,
 			@RequestPart(value = "description", required = true) String description) throws Exception {
 		IdExtractor idExtractor = new IdExtractor(authHeader);
-		ImageUrl image = storageService.pushImage(eventPhoto);
-		String imageString = image.getImageUrl();
-		Event event = new Event(name, when, where, imageString, idExtractor.getIdFromToken(), description);
-		return eventService.createEvent(event);
+		return eventService.createEvent(idExtractor.getIdFromToken(), name, eventPhoto, when, where, description);
 	}
 
 	@PutMapping("/editEvent")
@@ -104,16 +89,10 @@ public class EventRestController {
 			@RequestPart(value = "when", required = false) String when,
 			@RequestPart(value = "where", required = false) String where,
 			@RequestPart(value = "description", required = false) String description) throws Exception {
-		Session currentSession = entityManager.unwrap(Session.class);
 		IdExtractor idExtractor = new IdExtractor(authHeader);
-		int idEvent = Integer.parseInt(eventId);
-		Event theOriginalEvent = currentSession.get(Event.class, idEvent);
-		if (theOriginalEvent.getEventCreatorId() == idExtractor.getIdFromToken()) {
-			UpdateEvent newEvent = new UpdateEvent(idEvent, name, eventPhoto, when, where, description);
-			return eventService.updateEvent(newEvent, theOriginalEvent);
-		} else {
-			throw new CustomeException("cannot update an event that is not yours or this event doesn't exist");
-		}
+		return eventService.updateEvent(idExtractor.getIdFromToken(), eventId, name, when, where, description,
+				eventPhoto);
+
 	}
 
 	@ExceptionHandler

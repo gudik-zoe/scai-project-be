@@ -4,53 +4,54 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import com.luv2code.springboot.cruddemo.dao.MessagesDAO;
 import com.luv2code.springboot.cruddemo.entity.Message;
+import com.luv2code.springboot.cruddemo.jpa.repositories.MessageJpaRepo;
 
 @Service
 public class MessagesServiceImpl implements MessagesService {
-	
-	private MessagesDAO messagesDAO;
-	
+
 	@Autowired
-	public MessagesServiceImpl(MessagesDAO theMessagesDAO) {
-		messagesDAO = theMessagesDAO;
+	private MessageJpaRepo messageJpaRepo;
+
+	public MessagesServiceImpl() {
+
 	}
 
 	@Override
-	@Transactional
 	public Integer getMyMessages(int accountId) {
-		return messagesDAO.getMyMessages(accountId);
+		List<Message> myUnseenMessages = messageJpaRepo.getMyUnseenMessages(accountId);
+		return myUnseenMessages.size();
 	}
 
 	@Override
-	@Transactional
 	public Message sendMessage(Message theMessage) {
-		return messagesDAO.sendMessage(theMessage);
+		messageJpaRepo.save(theMessage);
+		return theMessage;
 	}
 
 	@Override
-	@Transactional
-	public List<Message> getMessagesReceivedFrom(int accountId , int senderId) {
-		return messagesDAO.getMessagesReceivedFrom(accountId , senderId);
+	public List<Message> getConversation(int accountId, int senderId) {
+		List<Message> convWithUser = messageJpaRepo.getConversation(accountId, senderId);
+		return convWithUser;
 	}
 
 	@Override
-	@Transactional
-	public Integer unSeenMessagesFrom(int accountId , int account2Id) {
-		return messagesDAO.unSeenMessagesFrom(accountId ,account2Id );
-		
+	public Integer unSeenMessagesFrom(int accountId, int account2Id) {
+		List<Message> unSeenMessagesFromUser = messageJpaRepo.getunSeenMessagesFromUser(accountId, account2Id);
+		return unSeenMessagesFromUser.size();
+
 	}
 
 	@Override
-	@Transactional
-	public void messageSeen(int user1Id , int user2Id) {
-		 messagesDAO.messageSeen(user1Id , user2Id);
-		
+	public void messageSeen(int accountId, int user2Id) {
+		List<Message> theUnseenMessagesBetweenMeAndUser2Id = messageJpaRepo.getunSeenMessagesFromUser(accountId,
+				user2Id);
+		for (Message message : theUnseenMessagesBetweenMeAndUser2Id) {
+			message.setSeen(true);
+			messageJpaRepo.save(message);
+		}
+
 	}
-
-
 
 }

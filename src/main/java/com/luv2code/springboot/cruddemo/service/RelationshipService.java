@@ -10,7 +10,7 @@ public interface RelationshipService {
 	
 	public Relationship checkRelation(int user1Id , int user2Id);
 	
-	public Relationship respondToFriendRequest(int relationshipId , int status);
+	public Relationship respondToFriendRequest(int accountId , int relationshipId, int status);
 	
 	public List<Relationship> getFriendRequests(int accountId);
 	
@@ -18,9 +18,9 @@ public interface RelationshipService {
 	
 	public List<Relationship> getMyFriends(int accountId);
 	
-//	public List<Relationship> getPeopleYouMayKnow(int accountId);
-	
 	public Integer getStatus(int user1Id , int user2Id);
+	
+	public Relationship getRelationshipById(int relationId);
 	
 	
 }

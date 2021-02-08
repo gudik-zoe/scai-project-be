@@ -1,4 +1,4 @@
-package com.luv2code.springboot.cruddemo.dao;
+package com.luv2code.springboot.cruddemo.jpa.repositories;
 
 import java.util.List;
 
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import com.luv2code.springboot.cruddemo.entity.Account;
 
 @Repository
-public interface AccountRepoJpa extends JpaRepository<Account, Integer> {
+public interface AccountJpaRepo extends JpaRepository<Account, Integer> {
 	
 	@Query("from Account as a where a.email =:email")
 	public Account findByEmail(@Param(value="email")String email);

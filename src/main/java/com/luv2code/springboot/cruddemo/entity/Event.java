@@ -120,5 +120,7 @@ public class Event {
 	public void setEventFollower(List<EventReact> eventFollower) {
 		this.eventFollower = eventFollower;
 	}
+	
+	
 
 }

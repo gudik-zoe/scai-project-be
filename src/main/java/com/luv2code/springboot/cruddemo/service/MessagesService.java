@@ -10,10 +10,10 @@ public interface MessagesService {
 
 	public Message sendMessage(Message theMessage);
 
-	public List<Message> getMessagesReceivedFrom(int accountId, int senderId);
+	public List<Message> getConversation(int accountId, int senderId);
 
 	public Integer unSeenMessagesFrom(int accountId, int account2Id);
 
-	public void messageSeen(int user1Id, int user2Id);
+	public void messageSeen(int accountId, int user2Id);
 
 }
