@@ -1,0 +1,50 @@
+2021-02-08 16:22:28,296 INFO org.springframework.boot.StartupInfoLogger [restartedMain] Starting CruddemoApplication on NOTB990 with PID 14544 (C:\Users\antoine.khoury\Documents\eclipse work space\scai-project\target\classes started by Antoine.Khoury in C:\Users\antoine.khoury\Documents\eclipse work space\scai-project)
+2021-02-08 16:22:28,299 DEBUG org.springframework.boot.StartupInfoLogger [restartedMain] Running with Spring Boot v2.3.3.RELEASE, Spring v5.2.8.RELEASE
+2021-02-08 16:22:28,300 INFO org.springframework.boot.SpringApplication [restartedMain] No active profile set, falling back to default profiles: default
+2021-02-08 16:22:39,441 INFO org.springframework.boot.StartupInfoLogger [restartedMain] Started CruddemoApplication in 11.618 seconds (JVM running for 12.343)
+2021-02-08 16:30:34,517 INFO org.springframework.boot.StartupInfoLogger [restartedMain] Starting CruddemoApplication on NOTB990 with PID 19836 (C:\Users\antoine.khoury\Documents\eclipse work space\scai-project\target\classes started by Antoine.Khoury in C:\Users\antoine.khoury\Documents\eclipse work space\scai-project)
+2021-02-08 16:30:34,519 DEBUG org.springframework.boot.StartupInfoLogger [restartedMain] Running with Spring Boot v2.3.3.RELEASE, Spring v5.2.8.RELEASE
+2021-02-08 16:30:34,520 INFO org.springframework.boot.SpringApplication [restartedMain] No active profile set, falling back to default profiles: default
+2021-02-08 16:30:43,626 INFO org.springframework.boot.StartupInfoLogger [restartedMain] Started CruddemoApplication in 9.681 seconds (JVM running for 10.423)
+2021-02-08 16:31:30,264 ERROR com.luv2code.springboot.cruddemo.rest.AccountRestController [http-nio-8080-exec-8] weiilaaa
+2021-02-08 16:31:38,155 ERROR com.luv2code.springboot.cruddemo.rest.AccountRestController [http-nio-8080-exec-9] weiilaaa
+2021-02-08 16:32:41,706 INFO org.springframework.boot.StartupInfoLogger [restartedMain] Starting CruddemoApplication on NOTB990 with PID 19836 (C:\Users\antoine.khoury\Documents\eclipse work space\scai-project\target\classes started by Antoine.Khoury in C:\Users\antoine.khoury\Documents\eclipse work space\scai-project)
+2021-02-08 16:32:41,706 DEBUG org.springframework.boot.StartupInfoLogger [restartedMain] Running with Spring Boot v2.3.3.RELEASE, Spring v5.2.8.RELEASE
+2021-02-08 16:32:41,707 INFO org.springframework.boot.SpringApplication [restartedMain] No active profile set, falling back to default profiles: default
+2021-02-08 16:32:44,986 INFO org.springframework.boot.StartupInfoLogger [restartedMain] Started CruddemoApplication in 3.347 seconds (JVM running for 131.783)
+2021-02-08 16:32:47,700 INFO org.springframework.boot.StartupInfoLogger [restartedMain] Starting CruddemoApplication on NOTB990 with PID 19836 (C:\Users\antoine.khoury\Documents\eclipse work space\scai-project\target\classes started by Antoine.Khoury in C:\Users\antoine.khoury\Documents\eclipse work space\scai-project)
+2021-02-08 16:32:47,700 DEBUG org.springframework.boot.StartupInfoLogger [restartedMain] Running with Spring Boot v2.3.3.RELEASE, Spring v5.2.8.RELEASE
+2021-02-08 16:32:47,701 INFO org.springframework.boot.SpringApplication [restartedMain] No active profile set, falling back to default profiles: default
+2021-02-08 16:32:51,437 INFO org.springframework.boot.StartupInfoLogger [restartedMain] Started CruddemoApplication in 3.785 seconds (JVM running for 138.235)
+2021-02-08 16:33:08,558 ERROR com.luv2code.springboot.cruddemo.rest.AccountRestController [http-nio-8080-exec-2] invalid credentials
+2021-02-08 16:35:48,875 INFO org.springframework.boot.StartupInfoLogger [restartedMain] Starting CruddemoApplication on NOTB990 with PID 19836 (C:\Users\antoine.khoury\Documents\eclipse work space\scai-project\target\classes started by Antoine.Khoury in C:\Users\antoine.khoury\Documents\eclipse work space\scai-project)
+2021-02-08 16:35:48,876 DEBUG org.springframework.boot.StartupInfoLogger [restartedMain] Running with Spring Boot v2.3.3.RELEASE, Spring v5.2.8.RELEASE
+2021-02-08 16:35:48,877 INFO org.springframework.boot.SpringApplication [restartedMain] No active profile set, falling back to default profiles: default
+2021-02-08 16:35:50,860 INFO org.springframework.boot.StartupInfoLogger [restartedMain] Started CruddemoApplication in 2.041 seconds (JVM running for 317.658)
+2021-02-08 16:36:06,030 INFO org.springframework.boot.StartupInfoLogger [restartedMain] Starting CruddemoApplication on NOTB990 with PID 14004 (C:\Users\antoine.khoury\Documents\eclipse work space\scai-project\target\classes started by Antoine.Khoury in C:\Users\antoine.khoury\Documents\eclipse work space\scai-project)
+2021-02-08 16:36:06,033 DEBUG org.springframework.boot.StartupInfoLogger [restartedMain] Running with Spring Boot v2.3.3.RELEASE, Spring v5.2.8.RELEASE
+2021-02-08 16:36:06,034 INFO org.springframework.boot.SpringApplication [restartedMain] No active profile set, falling back to default profiles: default
+2021-02-08 16:36:13,501 INFO org.springframework.boot.StartupInfoLogger [restartedMain] Started CruddemoApplication in 7.938 seconds (JVM running for 8.704)
+2021-02-08 16:36:43,536 ERROR com.luv2code.springboot.cruddemo.rest.AccountRestController [http-nio-8080-exec-1] invalid credentials
+2021-02-08 16:37:38,006 INFO org.springframework.boot.StartupInfoLogger [restartedMain] Starting CruddemoApplication on NOTB990 with PID 14004 (C:\Users\antoine.khoury\Documents\eclipse work space\scai-project\target\classes started by Antoine.Khoury in C:\Users\antoine.khoury\Documents\eclipse work space\scai-project)
+2021-02-08 16:37:38,007 DEBUG org.springframework.boot.StartupInfoLogger [restartedMain] Running with Spring Boot v2.3.3.RELEASE, Spring v5.2.8.RELEASE
+2021-02-08 16:37:38,007 INFO org.springframework.boot.SpringApplication [restartedMain] No active profile set, falling back to default profiles: default
+2021-02-08 16:37:40,277 INFO org.springframework.boot.StartupInfoLogger [restartedMain] Started CruddemoApplication in 2.359 seconds (JVM running for 95.48)
+2021-02-08 16:37:57,904 INFO org.springframework.boot.StartupInfoLogger [restartedMain] Starting CruddemoApplication on NOTB990 with PID 14004 (C:\Users\antoine.khoury\Documents\eclipse work space\scai-project\target\classes started by Antoine.Khoury in C:\Users\antoine.khoury\Documents\eclipse work space\scai-project)
+2021-02-08 16:37:57,904 DEBUG org.springframework.boot.StartupInfoLogger [restartedMain] Running with Spring Boot v2.3.3.RELEASE, Spring v5.2.8.RELEASE
+2021-02-08 16:37:57,905 INFO org.springframework.boot.SpringApplication [restartedMain] No active profile set, falling back to default profiles: default
+2021-02-08 16:37:59,765 INFO org.springframework.boot.StartupInfoLogger [restartedMain] Started CruddemoApplication in 1.907 seconds (JVM running for 114.968)
+2021-02-08 16:38:40,532 INFO org.springframework.boot.StartupInfoLogger [restartedMain] Starting CruddemoApplication on NOTB990 with PID 14004 (C:\Users\antoine.khoury\Documents\eclipse work space\scai-project\target\classes started by Antoine.Khoury in C:\Users\antoine.khoury\Documents\eclipse work space\scai-project)
+2021-02-08 16:38:40,532 DEBUG org.springframework.boot.StartupInfoLogger [restartedMain] Running with Spring Boot v2.3.3.RELEASE, Spring v5.2.8.RELEASE
+2021-02-08 16:38:40,533 INFO org.springframework.boot.SpringApplication [restartedMain] No active profile set, falling back to default profiles: default
+2021-02-08 16:38:42,250 INFO org.springframework.boot.StartupInfoLogger [restartedMain] Started CruddemoApplication in 1.77 seconds (JVM running for 157.453)
+2021-02-08 16:39:31,193 ERROR com.luv2code.springboot.cruddemo.rest.AccountRestController [http-nio-8080-exec-1] invalid credentials
+2021-02-08 16:58:48,169 INFO org.springframework.boot.StartupInfoLogger [restartedMain] Starting CruddemoApplication on NOTB990 with PID 18168 (C:\Users\antoine.khoury\Documents\eclipse work space\scai-project\target\classes started by Antoine.Khoury in C:\Users\antoine.khoury\Documents\eclipse work space\scai-project)
+2021-02-08 16:58:48,172 DEBUG org.springframework.boot.StartupInfoLogger [restartedMain] Running with Spring Boot v2.3.3.RELEASE, Spring v5.2.8.RELEASE
+2021-02-08 16:58:48,173 INFO org.springframework.boot.SpringApplication [restartedMain] No active profile set, falling back to default profiles: default
+2021-02-08 16:58:56,629 INFO org.springframework.boot.StartupInfoLogger [restartedMain] Started CruddemoApplication in 8.969 seconds (JVM running for 9.735)
+2021-02-08 17:02:10,333 ERROR com.luv2code.springboot.cruddemo.rest.AccountRestController [http-nio-8080-exec-2] invalid credentials
+2021-02-08 17:05:09,130 ERROR com.luv2code.springboot.cruddemo.rest.AccountRestController [http-nio-8080-exec-1] invalid credentials
+2021-02-08 17:06:43,168 INFO org.springframework.boot.StartupInfoLogger [restartedMain] Starting CruddemoApplication on NOTB990 with PID 18168 (C:\Users\antoine.khoury\Documents\eclipse work space\scai-project\target\classes started by Antoine.Khoury in C:\Users\antoine.khoury\Documents\eclipse work space\scai-project)
+2021-02-08 17:06:43,169 DEBUG org.springframework.boot.StartupInfoLogger [restartedMain] Running with Spring Boot v2.3.3.RELEASE, Spring v5.2.8.RELEASE
+2021-02-08 17:06:43,169 INFO org.springframework.boot.SpringApplication [restartedMain] No active profile set, falling back to default profiles: default

@@ -1,9 +1,11 @@
 package com.luv2code.springboot.cruddemo.rest;
 
 import java.util.List;
+
 import javax.security.auth.login.AccountException;
 
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -43,8 +45,11 @@ public class AccountRestController {
 
 	}
 
+	Logger logger = LoggerFactory.getLogger(AccountRestController.class);
+
 	@PostMapping("/login")
 	public ResponseEntity<Account> login(@RequestBody Account user) throws AccountException {
+
 		return accountService.login(user);
 	}
 
@@ -152,7 +157,7 @@ public class AccountRestController {
 	public ResponseEntity<ErrorResponse> handleException(CustomeException exc) {
 		ErrorResponse error = new ErrorResponse(HttpStatus.NOT_FOUND.value(), exc.getMessage(),
 				System.currentTimeMillis());
-
+		logger.error(error.getMessage());
 		return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
 
 	}
@@ -161,6 +166,7 @@ public class AccountRestController {
 	public ResponseEntity<ErrorResponse> handleException(Exception exc) {
 		ErrorResponse error = new ErrorResponse(HttpStatus.BAD_REQUEST.value(), "unknown error occured",
 				System.currentTimeMillis());
+		logger.error(error.getMessage());
 		return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
 	}
 }
