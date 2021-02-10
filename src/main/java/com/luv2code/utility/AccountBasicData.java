@@ -16,8 +16,6 @@ public class AccountBasicData {
 		
 	}
 
-	
-
 	public AccountBasicData(String firstName, String lastName, String profilePhoto, int idAccount, String coverPhoto) {
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -26,19 +24,13 @@ public class AccountBasicData {
 		this.coverPhoto = coverPhoto;
 	}
 
-
-
 	public String getCoverPhoto() {
 		return coverPhoto;
 	}
 
-
-
 	public void setCoverPhoto(String coverPhoto) {
 		this.coverPhoto = coverPhoto;
 	}
-
-
 
 	public String getFirstName() {
 		return firstName;

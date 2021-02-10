@@ -1,0 +1,20 @@
+2021-02-09 09:14:42,798 ERROR com.luv2code.springboot.cruddemo.rest.AccountRestController [http-nio-8080-exec-2] invalid credentials
+2021-02-09 09:18:13,524 ERROR com.luv2code.springboot.cruddemo.rest.AccountRestController [http-nio-8080-exec-1] invalid credentials
+2021-02-09 10:50:40,174 ERROR com.luv2code.springboot.cruddemo.rest.AccountRestController [http-nio-8080-exec-2] invalid credentials
+2021-02-09 10:54:23,547 ERROR com.luv2code.springboot.cruddemo.rest.AccountRestController [http-nio-8080-exec-3] unknown error occured
+2021-02-09 11:27:35,827 ERROR com.luv2code.springboot.cruddemo.rest.AccountRestController [http-nio-8080-exec-5] unknown error occured
+2021-02-09 11:27:43,762 ERROR com.luv2code.springboot.cruddemo.rest.AccountRestController [http-nio-8080-exec-6] unknown error occured
+2021-02-09 11:29:20,426 ERROR com.luv2code.springboot.cruddemo.rest.AccountRestController [http-nio-8080-exec-3] unknown error occured
+2021-02-09 11:38:51,971 ERROR com.luv2code.springboot.cruddemo.rest.AccountRestController [http-nio-8080-exec-1] unknown error occured
+2021-02-09 12:02:10,490 ERROR com.luv2code.springboot.cruddemo.rest.AccountRestController [http-nio-8080-exec-4] invalid credentials
+2021-02-09 12:02:15,171 ERROR com.luv2code.springboot.cruddemo.rest.AccountRestController [http-nio-8080-exec-7] unknown error occured
+2021-02-09 12:24:19,057 ERROR com.luv2code.springboot.cruddemo.rest.AccountRestController [http-nio-8080-exec-1] unknown error occured
+2021-02-09 17:59:58,888 ERROR com.luv2code.springboot.cruddemo.rest.PostLikesRestController [http-nio-8080-exec-7] Unknown error occured
+2021-02-09 22:36:44,638 ERROR com.luv2code.springboot.cruddemo.rest.AccountRestController [http-nio-8080-exec-8] unknown error occured
+2021-02-09 22:36:44,708 ERROR com.luv2code.springboot.cruddemo.rest.AccountRestController [http-nio-8080-exec-5] unknown error occured
+2021-02-09 22:36:44,711 ERROR com.luv2code.springboot.cruddemo.rest.AccountRestController [http-nio-8080-exec-4] unknown error occured
+2021-02-09 22:36:44,712 ERROR com.luv2code.springboot.cruddemo.rest.AccountRestController [http-nio-8080-exec-6] unknown error occured
+2021-02-09 23:47:54,402 ERROR com.luv2code.springboot.cruddemo.rest.AccountRestController [http-nio-8080-exec-3] unknown error occured
+2021-02-09 23:47:54,694 ERROR com.luv2code.springboot.cruddemo.rest.AccountRestController [http-nio-8080-exec-7] unknown error occured
+2021-02-09 23:47:54,703 ERROR com.luv2code.springboot.cruddemo.rest.AccountRestController [http-nio-8080-exec-4] unknown error occured
+2021-02-09 23:47:54,704 ERROR com.luv2code.springboot.cruddemo.rest.AccountRestController [http-nio-8080-exec-9] unknown error occured

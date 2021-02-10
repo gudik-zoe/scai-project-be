@@ -1,22 +1,5 @@
 package com.luv2code.springboot.cruddemo.service;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import javax.security.auth.login.AccountException;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
-
 import com.luv2code.exception.error.handling.CustomeException;
 import com.luv2code.springboot.cruddemo.entity.Account;
 import com.luv2code.springboot.cruddemo.entity.Relationship;
@@ -24,9 +7,19 @@ import com.luv2code.springboot.cruddemo.jpa.repositories.AccountJpaRepo;
 import com.luv2code.utility.AccountBasicData;
 import com.luv2code.utility.AccountData;
 import com.luv2code.utility.ImageUrl;
-
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.security.auth.login.AccountException;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
 public class AccountServiceImpl implements AccountService {
@@ -42,7 +35,7 @@ public class AccountServiceImpl implements AccountService {
 
 	@Autowired
 	private PostService postService;
-	
+
 	
 	public AccountServiceImpl() {
 
@@ -97,6 +90,7 @@ public class AccountServiceImpl implements AccountService {
 		} else {
 			Account theAccount = findById(accountId);
 			theAccount.setProfilePhoto(imgUrl.getImageUrl());
+			accountRepoJpa.save(theAccount);
 			return imgUrl;
 		}
 	}
@@ -117,13 +111,15 @@ public class AccountServiceImpl implements AccountService {
 		} else {
 			Account theAccount = findById(accountId);
 			theAccount.setCoverPhoto(imgUrl.getImageUrl());
+			accountRepoJpa.save(theAccount);
 			return imgUrl;
 		}
 
 	}
 
 	@Override
-	public Account updateAccount(Account account) throws AccountException {
+	public Account updateAccount(Account account , int accountId) throws AccountException {
+		account.setIdAccount(accountId);
 		return accountRepoJpa.save(account);
 	}
 

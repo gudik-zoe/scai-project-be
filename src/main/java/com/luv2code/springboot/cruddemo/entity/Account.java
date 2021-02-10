@@ -1,17 +1,7 @@
 package com.luv2code.springboot.cruddemo.entity;
 
+import javax.persistence.*;
 import java.util.List;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
 
 @Entity
 @Table(name = "account")
@@ -65,6 +55,7 @@ public class Account {
 	@OneToMany(cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
 	@JoinColumn(name = "event_react_creator_id", referencedColumnName = "id_account", insertable = false, updatable = false, nullable = false)
 	private List<EventReact> eventReact;
+
 
 	@Column(name = "first_name")
 	private String firstName;
@@ -123,7 +114,7 @@ public class Account {
 		this.coverPhoto = coverPhoto;
 	}
 
-	public String getProfilePhoto() {
+		public String getProfilePhoto() {
 		return profilePhoto;
 	}
 

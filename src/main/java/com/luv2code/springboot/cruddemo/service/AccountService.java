@@ -1,17 +1,15 @@
 package com.luv2code.springboot.cruddemo.service;
 
-import java.util.List;
-
-import javax.security.auth.login.AccountException;
-
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.multipart.MultipartFile;
-
 import com.luv2code.exception.error.handling.CustomeException;
 import com.luv2code.springboot.cruddemo.entity.Account;
 import com.luv2code.utility.AccountBasicData;
 import com.luv2code.utility.AccountData;
 import com.luv2code.utility.ImageUrl;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.security.auth.login.AccountException;
+import java.util.List;
 
 public interface AccountService {
 
@@ -29,7 +27,7 @@ public interface AccountService {
 
 	public Account save(Account account) throws CustomeException;
 
-	public Account updateAccount(Account account) throws AccountException;
+	public Account updateAccount(Account account , int accountId) throws AccountException;
 
 	public void deleteById(int theId);
 

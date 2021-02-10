@@ -1,19 +1,19 @@
 package com.luv2code.springboot.cruddemo.service;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
-
+import com.luv2code.exception.error.handling.CustomeException;
+import com.luv2code.springboot.cruddemo.entity.Notification;
+import com.luv2code.springboot.cruddemo.entity.Post;
+import com.luv2code.springboot.cruddemo.entity.Tag;
+import com.luv2code.springboot.cruddemo.jpa.repositories.PostJpaRepo;
+import com.luv2code.utility.AccountBasicData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.luv2code.exception.error.handling.CustomeException;
-import com.luv2code.springboot.cruddemo.entity.Notification;
-import com.luv2code.springboot.cruddemo.entity.Post;
-import com.luv2code.springboot.cruddemo.jpa.repositories.PostJpaRepo;
-import com.luv2code.utility.AccountBasicData;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PostServiceImpl implements PostService {
@@ -76,7 +76,10 @@ public class PostServiceImpl implements PostService {
 		thePost.setDate(new Date(System.currentTimeMillis()));
 		thePost.setText(text);
 		thePost.setPostCreatorId(accountId);
+		Tag theTag = new Tag("first tag");
+		thePost.addTag(theTag);
 		postRepoJpa.save(thePost);
+
 		return thePost;
 
 	}

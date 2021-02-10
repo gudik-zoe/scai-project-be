@@ -1,15 +1,15 @@
 package com.luv2code.springboot.cruddemo.service;
 
-import java.util.Date;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.luv2code.exception.error.handling.CustomeException;
 import com.luv2code.springboot.cruddemo.entity.Notification;
 import com.luv2code.springboot.cruddemo.entity.Post;
 import com.luv2code.springboot.cruddemo.entity.PostLike;
+import com.luv2code.springboot.cruddemo.jpa.repositories.PostJpaRepo;
 import com.luv2code.springboot.cruddemo.jpa.repositories.PostLikeJpaRepo;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.Date;
 
 @Service
 public class PostLikesServiceImpl implements PostLikesService {
@@ -24,6 +24,10 @@ public class PostLikesServiceImpl implements PostLikesService {
 
 	@Autowired
 	private NotificationService notificationService;
+
+
+	@Autowired
+	private PostJpaRepo postJpaRepo;
 
 	public PostLikesServiceImpl() {
 

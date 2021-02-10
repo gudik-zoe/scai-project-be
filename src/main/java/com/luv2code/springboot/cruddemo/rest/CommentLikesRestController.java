@@ -1,25 +1,19 @@
 package com.luv2code.springboot.cruddemo.rest;
 
 
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.luv2code.exception.error.handling.CustomeException;
 import com.luv2code.exception.error.handling.ErrorResponse;
 import com.luv2code.springboot.cruddemo.entity.CommentLike;
 import com.luv2code.springboot.cruddemo.service.CommentLikesService;
 import com.luv2code.utility.IdExtractor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @CrossOrigin(origins = "*", allowedHeaders = "*")
+@RequestMapping("/api")
 public class CommentLikesRestController {
 
 	@Autowired

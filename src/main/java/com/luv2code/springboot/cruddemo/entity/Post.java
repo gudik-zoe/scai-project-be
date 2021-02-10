@@ -1,19 +1,7 @@
 package com.luv2code.springboot.cruddemo.entity;
 
-import java.util.Date;
-import java.util.List;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.*;
 
 @Entity
 @Table(name = "post")
@@ -53,6 +41,29 @@ public class Post {
 
 	@Column(name = "date")
 	private Date date;
+
+
+
+	@ManyToMany(fetch=FetchType.LAZY , cascade = {CascadeType.PERSIST , CascadeType.MERGE , CascadeType.DETACH , CascadeType.REFRESH })
+	@JoinTable(name = "post_tag" ,
+	joinColumns = {@JoinColumn(name = "post_id_post")}, inverseJoinColumns = {@JoinColumn(name ="tag_id_tag")})
+	private List<Tag> tags;
+
+
+	public void addTag(Tag theTag){
+		if(tags == null){
+			tags = new ArrayList<>();
+		}
+		tags.add(theTag);
+	}
+
+	public List<Tag> getTags() {
+		return tags;
+	}
+
+	public void setTags(List<Tag> tags) {
+		this.tags = tags;
+	}
 
 	@OneToMany(cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
 	@JoinColumn(name = "related_post_id", referencedColumnName = "id_post", insertable = false, updatable = false, nullable = false)
