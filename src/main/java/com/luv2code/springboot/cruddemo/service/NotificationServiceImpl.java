@@ -1,31 +1,28 @@
 package com.luv2code.springboot.cruddemo.service;
 
-import java.util.ArrayList;
+import com.luv2code.exception.error.handling.NotFoundException;
+import com.luv2code.springboot.cruddemo.entity.Notification;
+import com.luv2code.springboot.cruddemo.jpa.repositories.NotRepoPaging;
+import com.luv2code.springboot.cruddemo.jpa.repositories.NotificationJpaRepo;
+import com.luv2code.utility.NotificationDetails;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+
+
 import java.util.List;
 import java.util.Optional;
 
-import javax.persistence.EntityManager;
-import javax.transaction.Transactional;
-
-import org.hibernate.Session;
-import org.hibernate.query.Query;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import com.luv2code.exception.error.handling.CustomeException;
-import com.luv2code.springboot.cruddemo.entity.Notification;
-import com.luv2code.springboot.cruddemo.jpa.repositories.NotificationJpaRepo;
-import com.luv2code.utility.NotificationDetails;
-
 @Service
-@Transactional
 public class NotificationServiceImpl implements NotificationService {
 
 	@Autowired
 	private NotificationJpaRepo notificationJpaRepo;
 
 	@Autowired
-	private EntityManager entityManager;
+	private NotRepoPaging notRepoPaging;
 
 	public NotificationServiceImpl() {
 
@@ -33,13 +30,19 @@ public class NotificationServiceImpl implements NotificationService {
 
 	@Override
 	public List<Notification> getMyNotification(int accountId) {
-		Session currentSession = entityManager.unwrap(Session.class);
-		Query<Notification> theQuery = currentSession
-				.createQuery("from Notification where not_receiver=" + accountId + " order by date DESC",
-						Notification.class)
-				.setMaxResults(5);
-		List<Notification> theNotificationList = theQuery.getResultList();
-		return theNotificationList;
+		Pageable first5 = PageRequest.of(0, 5);
+		Page<Notification> nots = notRepoPaging.findFirst5(first5, accountId);
+		List<Notification> myfirst = nots.getContent();
+		return myfirst;
+	}
+
+	@Override
+	public List<Notification> loadMore(int accountId, Integer notId) {
+
+		Pageable next = PageRequest.of(0, 5);
+		Page<Notification> nots = notRepoPaging.loadMore(next, accountId, notId);
+		List<Notification> myNext = nots.getContent();
+		return myNext;
 	}
 
 	@Override
@@ -66,17 +69,6 @@ public class NotificationServiceImpl implements NotificationService {
 	}
 
 	@Override
-	public List<Notification> loadMore(int accountId, Integer notId) {
-		Session currentSession = entityManager.unwrap(Session.class);
-		List<Notification> theRestNots = new ArrayList<Notification>();
-		Query<Notification> theQuery = currentSession.createQuery("from Notification where not_receiver = " + accountId
-				+ " and id_notification < " + notId + " order by date desc ", Notification.class).setMaxResults(5);
-		theRestNots = theQuery.getResultList();
-
-		return theRestNots;
-	}
-
-	@Override
 	public NotificationDetails getNotDetails(int accountId) {
 		List<Notification> myNotifications = notificationJpaRepo.getMyNotifications(accountId);
 		Integer myNotsNumber = myNotifications.size();
@@ -97,7 +89,7 @@ public class NotificationServiceImpl implements NotificationService {
 		if (result.isPresent()) {
 			theNot = result.get();
 		} else {
-			throw new CustomeException("no such id for a notification");
+			throw new NotFoundException("no such id for a notification");
 		}
 		return theNot;
 	}

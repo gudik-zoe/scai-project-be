@@ -1,10 +1,10 @@
 package com.luv2code.springboot.cruddemo.service;
 
-import com.luv2code.exception.error.handling.CustomeException;
+import com.luv2code.exception.error.handling.NotFoundException;
 import com.luv2code.springboot.cruddemo.entity.Notification;
 import com.luv2code.springboot.cruddemo.entity.Post;
 import com.luv2code.springboot.cruddemo.entity.PostLike;
-import com.luv2code.springboot.cruddemo.jpa.repositories.PostJpaRepo;
+import com.luv2code.springboot.cruddemo.entity.Relationship;
 import com.luv2code.springboot.cruddemo.jpa.repositories.PostLikeJpaRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,8 +26,6 @@ public class PostLikesServiceImpl implements PostLikesService {
 	private NotificationService notificationService;
 
 
-	@Autowired
-	private PostJpaRepo postJpaRepo;
 
 	public PostLikesServiceImpl() {
 
@@ -36,8 +34,9 @@ public class PostLikesServiceImpl implements PostLikesService {
 	@Override
 	public PostLike addLike(int accountId, int postId) {
 		Post theRelatedPost = postService.findPostByPostId(postId);
-		if (relationshipService.getStatus(accountId, theRelatedPost.getPostCreatorId()) != 1) {
-			throw new CustomeException("cannot like a post of a user that is not ur friend");
+		Relationship theRelationship = relationshipService.checkRelation(accountId , theRelatedPost.getPostCreatorId() );
+		if (theRelationship == null || theRelationship.getStatus() != 1  ) {
+			throw new NotFoundException("cannot like a post of a user that is not ur friend");
 		}
 		PostLike postLike = postLikeJpaRepo.likePost(accountId, postId);
 		if (postLike == null) {

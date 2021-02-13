@@ -8,7 +8,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import com.luv2code.exception.error.handling.CustomeException;
+import com.luv2code.exception.error.handling.NotFoundException;
 import com.luv2code.springboot.cruddemo.entity.Page;
 import com.luv2code.springboot.cruddemo.entity.PageLike;
 import com.luv2code.springboot.cruddemo.entity.Post;
@@ -126,7 +126,7 @@ public class PageServiceImpl implements PageService {
 		if (result.isPresent()) {
 			thePage = result.get();
 		} else {
-			throw new CustomeException("no such id for a page");
+			throw new NotFoundException("no such id for a page");
 		}
 		return thePage;
 	}
@@ -148,7 +148,7 @@ public class PageServiceImpl implements PageService {
 		int idPage = Integer.parseInt(pageId);
 		Page thePage = getPageFullData(idPage);
 		if (thePage.getPageCreatorId() != accountId) {
-			throw new CustomeException("cannot update a page that is not yours");
+			throw new NotFoundException("cannot update a page that is not yours");
 		} else {
 			if (profilePhoto != null) {
 				String newProPhoto = storageService.pushImage(profilePhoto).getImageUrl();

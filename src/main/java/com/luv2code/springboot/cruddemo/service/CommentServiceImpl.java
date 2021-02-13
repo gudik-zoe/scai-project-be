@@ -6,7 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.luv2code.exception.error.handling.CustomeException;
+import com.luv2code.exception.error.handling.NotFoundException;
 import com.luv2code.springboot.cruddemo.entity.Comment;
 import com.luv2code.springboot.cruddemo.entity.Notification;
 import com.luv2code.springboot.cruddemo.entity.Post;
@@ -43,7 +43,7 @@ public class CommentServiceImpl implements CommentService {
 		if (userComment) {
 			if (relationshipService.getStatus(accountId, theRelatedPost.getPostCreatorId()) != 1
 					|| theRelatedPost.getStatus() == 2) {
-				throw new CustomeException("cannot comment on friend's post that is not your friend");
+				throw new NotFoundException("cannot comment on friend's post that is not your friend");
 			} else {
 				theComment = new Comment(commentText, theRelatedPost.getIdPost(), new Date(System.currentTimeMillis()),
 						accountId, null);
@@ -79,7 +79,7 @@ public class CommentServiceImpl implements CommentService {
 			if (thePage.getPageCreatorId() == accountId) {
 				commentJpaRepo.delete(theComment);
 			} else {
-				throw new CustomeException("comment is not yours ");
+				throw new NotFoundException("comment is not yours ");
 			}
 		}
 	}
@@ -91,14 +91,14 @@ public class CommentServiceImpl implements CommentService {
 			if (theComment.getCommentCreatorId() == accountId) {
 				theComment.setText(commentText);
 			} else {
-				throw new CustomeException("cannot update a comment that is not yours");
+				throw new NotFoundException("cannot update a comment that is not yours");
 			}
 		} else {
 			PageBasicData thePage = pageService.getPageBasicDataById(theComment.getPageCreatorId());
 			if (thePage.getPageCreatorId() == accountId) {
 				theComment.setText(commentText);
 			} else {
-				throw new CustomeException("page is not yours");
+				throw new NotFoundException("page is not yours");
 			}
 		}
 		commentJpaRepo.save(theComment);
@@ -112,7 +112,7 @@ public class CommentServiceImpl implements CommentService {
 		if (result.isPresent()) {
 			theComment = result.get();
 		} else {
-			throw new CustomeException("no such id for a comment");
+			throw new NotFoundException("no such id for a comment");
 		}
 		return theComment;
 	}

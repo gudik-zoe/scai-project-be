@@ -1,13 +1,9 @@
 package com.luv2code.springboot.cruddemo.rest;
 
-import com.luv2code.exception.error.handling.CustomeException;
-import com.luv2code.exception.error.handling.ErrorResponse;
 import com.luv2code.springboot.cruddemo.entity.Comment;
 import com.luv2code.springboot.cruddemo.service.CommentService;
 import com.luv2code.utility.IdExtractor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -42,17 +38,17 @@ public class CommentRestController {
 
 	}
 
-	@ExceptionHandler
-	public ResponseEntity<ErrorResponse> handleCustomeException(CustomeException exc) {
-		ErrorResponse error = new ErrorResponse(HttpStatus.NOT_FOUND.value(), exc.getMessage(),
-				System.currentTimeMillis());
-		return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
-	}
-
-	@ExceptionHandler
-	public ResponseEntity<ErrorResponse> handleException(Exception exc) {
-		ErrorResponse error = new ErrorResponse(HttpStatus.BAD_REQUEST.value(), "Unknown error occured",
-				System.currentTimeMillis());
-		return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
-	}
+//	@ExceptionHandler
+//	public ResponseEntity<ErrorResponse> handleCustomeException(CustomeException exc) {
+//		ErrorResponse error = new ErrorResponse(HttpStatus.NOT_FOUND.value(), exc.getMessage(),
+//				System.currentTimeMillis());
+//		return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+//	}
+//
+//	@ExceptionHandler
+//	public ResponseEntity<ErrorResponse> handleException(Exception exc) {
+//		ErrorResponse error = new ErrorResponse(HttpStatus.BAD_REQUEST.value(), "Unknown error occured",
+//				System.currentTimeMillis());
+//		return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+//	}
 }

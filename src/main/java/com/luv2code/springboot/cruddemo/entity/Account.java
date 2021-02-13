@@ -12,12 +12,15 @@ public class Account {
 	@Column(name = "id_account")
 	private int idAccount;
 
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JoinColumn(name = "post_creator_id" , referencedColumnName = "id_account", insertable = false, updatable = false, nullable = false)
+//	@OneToMany( cascade = CascadeType.ALL)
+//	@JoinColumn(name = "post_creator_id" , referencedColumnName = "id_account", insertable = false, updatable = false, nullable = false)
+
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name = "post_creator_id")
 	private List<Post> posts;
 
 	@OneToMany(cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
-	@JoinColumn(name = "comment_creator_id", referencedColumnName = "id_account", insertable = false, updatable = false, nullable = false)
+	@JoinColumn(name = "comment_creator_id", referencedColumnName = "id_account", insertable = false, updatable = false, nullable = false )
 	private List<Comment> comments;
 
 	@OneToMany(cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)

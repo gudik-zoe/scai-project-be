@@ -1,6 +1,7 @@
 package com.luv2code.springboot.cruddemo.service;
 
-import com.luv2code.exception.error.handling.CustomeException;
+import com.luv2code.exception.error.handling.BadRequestException;
+import com.luv2code.exception.error.handling.NotFoundException;
 import com.luv2code.springboot.cruddemo.entity.Account;
 import com.luv2code.springboot.cruddemo.entity.Relationship;
 import com.luv2code.springboot.cruddemo.jpa.repositories.AccountJpaRepo;
@@ -9,6 +10,8 @@ import com.luv2code.utility.AccountData;
 import com.luv2code.utility.ImageUrl;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import login.prova.Person;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -36,14 +39,15 @@ public class AccountServiceImpl implements AccountService {
 	@Autowired
 	private PostService postService;
 
-	
 	public AccountServiceImpl() {
 
 	}
 
 	@Override
 	public List<AccountBasicData> getPeopleYouMayKnow(int accountId) {
-		List<Account> accounts = new ArrayList<Account>();
+		Person person = new Person(3 , "tony");
+			System.out.println(person.getName() + " " + person.getId());
+	List<Account> accounts = new ArrayList<Account>();
 		List<AccountBasicData> peopleYouMayKnow = new ArrayList<AccountBasicData>();
 		accounts = accountRepoJpa.findPeopleYouMayKnow(accountId);
 		for (Account account : accounts) {
@@ -58,21 +62,21 @@ public class AccountServiceImpl implements AccountService {
 	}
 
 	@Override
-	public Account save(Account account) throws CustomeException {
+	public Account save(Account account) throws NotFoundException {
 		String passwordPattern = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{8,}$";
 		Pattern emailPattern = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
 		Matcher mat = emailPattern.matcher(account.getEmail());
 		if (!mat.matches()) {
-			throw new CustomeException("enter a valid email");
+			throw new NotFoundException("enter a valid email");
 		} else if (!account.getPassword().matches(passwordPattern)) {
-			throw new CustomeException(
+			throw new NotFoundException(
 					"a valid password password should contains at least one letter in upperCase + one digit + one alphanumeric character -/*?");
 		} else if (accountRepoJpa.findByEmail(account.getEmail()) == null) {
 			BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 			account.setPassword(encoder.encode(account.getPassword()));
 			return accountRepoJpa.save(account);
 		} else {
-			throw new CustomeException("email already exist");
+			throw new NotFoundException("email already exist");
 		}
 
 	}
@@ -86,7 +90,7 @@ public class AccountServiceImpl implements AccountService {
 	public ImageUrl updateAccountProfilePhoto(int accountId, MultipartFile photo) throws Exception {
 		ImageUrl imgUrl = storageService.pushImage(photo);
 		if (imgUrl == null) {
-			throw new CustomeException("no image was provided");
+			throw new NotFoundException("no image was provided");
 		} else {
 			Account theAccount = findById(accountId);
 			theAccount.setProfilePhoto(imgUrl.getImageUrl());
@@ -107,7 +111,7 @@ public class AccountServiceImpl implements AccountService {
 	public ImageUrl updateAccountCoverPhoto(int accountId, MultipartFile photo) throws Exception {
 		ImageUrl imgUrl = storageService.pushImage(photo);
 		if (imgUrl == null) {
-			throw new CustomeException("no image was provided");
+			throw new NotFoundException("no image was provided");
 		} else {
 			Account theAccount = findById(accountId);
 			theAccount.setCoverPhoto(imgUrl.getImageUrl());
@@ -142,7 +146,7 @@ public class AccountServiceImpl implements AccountService {
 			theAccount.setEmail(email);
 			return accountRepoJpa.save(theAccount);
 		} else {
-			throw new CustomeException("enter a valid email or this email already exist");
+			throw new NotFoundException("enter a valid email or this email already exist");
 		}
 	}
 
@@ -150,7 +154,7 @@ public class AccountServiceImpl implements AccountService {
 	public Account updatePassword(int accountId, String oldPassword, String newPassword) {
 		String passwordPattern = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{8,}$";
 		if (!newPassword.matches(passwordPattern)) {
-			throw new CustomeException(
+			throw new NotFoundException(
 					" password  should contains at least one letter in upperCase + one digit + one alphanumeric character -/*?\");");
 		} else {
 			Account theAccount = findById(accountId);
@@ -161,7 +165,7 @@ public class AccountServiceImpl implements AccountService {
 				accountRepoJpa.save(theAccount);
 				return theAccount;
 			} else {
-				throw new CustomeException("incorrect password or u didn't make any changes to ur currentPassword");
+				throw new NotFoundException("incorrect password or u didn't make any changes to ur currentPassword");
 			}
 		}
 
@@ -196,21 +200,31 @@ public class AccountServiceImpl implements AccountService {
 
 	@Override
 	public ResponseEntity<Account> login(Account user) {
+
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-		Account theAccount = accountRepoJpa.findByEmail(user.getEmail());
+		Account theAccount = findByEmail(user.getEmail());
 		boolean check = encoder.matches(user.getPassword(), theAccount.getPassword());
 		if (theAccount != null && check) {
 			HttpHeaders headers = new HttpHeaders();
 			HashMap<String, Object> addedValues = new HashMap<String, Object>();
 			addedValues.put("userid", theAccount.getIdAccount());
 			String token = Jwts.builder().addClaims(addedValues).setIssuedAt(new Date(System.currentTimeMillis()))
-					.setExpiration(new Date(System.currentTimeMillis() + 60 * 60 * 1000))
+					.setExpiration(new Date(System.currentTimeMillis() + 60 *  60 * 1000))
 					.signWith(SignatureAlgorithm.HS512, "ciao").compact();
 			headers.add("Authorization", "Bearer " + token);
 			return ResponseEntity.ok().headers(headers).build();
-		} else {
-			throw new CustomeException("invalid credentials");
 		}
+		else {
+			throw new BadRequestException("invalid credentials");
+		}
+
+	}
+	public Account findByEmail(String email){
+		Account theAccount = accountRepoJpa.findByEmail(email);
+		if(theAccount == null){
+			throw new BadRequestException("invalid credentials");
+		}
+		return theAccount;
 	}
 
 	@Override
@@ -233,8 +247,9 @@ public class AccountServiceImpl implements AccountService {
 		Account theAccount = null;
 		if (result.isPresent()) {
 			theAccount = result.get();
-		} else {
-			throw new CustomeException("no such id for an account");
+		}
+		else {
+			throw new NotFoundException("no such id for an account");
 		}
 		return theAccount;
 	}

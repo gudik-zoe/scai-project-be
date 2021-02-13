@@ -1,6 +1,6 @@
 package com.luv2code.springboot.cruddemo.rest;
 
-import com.luv2code.exception.error.handling.CustomeException;
+import com.luv2code.exception.error.handling.NotFoundException;
 import com.luv2code.exception.error.handling.ErrorResponse;
 import com.luv2code.springboot.cruddemo.entity.PostLike;
 import com.luv2code.springboot.cruddemo.service.PostLikesService;
@@ -19,7 +19,9 @@ public class PostLikesRestController {
 
 	@Autowired
 	private PostLikesService postLikesService;
+
 	Logger logger = LoggerFactory.getLogger(AccountRestController.class);
+
 	public PostLikesRestController() {
 
 	}
@@ -32,7 +34,7 @@ public class PostLikesRestController {
 	}
 
 	@ExceptionHandler
-	public ResponseEntity<ErrorResponse> handleCustomeEsception(CustomeException exc) {
+	public ResponseEntity<ErrorResponse> handleCustomeEsception(NotFoundException exc) {
 		ErrorResponse error = new ErrorResponse(HttpStatus.NOT_FOUND.value(), exc.getMessage(),
 				System.currentTimeMillis());
 		logger.error(error.getMessage());

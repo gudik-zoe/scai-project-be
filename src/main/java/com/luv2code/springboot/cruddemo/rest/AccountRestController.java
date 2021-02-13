@@ -1,7 +1,6 @@
 package com.luv2code.springboot.cruddemo.rest;
 
-import com.luv2code.exception.error.handling.CustomeException;
-import com.luv2code.exception.error.handling.ErrorResponse;
+import com.luv2code.exception.error.handling.NotFoundException;
 import com.luv2code.springboot.cruddemo.entity.Account;
 import com.luv2code.springboot.cruddemo.service.AccountService;
 import com.luv2code.utility.AccountBasicData;
@@ -9,10 +8,7 @@ import com.luv2code.utility.AccountData;
 import com.luv2code.utility.IdExtractor;
 import com.luv2code.utility.ImageUrl;
 import io.swagger.annotations.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -32,18 +28,19 @@ public class AccountRestController {
 
 	}
 
-	Logger logger = LoggerFactory.getLogger(AccountRestController.class);
+//	Logger logger = LoggerFactory.getLogger(AccountRestController.class);
 
 	@ApiOperation(value = "login an account " , notes = "check for the account by mail then check the password : doesn't token in header")
 	@ApiResponses(value={
 			@ApiResponse(code = 200 , message = "Successful" , response = Account.class) ,
-			@ApiResponse(code = 400 , message = "Bad Request " , response = CustomeException.class) ,
-			@ApiResponse(code = 404 , message = "not found " , response = CustomeException.class) ,
+			@ApiResponse(code = 400 , message = "Bad Request " , response = NotFoundException.class) ,
+			@ApiResponse(code = 404 , message = "not found " , response = NotFoundException.class) ,
 			@ApiResponse(code = 500 , message = "Internal Server Error")
 	})
 	@ApiImplicitParams({
 			@ApiImplicitParam(name = "access-token" , value = "access-token" , required = true , dataType = "sting" , paramType="header")
 	})
+
 	@PostMapping("/login")
 	public ResponseEntity<Account> login(@ApiParam(name = "Account Object")@RequestBody Account user) throws AccountException {
 		return accountService.login(user);
@@ -101,7 +98,7 @@ public class AccountRestController {
 
 	@ApiOperation(value="create a user" , notes = "check's in db for a similar mail if not it adds the user", response = Account.class)
 	@PostMapping("/signUp")
-	public Account addAccount(@ApiParam(name = "account object" , required = true) @RequestBody Account theAccount) throws CustomeException, AccountException {
+	public Account addAccount(@ApiParam(name = "account object" , required = true) @RequestBody Account theAccount) throws NotFoundException, AccountException {
 		return accountService.save(theAccount);
 	}
 
@@ -169,20 +166,20 @@ public class AccountRestController {
 		accountService.deleteById(idExtractor.getIdFromToken());
 	}
 
-	@ExceptionHandler
-	public ResponseEntity<ErrorResponse> handleException(CustomeException exc) {
-		ErrorResponse error = new ErrorResponse(HttpStatus.NOT_FOUND.value(), exc.getMessage(),
-				System.currentTimeMillis());
-		logger.error(error.getMessage());
-		return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
-
-	}
-
-	@ExceptionHandler
-	public ResponseEntity<ErrorResponse> handleException(Exception exc) {
-		ErrorResponse error = new ErrorResponse(HttpStatus.BAD_REQUEST.value(), "unknown error occured",
-				System.currentTimeMillis());
-		logger.error(error.getMessage());
-		return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
-	}
+//	@ExceptionHandler
+//	public ResponseEntity<ErrorResponse> handleException(CustomeException exc) {
+//		ErrorResponse error = new ErrorResponse(HttpStatus.NOT_FOUND.value(), exc.getMessage(),
+//				System.currentTimeMillis());
+//		logger.error(error.getMessage());
+//		return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+//
+//	}
+//
+//	@ExceptionHandler
+//	public ResponseEntity<ErrorResponse> handleException(Exception exc) {
+//		ErrorResponse error = new ErrorResponse(HttpStatus.BAD_REQUEST.value(), exc.getMessage(),
+//				System.currentTimeMillis());
+//		logger.error(error.getMessage());
+//		return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+//	}
 }

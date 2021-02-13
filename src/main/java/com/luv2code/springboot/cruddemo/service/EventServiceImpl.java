@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.luv2code.exception.error.handling.CustomeException;
+import com.luv2code.exception.error.handling.NotFoundException;
 
 import com.luv2code.springboot.cruddemo.entity.Event;
 import com.luv2code.springboot.cruddemo.entity.EventReact;
@@ -97,7 +97,7 @@ public class EventServiceImpl implements EventService {
 		if (result.isPresent()) {
 			theEvent = result.get();
 		} else {
-			throw new CustomeException("no such id for an account");
+			throw new NotFoundException("no such id for an account");
 		}
 		return theEvent;
 	}
@@ -128,7 +128,7 @@ public class EventServiceImpl implements EventService {
 			eventJpaRepo.save(theEvent);
 			return theEvent;
 		} else {
-			throw new CustomeException("cannot update an event that is not yours");
+			throw new NotFoundException("cannot update an event that is not yours");
 		}
 
 	}

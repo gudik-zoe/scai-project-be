@@ -1,9 +1,8 @@
 package com.luv2code.springboot.cruddemo.service;
 
-import com.luv2code.exception.error.handling.CustomeException;
+import com.luv2code.exception.error.handling.NotFoundException;
 import com.luv2code.springboot.cruddemo.entity.Notification;
 import com.luv2code.springboot.cruddemo.entity.Post;
-import com.luv2code.springboot.cruddemo.entity.Tag;
 import com.luv2code.springboot.cruddemo.jpa.repositories.PostJpaRepo;
 import com.luv2code.utility.AccountBasicData;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,8 +62,10 @@ public class PostServiceImpl implements PostService {
 		Post thePost = new Post();
 		String theImage = null;
 		if (image != null) {
+			System.out.println("here");
 			theImage = storageService.pushImage(image).getImageUrl();
 		}
+		System.out.println(theImage);
 		thePost.setImage(theImage);
 		if (postOption.equals("public")) {
 			thePost.setStatus(0);
@@ -76,8 +77,8 @@ public class PostServiceImpl implements PostService {
 		thePost.setDate(new Date(System.currentTimeMillis()));
 		thePost.setText(text);
 		thePost.setPostCreatorId(accountId);
-		Tag theTag = new Tag("first tag");
-		thePost.addTag(theTag);
+//		Tag theTag = new Tag("first tag");
+//		thePost.addTag(theTag);
 		postRepoJpa.save(thePost);
 
 		return thePost;
@@ -88,7 +89,7 @@ public class PostServiceImpl implements PostService {
 	public void deletePostById(int accountId, int postId) {
 		Post post = findPostByPostId(postId);
 		if(post.getPostCreatorId()!= null && post.getPostCreatorId() != accountId) {
-			throw new CustomeException("post is not yours");
+			throw new NotFoundException("post is not yours");
 		}else {
 			postRepoJpa.deleteById(postId);
 		}
@@ -128,7 +129,7 @@ public class PostServiceImpl implements PostService {
 		if (result.isPresent()) {
 			thePost = result.get();
 		} else {
-			throw new CustomeException("no such id for a post");
+			throw new NotFoundException("no such id for a post");
 		}
 		return thePost;
 	}
@@ -155,10 +156,10 @@ public class PostServiceImpl implements PostService {
 		Post OriginalPost = findPostByPostId(idPost);
 		if (OriginalPost.getPostCreatorId() != null
 				&& relationshipService.getStatus(accountId, OriginalPost.getPostCreatorId()) != 1) {
-			throw new CustomeException("cannot share a post to a user that is not ur friend");
+			throw new NotFoundException("cannot share a post to a user that is not ur friend");
 		} else if (OriginalPost.getPageCreatorId() != null
 				&& !pageService.checkIfPageLikedByAccount(accountId, OriginalPost.getPageCreatorId())) {
-			throw new CustomeException("cannot share a page's post that u didn't like");
+			throw new NotFoundException("cannot share a page's post that u didn't like");
 		} else {
 			thePost.setExtraText(extraText);
 			if (postOption.equals("public")) {
@@ -187,7 +188,7 @@ public class PostServiceImpl implements PostService {
 		Post thePost = new Post();
 		Integer theRelationshipStatus = relationshipService.getStatus(accountId, postedOnUserId);
 		if (theRelationshipStatus != 1) {
-			throw new CustomeException("cannot add a post on a user's wall that is not ur friend");
+			throw new NotFoundException("cannot add a post on a user's wall that is not ur friend");
 		} else {
 			thePost.setPostedOn(postedOnUserId);
 			thePost.setText(text);

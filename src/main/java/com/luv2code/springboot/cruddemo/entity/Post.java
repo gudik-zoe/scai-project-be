@@ -50,21 +50,6 @@ public class Post {
 	private List<Tag> tags;
 
 
-	public void addTag(Tag theTag){
-		if(tags == null){
-			tags = new ArrayList<>();
-		}
-		tags.add(theTag);
-	}
-
-	public List<Tag> getTags() {
-		return tags;
-	}
-
-	public void setTags(List<Tag> tags) {
-		this.tags = tags;
-	}
-
 	@OneToMany(cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
 	@JoinColumn(name = "related_post_id", referencedColumnName = "id_post", insertable = false, updatable = false, nullable = false)
 	private List<PostLike> postLikes;
@@ -77,6 +62,18 @@ public class Post {
 	@OneToMany(cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
 	@JoinColumn(name = "related_post_id", referencedColumnName = "id_post", insertable = false, updatable = false, nullable = false)
 	private List<Notification> notifications;
+
+//	@ManyToOne(fetch = FetchType.LAZY)
+//	@JoinColumn(name = "post_creator_id" , insertable = false, updatable = false, nullable = false)
+//	private Account account;
+
+//	public Account getAccount() {
+//		return account;
+//	}
+//
+//	public void setAccount(Account account) {
+//		this.account = account;
+//	}
 
 	public Post() {
 
@@ -97,6 +94,14 @@ public class Post {
 		this.pageCreatorId = pageCreatorId;
 	}
 
+
+	public List<Tag> getTags() {
+		return tags;
+	}
+
+	public void setTags(List<Tag> tags) {
+		this.tags = tags;
+	}
 	public int getIdPost() {
 		return idPost;
 	}

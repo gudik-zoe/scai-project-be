@@ -6,7 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.luv2code.exception.error.handling.CustomeException;
+import com.luv2code.exception.error.handling.NotFoundException;
 import com.luv2code.springboot.cruddemo.entity.Relationship;
 import com.luv2code.springboot.cruddemo.jpa.repositories.RelationshipJpaRepo;
 
@@ -28,7 +28,7 @@ public class RelationshipServiceImpl implements RelationshipService {
 				theRelationship = new Relationship(user1Id, user2Id, 0);
 				relationshipJpa.save(theRelationship);
 			} else {
-				throw new CustomeException("there is already a relation");
+				throw new NotFoundException("there is already a relation");
 			}
 		}
 		return null;
@@ -58,7 +58,7 @@ public class RelationshipServiceImpl implements RelationshipService {
 				return theRelationship;
 			}
 		} else {
-			throw new CustomeException("cannot update a relation that is not related to you");
+			throw new NotFoundException("cannot update a relation that is not related to you");
 		}
 	}
 
@@ -108,7 +108,7 @@ public class RelationshipServiceImpl implements RelationshipService {
 		if (result.isPresent()) {
 			theRelationship = result.get();
 		} else {
-			throw new CustomeException("no such id for a relationship");
+			throw new NotFoundException("no such id for a relationship");
 		}
 		return theRelationship;
 	}

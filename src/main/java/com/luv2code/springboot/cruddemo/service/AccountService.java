@@ -1,6 +1,6 @@
 package com.luv2code.springboot.cruddemo.service;
 
-import com.luv2code.exception.error.handling.CustomeException;
+import com.luv2code.exception.error.handling.NotFoundException;
 import com.luv2code.springboot.cruddemo.entity.Account;
 import com.luv2code.utility.AccountBasicData;
 import com.luv2code.utility.AccountData;
@@ -25,7 +25,7 @@ public interface AccountService {
 
 	public AccountData getLoggedInUserFullData(int accountIdFromToken);
 
-	public Account save(Account account) throws CustomeException;
+	public Account save(Account account) throws NotFoundException;
 
 	public Account updateAccount(Account account , int accountId) throws AccountException;
 

@@ -1,13 +1,10 @@
 package com.luv2code.springboot.cruddemo.rest;
 
-import com.luv2code.exception.error.handling.CustomeException;
+import com.luv2code.exception.error.handling.NotFoundException;
 import com.luv2code.springboot.cruddemo.service.StorageService;
 import com.luv2code.utility.IdExtractor;
 import com.luv2code.utility.ImageUrl;
-import com.luv2code.utility.StorageErrorResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -40,7 +37,7 @@ public class FileUploadController {
 			@RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes) {
 
 		if (!file.getContentType().contains("image")) {
-			throw new CustomeException("file not supported");
+			throw new NotFoundException("file not supported");
 		} else {
 			storageService.store(file);
 			redirectAttributes.addFlashAttribute("message",
@@ -54,25 +51,25 @@ public class FileUploadController {
 		System.out.println(image);
 		IdExtractor idExtractor = new IdExtractor(authHeader);
 		if (image.getSize() > 2000000) {
-			throw new CustomeException("image size exceeds the permitted limit");
+			throw new NotFoundException("image size exceeds the permitted limit");
 		} else {
 			return storageService.pushImage(image);
 		}
 	}
 	
 	
-	@ExceptionHandler
-	public ResponseEntity<StorageErrorResponse> handleException(CustomeException exc) {
-		StorageErrorResponse error = new StorageErrorResponse(HttpStatus.UNAUTHORIZED.value(), exc.getMessage(),
-				System.currentTimeMillis());
-		return new ResponseEntity<>(error, HttpStatus.UNAUTHORIZED);
-	}
-
-	@ExceptionHandler
-	public ResponseEntity<StorageErrorResponse> handleException(Exception exc) {
-		StorageErrorResponse error = new StorageErrorResponse(HttpStatus.UNAUTHORIZED.value(), exc.getMessage(),
-				System.currentTimeMillis());
-		return new ResponseEntity<>(error, HttpStatus.UNAUTHORIZED);
-	}
+//	@ExceptionHandler
+//	public ResponseEntity<StorageErrorResponse> handleException(CustomeException exc) {
+//		StorageErrorResponse error = new StorageErrorResponse(HttpStatus.UNAUTHORIZED.value(), exc.getMessage(),
+//				System.currentTimeMillis());
+//		return new ResponseEntity<>(error, HttpStatus.UNAUTHORIZED);
+//	}
+//
+//	@ExceptionHandler
+//	public ResponseEntity<StorageErrorResponse> handleException(Exception exc) {
+//		StorageErrorResponse error = new StorageErrorResponse(HttpStatus.UNAUTHORIZED.value(), exc.getMessage(),
+//				System.currentTimeMillis());
+//		return new ResponseEntity<>(error, HttpStatus.UNAUTHORIZED);
+//	}
 
 }

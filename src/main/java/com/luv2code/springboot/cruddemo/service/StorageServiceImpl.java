@@ -23,7 +23,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.luv2code.exception.error.handling.CustomeException;
+import com.luv2code.exception.error.handling.NotFoundException;
 import com.luv2code.exception.error.handling.ErrorResponse;
 import com.luv2code.exception.error.handling.StorageException;
 import com.luv2code.utility.ImageUrl;
@@ -98,7 +98,7 @@ public class StorageServiceImpl implements StorageService  {
 //	}
 
 	@ExceptionHandler
-	public ResponseEntity<ErrorResponse> handleStorageException(CustomeException exc) {
+	public ResponseEntity<ErrorResponse> handleStorageException(NotFoundException exc) {
 		ErrorResponse error = new ErrorResponse(HttpStatus.NOT_FOUND.value(), exc.getMessage(),
 				System.currentTimeMillis());
 		return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
@@ -114,13 +114,13 @@ public class StorageServiceImpl implements StorageService  {
 	@Override
 	public ImageUrl pushImage( MultipartFile theImage) throws IOException  {
 		if (!theImage.getContentType().contains("image")) {
-			throw new CustomeException("file type is not supported");
+			throw new NotFoundException("file type is not supported");
 		}
 		if (theImage.getSize() > 2000000) {
-			throw new CustomeException("image size exceeds the permitted limit");
+			throw new NotFoundException("image size exceeds the permitted limit");
 		}
 		if (theImage.isEmpty() || !theImage.getContentType().contains("image")) {
-			throw new CustomeException("Failed to store empty file or the file is not an image");
+			throw new NotFoundException("Failed to store empty file or the file is not an image");
 		}
 		String url = "https://api.imgbb.com/1/upload?key=cd6c2303364ac3ce4edb3ccc3615d28c";
 		CloseableHttpClient httpclient = HttpClients.createDefault();
