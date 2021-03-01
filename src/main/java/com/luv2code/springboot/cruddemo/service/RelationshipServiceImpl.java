@@ -1,18 +1,17 @@
 package com.luv2code.springboot.cruddemo.service;
 
-import java.util.List;
-import java.util.Optional;
-
+import com.luv2code.springboot.cruddemo.entity.Relationship;
+import com.luv2code.springboot.cruddemo.exceptions.NotFoundException;
+import com.luv2code.springboot.cruddemo.jpa.RelationshipJpaRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.luv2code.exception.error.handling.NotFoundException;
-import com.luv2code.springboot.cruddemo.entity.Relationship;
-import com.luv2code.springboot.cruddemo.jpa.repositories.RelationshipJpaRepo;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class RelationshipServiceImpl implements RelationshipService {
-
+	
 	@Autowired
 	private RelationshipJpaRepo relationshipJpa;
 

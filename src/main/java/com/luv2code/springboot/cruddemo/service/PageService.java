@@ -7,7 +7,9 @@ import org.springframework.web.multipart.MultipartFile;
 import com.luv2code.springboot.cruddemo.entity.Page;
 import com.luv2code.springboot.cruddemo.entity.PageLike;
 import com.luv2code.springboot.cruddemo.entity.Post;
-import com.luv2code.utility.PageBasicData;
+import com.luv2code.springboot.cruddemo.utility.PageBasicData;
+
+
 
 public interface PageService {
 

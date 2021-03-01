@@ -1,0 +1,36 @@
+2021-02-15 09:05:55,793 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-2] invalid credentials
+2021-02-15 09:12:36,754 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-9] Handler dispatch failed; nested exception is java.lang.NoClassDefFoundError: library/test/Person
+2021-02-15 09:13:00,356 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-1] Handler dispatch failed; nested exception is java.lang.NoClassDefFoundError: library/test/Person
+2021-02-15 09:26:12,111 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-3] Type definition error: [simple type, class org.hibernate.proxy.pojo.bytebuddy.ByteBuddyInterceptor]; nested exception is com.fasterxml.jackson.databind.exc.InvalidDefinitionException: No serializer found for class org.hibernate.proxy.pojo.bytebuddy.ByteBuddyInterceptor and no properties discovered to create BeanSerializer (to avoid exception, disable SerializationFeature.FAIL_ON_EMPTY_BEANS) (through reference chain: java.util.ArrayList[0]->com.luv2code.springboot.cruddemo.entity.Post["account"]->com.luv2code.springboot.cruddemo.entity.Account$HibernateProxy$O6UHmbht["hibernateLazyInitializer"])
+2021-02-15 09:30:19,856 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-9] Type definition error: [simple type, class org.hibernate.proxy.pojo.bytebuddy.ByteBuddyInterceptor]; nested exception is com.fasterxml.jackson.databind.exc.InvalidDefinitionException: No serializer found for class org.hibernate.proxy.pojo.bytebuddy.ByteBuddyInterceptor and no properties discovered to create BeanSerializer (to avoid exception, disable SerializationFeature.FAIL_ON_EMPTY_BEANS) (through reference chain: java.util.ArrayList[0]->com.luv2code.springboot.cruddemo.entity.Post["id_account"]->com.luv2code.springboot.cruddemo.entity.Account$HibernateProxy$jUs8uetT["hibernateLazyInitializer"])
+2021-02-15 09:46:32,376 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-2] Handler dispatch failed; nested exception is java.lang.Error: Unresolved compilation problem: 
+	posts cannot be resolved to a variable
+
+2021-02-15 09:48:41,414 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-7] Type definition error: [simple type, class org.hibernate.proxy.pojo.bytebuddy.ByteBuddyInterceptor]; nested exception is com.fasterxml.jackson.databind.exc.InvalidDefinitionException: No serializer found for class org.hibernate.proxy.pojo.bytebuddy.ByteBuddyInterceptor and no properties discovered to create BeanSerializer (to avoid exception, disable SerializationFeature.FAIL_ON_EMPTY_BEANS) (through reference chain: java.util.ArrayList[0]->com.luv2code.springboot.cruddemo.entity.Post["account"]->com.luv2code.springboot.cruddemo.entity.Account$HibernateProxy$or51QRXr["hibernateLazyInitializer"])
+2021-02-15 09:51:41,138 ERROR com.luv2code.springboot.cruddemo.rest.PostLikesRestController [http-nio-8080-exec-6] cannot like a post of a user that is not ur friend
+2021-02-15 09:51:42,240 ERROR com.luv2code.springboot.cruddemo.rest.PostLikesRestController [http-nio-8080-exec-7] cannot like a post of a user that is not ur friend
+2021-02-15 09:53:52,609 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-9] no such id for a post
+2021-02-15 09:54:31,036 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-3] no such id for a post
+2021-02-15 09:55:48,918 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-2] Handler dispatch failed; nested exception is java.lang.Error: Unresolved compilation problem: 
+	postLikes cannot be resolved to a variable
+
+2021-02-15 10:17:16,361 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-1] JWT expired at 2021-02-15T10:16:26Z. Current time: 2021-02-15T10:17:16Z, a difference of 50360 milliseconds.  Allowed clock skew: 0 milliseconds.
+2021-02-15 10:17:16,364 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-10] JWT expired at 2021-02-15T10:16:26Z. Current time: 2021-02-15T10:17:16Z, a difference of 50364 milliseconds.  Allowed clock skew: 0 milliseconds.
+2021-02-15 10:20:52,309 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-9] no such id for a post
+2021-02-15 10:21:14,293 ERROR com.luv2code.springboot.cruddemo.rest.PostLikesRestController [http-nio-8080-exec-1] cannot like a post of a user that is not ur friend
+2021-02-15 10:21:50,797 ERROR com.luv2code.springboot.cruddemo.rest.PostLikesRestController [http-nio-8080-exec-10] cannot like a post of a user that is not ur friend
+2021-02-15 10:23:09,672 ERROR com.luv2code.springboot.cruddemo.rest.PostLikesRestController [http-nio-8080-exec-1] Unknown error occured
+2021-02-15 10:23:10,814 ERROR com.luv2code.springboot.cruddemo.rest.PostLikesRestController [http-nio-8080-exec-2] Unknown error occured
+2021-02-15 10:23:15,510 ERROR com.luv2code.springboot.cruddemo.rest.PostLikesRestController [http-nio-8080-exec-3] Unknown error occured
+2021-02-15 10:23:16,541 ERROR com.luv2code.springboot.cruddemo.rest.PostLikesRestController [http-nio-8080-exec-4] Unknown error occured
+2021-02-15 10:24:25,172 ERROR com.luv2code.springboot.cruddemo.rest.PostLikesRestController [http-nio-8080-exec-1] Unknown error occured
+2021-02-15 10:24:26,527 ERROR com.luv2code.springboot.cruddemo.rest.PostLikesRestController [http-nio-8080-exec-2] Unknown error occured
+2021-02-15 10:25:07,183 ERROR com.luv2code.springboot.cruddemo.rest.PostLikesRestController [http-nio-8080-exec-1] Unknown error occured
+2021-02-15 10:25:08,225 ERROR com.luv2code.springboot.cruddemo.rest.PostLikesRestController [http-nio-8080-exec-2] Unknown error occured
+2021-02-15 10:25:31,954 ERROR com.luv2code.springboot.cruddemo.rest.PostLikesRestController [http-nio-8080-exec-1] cannot like a post of a user that is not ur friend
+2021-02-15 10:25:35,668 ERROR com.luv2code.springboot.cruddemo.rest.PostLikesRestController [http-nio-8080-exec-2] cannot like a post of a user that is not ur friend
+2021-02-15 10:35:18,933 ERROR com.luv2code.springboot.cruddemo.rest.PostLikesRestController [http-nio-8080-exec-1] cannot like a post of a user that is not ur friend
+2021-02-15 10:35:44,758 ERROR com.luv2code.springboot.cruddemo.rest.PostLikesRestController [http-nio-8080-exec-1] Unknown error occured
+2021-02-15 10:35:45,608 ERROR com.luv2code.springboot.cruddemo.rest.PostLikesRestController [http-nio-8080-exec-2] Unknown error occured
+2021-02-15 10:35:46,120 ERROR com.luv2code.springboot.cruddemo.rest.PostLikesRestController [http-nio-8080-exec-3] Unknown error occured
+2021-02-15 18:31:37,026 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-1] Cannot invoke "com.library.springboot.service.AccountService.login(com.library.springboot.entity.Account)" because "this.accountService" is null

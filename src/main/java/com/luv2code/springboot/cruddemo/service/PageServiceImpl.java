@@ -1,25 +1,24 @@
 package com.luv2code.springboot.cruddemo.service;
 
+import com.luv2code.springboot.cruddemo.entity.Page;
+import com.luv2code.springboot.cruddemo.entity.PageLike;
+import com.luv2code.springboot.cruddemo.entity.Post;
+import com.luv2code.springboot.cruddemo.exceptions.NotFoundException;
+import com.luv2code.springboot.cruddemo.jpa.PageJpaRepo;
+import com.luv2code.springboot.cruddemo.jpa.PageLikeJpaRepo;
+import com.luv2code.springboot.cruddemo.jpa.PostJpaRepo;
+import com.luv2code.springboot.cruddemo.utility.PageBasicData;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
-import com.luv2code.exception.error.handling.NotFoundException;
-import com.luv2code.springboot.cruddemo.entity.Page;
-import com.luv2code.springboot.cruddemo.entity.PageLike;
-import com.luv2code.springboot.cruddemo.entity.Post;
-import com.luv2code.springboot.cruddemo.jpa.repositories.PageJpaRepo;
-import com.luv2code.springboot.cruddemo.jpa.repositories.PageLikeJpaRepo;
-import com.luv2code.springboot.cruddemo.jpa.repositories.PostJpaRepo;
-import com.luv2code.utility.PageBasicData;
-
 @Service
 public class PageServiceImpl implements PageService {
-
 	@Autowired
 	private PageJpaRepo pageJpaRepo;
 

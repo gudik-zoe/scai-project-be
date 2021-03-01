@@ -1,18 +1,10 @@
 package com.luv2code.springboot.cruddemo.entity;
 
+import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+
 
 @Entity
 @Table(name = "comment")
@@ -32,13 +24,19 @@ public class Comment {
 
 	@Column(name = "comment_creator_id")
 	private Integer commentCreatorId;
-
+	
+	
 	@Column(name = "page_Creator_id")
 	private Integer pageCreatorId;
 
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "related_comment_id", referencedColumnName = "id_comment", insertable = false, updatable = false, nullable = false)
 	private List<CommentLike> commentLike;
+	
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "comment_creator_id", insertable = false, updatable = false, nullable = false)
+	private Account account;
 
 	public Comment() {
 

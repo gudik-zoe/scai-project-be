@@ -1,13 +1,15 @@
 package com.luv2code.springboot.cruddemo.entity;
 
-
 import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -24,7 +26,6 @@ public class Notification {
 
 	@Column(name = "not_receiver")
 	private int notReceiver;
-	
 
 	@Column(name = "action")
 	private String action;
@@ -37,6 +38,10 @@ public class Notification {
 
 	@Column(name = "seen")
 	private boolean seen;
+
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "not_creator", insertable = false, updatable = false, nullable = false)
+	private Account account;
 
 	public Notification() {
 
@@ -106,11 +111,5 @@ public class Notification {
 	public void setSeen(boolean seen) {
 		this.seen = seen;
 	}
-
-	
-	
-	
-
-	
 
 }

@@ -7,7 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.luv2code.springboot.cruddemo.entity.Event;
 import com.luv2code.springboot.cruddemo.entity.EventReact;
-import com.luv2code.utility.ReactToEvent;
+import com.luv2code.springboot.cruddemo.utility.ReactToEvent;
 
 public interface EventService {
 

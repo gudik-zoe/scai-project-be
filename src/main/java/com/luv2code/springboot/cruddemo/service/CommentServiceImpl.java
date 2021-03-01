@@ -1,21 +1,19 @@
 package com.luv2code.springboot.cruddemo.service;
 
-import java.util.Date;
-import java.util.Optional;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import com.luv2code.exception.error.handling.NotFoundException;
 import com.luv2code.springboot.cruddemo.entity.Comment;
 import com.luv2code.springboot.cruddemo.entity.Notification;
 import com.luv2code.springboot.cruddemo.entity.Post;
-import com.luv2code.springboot.cruddemo.jpa.repositories.CommentJpaRepo;
-import com.luv2code.utility.PageBasicData;
+import com.luv2code.springboot.cruddemo.exceptions.NotFoundException;
+import com.luv2code.springboot.cruddemo.jpa.CommentJpaRepo;
+import com.luv2code.springboot.cruddemo.utility.PageBasicData;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.Date;
+import java.util.Optional;
 
 @Service
 public class CommentServiceImpl implements CommentService {
-
 	@Autowired
 	private CommentJpaRepo commentJpaRepo;
 
@@ -31,7 +29,6 @@ public class CommentServiceImpl implements CommentService {
 	@Autowired
 	private NotificationService notificationService;
 
-	@Autowired
 	public CommentServiceImpl() {
 
 	}

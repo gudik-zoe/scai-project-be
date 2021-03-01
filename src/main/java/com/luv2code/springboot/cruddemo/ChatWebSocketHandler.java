@@ -6,7 +6,6 @@ import java.util.Map;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
@@ -14,30 +13,31 @@ import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import com.luv2code.springboot.cruddemo.entity.Message;
 import com.luv2code.springboot.cruddemo.service.MessagesService;
-import com.luv2code.springboot.cruddemo.service.StorageService;
-import com.luv2code.utility.IdExtractor;
-import com.luv2code.utility.ImageUrl;
+import com.luv2code.springboot.cruddemo.utility.IdExtractor;
+
 
 public class ChatWebSocketHandler extends TextWebSocketHandler {
 
-
 	private final Map<Integer, WebSocketSession> webSocketSessions = new HashMap<Integer, WebSocketSession>();
 
-	@Autowired
 	private MessagesService messageService;
-	
-	@Autowired
-	private StorageService storageService;
+
+	public ChatWebSocketHandler() {
+
+	}
+
+	public ChatWebSocketHandler(MessagesService theMessageService) {
+		messageService = theMessageService;
+	}
 
 	@Override
 	public void afterConnectionEstablished(WebSocketSession session) throws Exception {
-
 
 	}
 
 	@Override
 	protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
-		
+
 		if (message.getPayload().contains("Bearer ")) {
 
 			try {
@@ -60,8 +60,6 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
 				obj.append("idSender", senderId);
 				int idReceiver = obj.getInt("idReceiver");
 				String messageText = obj.getString("message");
-				
-				
 
 				TextMessage newMessage = new TextMessage(obj.toString());
 
@@ -70,7 +68,8 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
 				}
 				session.sendMessage(newMessage);
 
-				Message theMessage = new Message(senderId, idReceiver, messageText, new Date(System.currentTimeMillis()), false  );
+				Message theMessage = new Message(senderId, idReceiver, messageText,
+						new Date(System.currentTimeMillis()), false);
 				messageService.sendMessage(theMessage);
 
 			} catch (JSONException e) {

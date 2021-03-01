@@ -1,10 +1,8 @@
 package com.luv2code.springboot.cruddemo;
 
 import com.luv2code.filter.AuthFilter;
-import com.luv2code.utility.StorageProperties;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -17,8 +15,11 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import java.util.Collections;
 
+
 @SpringBootApplication
-@EnableConfigurationProperties(StorageProperties.class)
+//@EnableJpaRepositories(basePackages = "com.luv2code.springboot.cruddemo.jpa.repositories")
+
+
 @EnableSwagger2
 public class CruddemoApplication {
 
@@ -32,22 +33,17 @@ public class CruddemoApplication {
 	}
 
 	@Bean
-	public Docket swaggerConfiguration(){
+	public Docket swaggerConfiguration() {
 		return new Docket(DocumentationType.SWAGGER_2).select().paths(PathSelectors.ant("/api/**"))
-				.apis(RequestHandlerSelectors.basePackage("com.luv2code.springboot.cruddemo.rest")).build().apiInfo(apiDetails());
+				.apis(RequestHandlerSelectors.basePackage("com.luv2code.springboot.cruddemo.rest")).build()
+				.apiInfo(apiDetails());
 	}
 
-//	private ApiKey apiKey() {
-//		return new ApiKey("AUTHORIZATION", "api_key", "header");
-//	}
-
-	private ApiInfo apiDetails(){
-		return new ApiInfo("Adress book API" , "Sample API for Cruddemo tutorial" , "1,0" , "free to user" , new springfox.documentation.service.Contact("antoine khoury" , "http://cruddemo.io" , "asd@asd.com"),"API License" , "http://cruddemo.io" , Collections.emptyList());
+	private ApiInfo apiDetails() {
+		return new ApiInfo("Adress book API", "Sample API for Cruddemo tutorial", "1,0", "free to user",
+				new springfox.documentation.service.Contact("antoine khoury", "http://cruddemo.io", "asd@asd.com"),
+				"API License", "http://cruddemo.io", Collections.emptyList());
 	}
-
-
-
-
 
 	@Bean
 	public WebMvcConfigurer corsConfigurer() {

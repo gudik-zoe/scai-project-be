@@ -1,3 +1,5 @@
-2021-02-13 13:29:55,187 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-7] JWT expired at 2021-02-13T12:19:47Z. Current time: 2021-02-13T13:29:55Z, a difference of 4208178 milliseconds.  Allowed clock skew: 0 milliseconds.
-2021-02-13 13:29:55,187 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-1] JWT expired at 2021-02-13T12:19:47Z. Current time: 2021-02-13T13:29:55Z, a difference of 4208178 milliseconds.  Allowed clock skew: 0 milliseconds.
-2021-02-13 14:26:33,072 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-1] invalid credentials
+2021-03-01 16:29:17,551 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-1] invalid credentials
+2021-03-01 16:41:16,632 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-7] could not execute statement; SQL [n/a]; constraint [null]; nested exception is org.hibernate.exception.ConstraintViolationException: could not execute statement
+2021-03-01 16:41:27,614 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-9] could not execute statement; SQL [n/a]; constraint [null]; nested exception is org.hibernate.exception.ConstraintViolationException: could not execute statement
+2021-03-01 16:51:24,697 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-9] no such id for an account
+2021-03-01 16:51:24,811 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-10] no such id for an account

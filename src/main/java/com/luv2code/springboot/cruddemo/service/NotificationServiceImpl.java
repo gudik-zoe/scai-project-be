@@ -1,26 +1,24 @@
 package com.luv2code.springboot.cruddemo.service;
 
-import com.luv2code.exception.error.handling.NotFoundException;
 import com.luv2code.springboot.cruddemo.entity.Notification;
-import com.luv2code.springboot.cruddemo.jpa.repositories.NotRepoPaging;
-import com.luv2code.springboot.cruddemo.jpa.repositories.NotificationJpaRepo;
-import com.luv2code.utility.NotificationDetails;
+import com.luv2code.springboot.cruddemo.exceptions.NotFoundException;
+import com.luv2code.springboot.cruddemo.jpa.NotRepoPaging;
+import com.luv2code.springboot.cruddemo.jpa.NotificationJpaRepo;
+import com.luv2code.springboot.cruddemo.utility.NotificationDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class NotificationServiceImpl implements NotificationService {
-
 	@Autowired
 	private NotificationJpaRepo notificationJpaRepo;
-
+	
 	@Autowired
 	private NotRepoPaging notRepoPaging;
 

@@ -2,29 +2,37 @@ package com.luv2code.springboot.cruddemo.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
 
 
 @Entity
 @Table(name = "page_like")
 public class PageLike {
-	
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id_page_like")
 	private int idPageLike;
-	
+
 	@Column(name = "related_page_id")
 	private int relatedPageId;
-	
+
 	@Column(name = "page_like_creator_id")
 	private int pageLikeCreatorId;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "page_like_creator_id", insertable = false, updatable = false, nullable = false)
+	private Account account;
+
 	public PageLike() {
-		
+
 	}
 
 	public PageLike(int pageLikeCreatorId, int relatedPageId) {
@@ -55,11 +63,5 @@ public class PageLike {
 	public void setRelatedPageId(int relatedPageId) {
 		this.relatedPageId = relatedPageId;
 	}
-	
-	
-	
-	
-	
-	
 
 }

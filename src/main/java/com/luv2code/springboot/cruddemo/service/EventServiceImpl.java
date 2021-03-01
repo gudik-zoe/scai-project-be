@@ -1,29 +1,23 @@
 package com.luv2code.springboot.cruddemo.service;
 
+import com.luv2code.springboot.cruddemo.entity.Event;
+import com.luv2code.springboot.cruddemo.entity.EventReact;
+import com.luv2code.springboot.cruddemo.exceptions.NotFoundException;
+import com.luv2code.springboot.cruddemo.jpa.EventJpaRepo;
+import com.luv2code.springboot.cruddemo.jpa.EventReactJpaRepo;
+import com.luv2code.springboot.cruddemo.utility.ReactToEvent;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-import javax.transaction.Transactional;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
-
-import com.luv2code.exception.error.handling.NotFoundException;
-
-import com.luv2code.springboot.cruddemo.entity.Event;
-import com.luv2code.springboot.cruddemo.entity.EventReact;
-import com.luv2code.springboot.cruddemo.jpa.repositories.EventJpaRepo;
-import com.luv2code.springboot.cruddemo.jpa.repositories.EventReactJpaRepo;
-import com.luv2code.utility.ReactToEvent;
-
 @Service
-@Transactional
 public class EventServiceImpl implements EventService {
-
 	@Autowired
 	private EventJpaRepo eventJpaRepo;
 

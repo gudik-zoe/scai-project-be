@@ -3,7 +3,7 @@ package com.luv2code.springboot.cruddemo.service;
 import java.util.List;
 
 import com.luv2code.springboot.cruddemo.entity.Notification;
-import com.luv2code.utility.NotificationDetails;
+import com.luv2code.springboot.cruddemo.utility.NotificationDetails;
 
 public interface NotificationService {
 

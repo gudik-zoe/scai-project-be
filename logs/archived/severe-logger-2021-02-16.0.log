@@ -1,0 +1,27 @@
+2021-02-16 11:50:55,059 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-8] invalid credentials
+2021-02-16 12:06:08,881 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-5] invalid credentials
+2021-02-16 12:06:52,343 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-1] invalid credentials
+2021-02-16 12:14:35,661 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-1] invalid credentials
+2021-02-16 12:14:42,109 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-2] invalid credentials
+2021-02-16 12:15:11,506 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-1] invalid credentials
+2021-02-16 12:15:34,645 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-1] invalid credentials
+2021-02-16 12:16:03,202 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-1] invalid credentials
+2021-02-16 12:19:09,709 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-2] invalid credentials
+2021-02-16 12:20:20,203 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-2] cannot like a post of a user that is not ur friend
+2021-02-16 12:27:32,410 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-1] no such id for an account
+2021-02-16 12:27:52,210 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-3] Failed to convert value of type 'java.lang.String' to required type 'java.lang.Integer'; nested exception is java.lang.NumberFormatException: For input string: "aaa"
+2021-02-16 12:27:58,307 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-5] no such id for an account
+2021-02-16 12:29:09,425 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-2] no such id for an account
+2021-02-16 12:30:23,786 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-4] no such id for an account
+2021-02-16 12:30:27,560 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-6] no such id for an account
+2021-02-16 12:41:17,570 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-3] no such id for an account
+2021-02-16 12:41:27,103 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-7] no such id for an account
+2021-02-16 12:41:29,594 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-8] Failed to convert value of type 'java.lang.String' to required type 'java.lang.Integer'; nested exception is java.lang.NumberFormatException: For input string: "asdasd"
+2021-02-16 12:41:52,941 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-10] invalid credentials
+2021-02-16 12:42:00,585 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-1] invalid credentials
+2021-02-16 12:42:08,437 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-6] invalid credentials
+2021-02-16 12:44:28,085 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-1] invalid credentials
+2021-02-16 14:05:09,771 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-5] JWT expired at 2021-02-16T13:44:43Z. Current time: 2021-02-16T14:05:09Z, a difference of 1226771 milliseconds.  Allowed clock skew: 0 milliseconds.
+2021-02-16 14:05:09,772 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-9] JWT expired at 2021-02-16T13:44:43Z. Current time: 2021-02-16T14:05:09Z, a difference of 1226771 milliseconds.  Allowed clock skew: 0 milliseconds.
+2021-02-16 14:09:54,616 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-3] invalid credentials
+2021-02-16 14:11:29,236 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-2] Failed to convert value of type 'java.lang.String' to required type 'java.lang.Integer'; nested exception is java.lang.NumberFormatException: For input string: "asdasd"

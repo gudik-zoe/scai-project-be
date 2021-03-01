@@ -1,11 +1,17 @@
 package com.luv2code.springboot.cruddemo.rest;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.luv2code.springboot.cruddemo.entity.CommentLike;
 import com.luv2code.springboot.cruddemo.service.CommentLikesService;
-import com.luv2code.utility.IdExtractor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import com.luv2code.springboot.cruddemo.utility.IdExtractor;
+
 
 @RestController
 @CrossOrigin(origins = "*", allowedHeaders = "*")

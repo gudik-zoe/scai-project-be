@@ -10,8 +10,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+
 
 @Entity
 @Table(name = "page")
@@ -36,25 +39,26 @@ public class Page {
 
 	@Column(name = "page_creator_id")
 	private Integer pageCreatorId;
-	
-	
 
-	@OneToMany(cascade = CascadeType.ALL ,fetch = FetchType.LAZY )
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "page_creator_id", referencedColumnName = "id_page", insertable = false, updatable = false, nullable = false)
 	private List<Post> posts;
 
 	@OneToMany(cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
 	@JoinColumn(name = "related_page_id", referencedColumnName = "id_page", insertable = false, updatable = false, nullable = false)
 	private List<PageLike> pageLike;
-	
+
 	@OneToMany(cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
 	@JoinColumn(name = "page_creator_id", referencedColumnName = "id_page", insertable = false, updatable = false, nullable = false)
 	private List<Comment> comments;
-	
-	
+
 	@OneToMany(cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
 	@JoinColumn(name = "page_creator_id", referencedColumnName = "id_page", insertable = false, updatable = false, nullable = false)
 	private List<CommentLike> commentLikes;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "page_creator_id", insertable = false, updatable = false, nullable = false)
+	private Account account;
 
 	public Page() {
 
@@ -131,8 +135,5 @@ public class Page {
 	public void setPosts(List<Post> posts) {
 		this.posts = posts;
 	}
-	
-	
-
 
 }

@@ -1,17 +1,17 @@
 package com.luv2code.springboot.cruddemo.service;
 
-import com.luv2code.exception.error.handling.BadRequestException;
-import com.luv2code.exception.error.handling.NotFoundException;
 import com.luv2code.springboot.cruddemo.entity.Account;
+import com.luv2code.springboot.cruddemo.entity.Profile;
 import com.luv2code.springboot.cruddemo.entity.Relationship;
-import com.luv2code.springboot.cruddemo.jpa.repositories.AccountJpaRepo;
-import com.luv2code.utility.AccountBasicData;
-import com.luv2code.utility.AccountData;
-import com.luv2code.utility.ImageUrl;
+import com.luv2code.springboot.cruddemo.exceptions.BadRequestException;
+import com.luv2code.springboot.cruddemo.exceptions.NotFoundException;
+import com.luv2code.springboot.cruddemo.jpa.AccountJpaRepo;
+import com.luv2code.springboot.cruddemo.jpa.ProfileJpaRepo;
+import com.luv2code.springboot.cruddemo.utility.AccountBasicData;
+import com.luv2code.springboot.cruddemo.utility.AccountData;
+import com.luv2code.springboot.cruddemo.utility.ImageUrl;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import login.prova.Person;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -39,15 +39,16 @@ public class AccountServiceImpl implements AccountService {
 	@Autowired
 	private PostService postService;
 
+	@Autowired
+	private ProfileJpaRepo profileJpaRepo;
+
 	public AccountServiceImpl() {
 
 	}
 
 	@Override
 	public List<AccountBasicData> getPeopleYouMayKnow(int accountId) {
-		Person person = new Person(3 , "tony");
-			System.out.println(person.getName() + " " + person.getId());
-	List<Account> accounts = new ArrayList<Account>();
+		List<Account> accounts = new ArrayList<Account>();
 		List<AccountBasicData> peopleYouMayKnow = new ArrayList<AccountBasicData>();
 		accounts = accountRepoJpa.findPeopleYouMayKnow(accountId);
 		for (Account account : accounts) {
@@ -62,7 +63,7 @@ public class AccountServiceImpl implements AccountService {
 	}
 
 	@Override
-	public Account save(Account account) throws NotFoundException {
+	public boolean save(Account account) throws NotFoundException {
 		String passwordPattern = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{8,}$";
 		Pattern emailPattern = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
 		Matcher mat = emailPattern.matcher(account.getEmail());
@@ -74,7 +75,9 @@ public class AccountServiceImpl implements AccountService {
 		} else if (accountRepoJpa.findByEmail(account.getEmail()) == null) {
 			BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 			account.setPassword(encoder.encode(account.getPassword()));
-			return accountRepoJpa.save(account);
+			 accountRepoJpa.save(account);
+			 profileJpaRepo.save(new Profile(account.getIdAccount()));
+			 return true;
 		} else {
 			throw new NotFoundException("email already exist");
 		}
@@ -83,7 +86,7 @@ public class AccountServiceImpl implements AccountService {
 
 	@Override
 	public void deleteById(int theId) {
-		accountRepoJpa.deleteById(theId);
+		profileJpaRepo.deleteById(theId);
 	}
 
 	@Override
@@ -102,9 +105,10 @@ public class AccountServiceImpl implements AccountService {
 	@Override
 	public AccountBasicData getAccountBasicData(int accountId) {
 		Account account = findById(accountId);
-		AccountBasicData theAccount = new AccountBasicData(account.getFirstName(), account.getLastName(),
-				account.getProfilePhoto(), account.getIdAccount(), account.getCoverPhoto());
-		return theAccount;
+	AccountBasicData theAccount = new AccountBasicData(account.getFirstName(), account.getLastName(),
+			account.getProfilePhoto(), account.getIdAccount(), account.getCoverPhoto());
+	return theAccount;
+
 	}
 
 	@Override
@@ -122,7 +126,7 @@ public class AccountServiceImpl implements AccountService {
 	}
 
 	@Override
-	public Account updateAccount(Account account , int accountId) throws AccountException {
+	public Account updateAccount(Account account, int accountId) throws AccountException {
 		account.setIdAccount(accountId);
 		return accountRepoJpa.save(account);
 	}
@@ -209,19 +213,19 @@ public class AccountServiceImpl implements AccountService {
 			HashMap<String, Object> addedValues = new HashMap<String, Object>();
 			addedValues.put("userid", theAccount.getIdAccount());
 			String token = Jwts.builder().addClaims(addedValues).setIssuedAt(new Date(System.currentTimeMillis()))
-					.setExpiration(new Date(System.currentTimeMillis() + 60 *  60 * 1000))
+					.setExpiration(new Date(System.currentTimeMillis() + 60 * 60 * 1000))
 					.signWith(SignatureAlgorithm.HS512, "ciao").compact();
 			headers.add("Authorization", "Bearer " + token);
 			return ResponseEntity.ok().headers(headers).build();
-		}
-		else {
+		} else {
 			throw new BadRequestException("invalid credentials");
 		}
 
 	}
-	public Account findByEmail(String email){
+
+	public Account findByEmail(String email) {
 		Account theAccount = accountRepoJpa.findByEmail(email);
-		if(theAccount == null){
+		if (theAccount == null) {
 			throw new BadRequestException("invalid credentials");
 		}
 		return theAccount;
@@ -242,13 +246,23 @@ public class AccountServiceImpl implements AccountService {
 	}
 
 	@Override
-	public Account findById(int accountId) {
+	public Account findById(int accountId) throws NotFoundException{
 		Optional<Account> result = accountRepoJpa.findById(accountId);
 		Account theAccount = null;
 		if (result.isPresent()) {
 			theAccount = result.get();
+		} else {
+			throw new NotFoundException("no such id for an account");
 		}
-		else {
+		return theAccount;
+	}
+
+	public Profile getProfileById(int accountId) throws NotFoundException{
+		Optional<Profile> result = profileJpaRepo.findById(accountId);
+		Profile theAccount = null;
+		if (result.isPresent()) {
+			theAccount = result.get();
+		} else {
 			throw new NotFoundException("no such id for an account");
 		}
 		return theAccount;

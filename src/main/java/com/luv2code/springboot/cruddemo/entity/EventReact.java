@@ -2,10 +2,14 @@ package com.luv2code.springboot.cruddemo.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
 
 @Entity
 @Table(name = "event_react")
@@ -24,6 +28,10 @@ public class EventReact {
 
 	@Column(name = "event_react_creator_id")
 	private int eventReactCreatorId;
+	
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "event_react_creator_id", insertable = false, updatable = false, nullable = false)
+	private Account account;
 
 	public EventReact() {
 

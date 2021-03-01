@@ -1,13 +1,15 @@
 package com.luv2code.springboot.cruddemo.entity;
 
-
 import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -27,9 +29,6 @@ public class Message {
 
 	@Column(name = "message")
 	private String message;
-	
-
-
 
 	@Column(name = "date")
 	private Date date;
@@ -37,11 +36,15 @@ public class Message {
 	@Column(name = "seen")
 	private boolean seen;
 
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "id_sender", insertable = false, updatable = false, nullable = false)
+	private Account account;
+
 	public Message() {
 
 	}
 
-	public Message(int idSender, int idReceiver, String message, Date date, boolean seen ) {
+	public Message(int idSender, int idReceiver, String message, Date date, boolean seen) {
 		this.idSender = idSender;
 		this.idReceiver = idReceiver;
 		this.message = message;
@@ -56,8 +59,6 @@ public class Message {
 	public void setDate(Date date) {
 		this.date = date;
 	}
-
-
 
 	public int getIdMessages() {
 		return idMessages;
@@ -91,8 +92,6 @@ public class Message {
 		this.message = message;
 	}
 
-	
-
 	public boolean isSeen() {
 		return seen;
 	}
@@ -100,9 +99,5 @@ public class Message {
 	public void setSeen(boolean seen) {
 		this.seen = seen;
 	}
-	
-	
-	
-	
 
 }

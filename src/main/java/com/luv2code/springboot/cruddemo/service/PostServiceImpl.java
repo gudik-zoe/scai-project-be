@@ -1,10 +1,10 @@
 package com.luv2code.springboot.cruddemo.service;
 
-import com.luv2code.exception.error.handling.NotFoundException;
 import com.luv2code.springboot.cruddemo.entity.Notification;
 import com.luv2code.springboot.cruddemo.entity.Post;
-import com.luv2code.springboot.cruddemo.jpa.repositories.PostJpaRepo;
-import com.luv2code.utility.AccountBasicData;
+import com.luv2code.springboot.cruddemo.exceptions.NotFoundException;
+import com.luv2code.springboot.cruddemo.jpa.PostJpaRepo;
+import com.luv2code.springboot.cruddemo.utility.AccountBasicData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -88,9 +88,9 @@ public class PostServiceImpl implements PostService {
 	@Override
 	public void deletePostById(int accountId, int postId) {
 		Post post = findPostByPostId(postId);
-		if(post.getPostCreatorId()!= null && post.getPostCreatorId() != accountId) {
+		if (post.getPostCreatorId() != null && post.getPostCreatorId() != accountId) {
 			throw new NotFoundException("post is not yours");
-		}else {
+		} else {
 			postRepoJpa.deleteById(postId);
 		}
 	}
@@ -135,14 +135,15 @@ public class PostServiceImpl implements PostService {
 	}
 
 	@Override
-	public Post updatePost(int accountId , int postId, MultipartFile image, boolean postWithImage, String newText)throws Exception {
+	public Post updatePost(int accountId, int postId, MultipartFile image, boolean postWithImage, String newText)
+			throws Exception {
 		Post OriginalPost = findPostByPostId(postId);
-		if(!newText.equals(OriginalPost.getText())) {
+		if (!newText.equals(OriginalPost.getText())) {
 			OriginalPost.setText(newText);
 		}
-		if(postWithImage && image!= null) {
+		if (postWithImage && image != null) {
 			OriginalPost.setImage(storageService.pushImage(image).getImageUrl());
-		}else if(!postWithImage) {
+		} else if (!postWithImage) {
 			OriginalPost.setImage(null);
 		}
 		postRepoJpa.save(OriginalPost);

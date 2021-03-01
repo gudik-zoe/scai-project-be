@@ -2,15 +2,16 @@ package com.luv2code.springboot.cruddemo.service;
 
 import java.util.List;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.luv2code.springboot.cruddemo.entity.Message;
-import com.luv2code.springboot.cruddemo.jpa.repositories.MessageJpaRepo;
+import com.luv2code.springboot.cruddemo.jpa.MessageJpaRepo;
 
 @Service
 public class MessagesServiceImpl implements MessagesService {
-
+	
 	@Autowired
 	private MessageJpaRepo messageJpaRepo;
 

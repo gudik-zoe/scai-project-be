@@ -1,6 +1,9 @@
 package com.luv2code.springboot.cruddemo.entity;
 
 import javax.persistence.*;
+
+
+
 import java.util.*;
 
 @Entity
@@ -20,16 +23,13 @@ public class Post {
 
 	@Column(name = "image")
 	private String image;
-	
-	
+
 	@Column(name = "status")
 	private Integer status;
-	
-	
+
 	@Column(name = "page_creator_id")
 	private Integer pageCreatorId;
 
-	
 	@Column(name = "post_creator_id")
 	private Integer postCreatorId;
 
@@ -43,18 +43,10 @@ public class Post {
 	private Date date;
 
 
-
-	@ManyToMany(fetch=FetchType.LAZY , cascade = {CascadeType.PERSIST , CascadeType.MERGE , CascadeType.DETACH , CascadeType.REFRESH })
-	@JoinTable(name = "post_tag" ,
-	joinColumns = {@JoinColumn(name = "post_id_post")}, inverseJoinColumns = {@JoinColumn(name ="tag_id_tag")})
-	private List<Tag> tags;
-
-
 	@OneToMany(cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
 	@JoinColumn(name = "related_post_id", referencedColumnName = "id_post", insertable = false, updatable = false, nullable = false)
 	private List<PostLike> postLikes;
-	
-	
+
 	@OneToMany(cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
 	@JoinColumn(name = "related_post_id", referencedColumnName = "id_post", insertable = false, updatable = false, nullable = false)
 	private List<Comment> comments;
@@ -63,24 +55,14 @@ public class Post {
 	@JoinColumn(name = "related_post_id", referencedColumnName = "id_post", insertable = false, updatable = false, nullable = false)
 	private List<Notification> notifications;
 
-//	@ManyToOne(fetch = FetchType.LAZY)
-//	@JoinColumn(name = "post_creator_id" , insertable = false, updatable = false, nullable = false)
-//	private Account account;
-
-//	public Account getAccount() {
-//		return account;
-//	}
-//
-//	public void setAccount(Account account) {
-//		this.account = account;
-//	}
 
 	public Post() {
 
 	}
 
 	public Post(String text, Integer postOriginalId, String image, Integer postCreatorId, Integer postedOn,
-			String extraText, Date date, Integer status , List<PostLike> postLikes, Integer pageCreatorId ,List<Comment> comments) {
+			String extraText, Date date, Integer status, List<PostLike> postLikes, Integer pageCreatorId,
+			List<Comment> comments) {
 		this.text = text;
 		this.postOriginalId = postOriginalId;
 		this.image = image;
@@ -94,14 +76,14 @@ public class Post {
 		this.pageCreatorId = pageCreatorId;
 	}
 
+//	public List<Tag> getTags() {
+//		return tags;
+//	}
+//
+//	public void setTags(List<Tag> tags) {
+//		this.tags = tags;
+//	}
 
-	public List<Tag> getTags() {
-		return tags;
-	}
-
-	public void setTags(List<Tag> tags) {
-		this.tags = tags;
-	}
 	public int getIdPost() {
 		return idPost;
 	}

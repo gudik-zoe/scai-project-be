@@ -1,11 +1,7 @@
 package com.luv2code.springboot.cruddemo.service;
 
-
-import java.io.IOException;
-import java.io.InputStream;
-
-
-
+import com.luv2code.springboot.cruddemo.exceptions.NotFoundException;
+import com.luv2code.springboot.cruddemo.utility.ImageUrl;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
@@ -16,45 +12,55 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONObject;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.luv2code.exception.error.handling.NotFoundException;
-import com.luv2code.exception.error.handling.ErrorResponse;
-import com.luv2code.exception.error.handling.StorageException;
-import com.luv2code.utility.ImageUrl;
+import java.io.IOException;
 
+//import org.apache.http.HttpEntity;
+//import org.apache.http.client.methods.CloseableHttpResponse;
+//import org.apache.http.client.methods.HttpPost;
+//import org.apache.http.entity.ContentType;
+//import org.apache.http.entity.mime.HttpMultipartMode;
+//import org.apache.http.entity.mime.MultipartEntityBuilder;
+//import org.apache.http.impl.client.CloseableHttpClient;
+//import org.apache.http.impl.client.HttpClients;
+//import org.apache.http.util.EntityUtils;
+//import org.json.JSONObject;
+
+//import com.luv2code.exception.error.handling.NotFoundException;
+//import com.luv2code.exception.error.handling.ErrorResponse;
+//import com.luv2code.exception.error.handling.StorageException;
+//import com.luv2code.springboot.cruddemo.service.StorageService;
+//import com.luv2code.utility.ImageUrl;
 
 @Service
-public class StorageServiceImpl implements StorageService  {
+public class StorageServiceImpl implements StorageService {
+	
+	
+	public StorageServiceImpl() {
 
-
-	@Override
-	public void store(MultipartFile file) {
-
-		String filename = StringUtils.cleanPath(file.getOriginalFilename());
-
-		if (file.isEmpty()) {
-			throw new StorageException("Failed to store empty file " + filename);
-		}
-		if (!file.getContentType().contains("image")) {
-			throw new StorageException("file type is not supported");
-		}
-		if (file.getSize() > 2000000) {
-			throw new StorageException("image size exceeds the permitted limit");
-		}
-		try (InputStream inputStream = file.getInputStream()) {
-//			Files.copy(inputStream, this.rootLocation.resolve(filename), StandardCopyOption.REPLACE_EXISTING);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 	}
-
-
+//	@Override
+//	public void store(MultipartFile file) {
+//
+//		String filename = StringUtils.cleanPath(file.getOriginalFilename());
+//
+//		if (file.isEmpty()) {
+//			throw new StorageException("Failed to store empty file " + filename);
+//		}
+//		if (!file.getContentType().contains("image")) {
+//			throw new StorageException("file type is not supported");
+//		}
+//		if (file.getSize() > 2000000) {
+//			throw new StorageException("image size exceeds the permitted limit");
+//		}
+//		try (InputStream inputStream = file.getInputStream()) {
+////			Files.copy(inputStream, this.rootLocation.resolve(filename), StandardCopyOption.REPLACE_EXISTING);
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//	}
 
 //	@Override
 //	public Stream<Path> loadAll() {
@@ -97,22 +103,22 @@ public class StorageServiceImpl implements StorageService  {
 //		}
 //	}
 
-	@ExceptionHandler
-	public ResponseEntity<ErrorResponse> handleStorageException(NotFoundException exc) {
-		ErrorResponse error = new ErrorResponse(HttpStatus.NOT_FOUND.value(), exc.getMessage(),
-				System.currentTimeMillis());
-		return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
-	}
-
-	@ExceptionHandler
-	public ResponseEntity<ErrorResponse> handleException1(Exception exc) {
-		ErrorResponse error = new ErrorResponse(HttpStatus.BAD_REQUEST.value(), "unknown error occured",
-				System.currentTimeMillis());
-		return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
-	}
+//	@ExceptionHandler
+//	public ResponseEntity<ErrorResponse> handleStorageException(NotFoundException exc) {
+//		ErrorResponse error = new ErrorResponse(HttpStatus.NOT_FOUND.value(), exc.getMessage(),
+//				System.currentTimeMillis());
+//		return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+//	}
+//
+//	@ExceptionHandler
+//	public ResponseEntity<ErrorResponse> handleException1(Exception exc) {
+//		ErrorResponse error = new ErrorResponse(HttpStatus.BAD_REQUEST.value(), "unknown error occured",
+//				System.currentTimeMillis());
+//		return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+//	}
 
 	@Override
-	public ImageUrl pushImage( MultipartFile theImage) throws IOException  {
+	public ImageUrl pushImage(MultipartFile theImage) throws IOException {
 		if (!theImage.getContentType().contains("image")) {
 			throw new NotFoundException("file type is not supported");
 		}
@@ -135,16 +141,12 @@ public class StorageServiceImpl implements StorageService  {
 		JSONObject obj;
 		obj = new JSONObject(EntityUtils.toString(response.getEntity()));
 		JSONObject obj2 = obj.getJSONObject("data");
-		String imageUrl =obj2.getString("display_url");
+		String imageUrl = obj2.getString("display_url");
 		ImageUrl imgUrlClass = new ImageUrl();
 		imgUrlClass.setImageUrl(imageUrl);
 //		System.out.println(imgUrlClass.getImageUrl());
 		return imgUrlClass;
-		
+
 	}
-
-
-
-
 
 }

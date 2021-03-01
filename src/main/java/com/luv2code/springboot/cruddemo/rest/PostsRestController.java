@@ -1,12 +1,12 @@
 package com.luv2code.springboot.cruddemo.rest;
 
-import com.luv2code.exception.error.handling.NotFoundException;
 import com.luv2code.springboot.cruddemo.entity.Post;
+import com.luv2code.springboot.cruddemo.exceptions.NotFoundException;
 import com.luv2code.springboot.cruddemo.service.PostService;
 import com.luv2code.springboot.cruddemo.service.StorageService;
-import com.luv2code.utility.IdExtractor;
-import com.luv2code.utility.ImageUrl;
-import com.luv2code.utility.UploadPost;
+import com.luv2code.springboot.cruddemo.utility.IdExtractor;
+import com.luv2code.springboot.cruddemo.utility.ImageUrl;
+import com.luv2code.springboot.cruddemo.utility.UploadPost;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -67,7 +67,7 @@ public class PostsRestController {
 
 	@PostMapping("posts/pushImage")
 	public ImageUrl pushImage(@RequestBody MultipartFile image) throws Exception {
-		if(!image.isEmpty()) {
+		if (!image.isEmpty()) {
 			return storageService.pushImage(image);
 		}
 		return null;
@@ -92,8 +92,7 @@ public class PostsRestController {
 
 	}
 
-
-	@PostMapping(value = "/newApproach" )
+	@PostMapping(value = "/newApproach")
 	public void giveMeData(@RequestParam("post") UploadPost post) throws Exception {
 		System.out.println(post.getPhoto());
 
@@ -104,19 +103,5 @@ public class PostsRestController {
 		IdExtractor idExtractor = new IdExtractor(authHeader);
 		postService.deletePostById(idExtractor.getIdFromToken(), postId);
 	}
-
-//	@ExceptionHandler
-//	public ResponseEntity<ErrorResponse> handleCustomeException(CustomeException exc) {
-//		ErrorResponse error = new ErrorResponse(HttpStatus.NOT_FOUND.value(), exc.getMessage(),
-//				System.currentTimeMillis());
-//		return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
-//	}
-//
-//	@ExceptionHandler
-//	public ResponseEntity<ErrorResponse> handleException(Exception exc) {
-//		ErrorResponse error = new ErrorResponse(HttpStatus.BAD_REQUEST.value(), "unknown error occured",
-//				System.currentTimeMillis());
-//		return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
-//	}
 
 }

@@ -2,10 +2,15 @@ package com.luv2code.springboot.cruddemo.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+
 
 @Entity
 @Table(name="post_like")
@@ -23,6 +28,10 @@ public class PostLike {
 	
 	@Column(name="post_like_creator_id")
 	private int postLikeCreatorId;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "post_Like_creator_id", insertable = false, updatable = false, nullable = false)
+	private Account account;
 	
 	public PostLike() {	
 	}

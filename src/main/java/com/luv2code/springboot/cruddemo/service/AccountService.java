@@ -1,15 +1,18 @@
 package com.luv2code.springboot.cruddemo.service;
 
-import com.luv2code.exception.error.handling.NotFoundException;
+
 import com.luv2code.springboot.cruddemo.entity.Account;
-import com.luv2code.utility.AccountBasicData;
-import com.luv2code.utility.AccountData;
-import com.luv2code.utility.ImageUrl;
+import com.luv2code.springboot.cruddemo.exceptions.NotFoundException;
+import com.luv2code.springboot.cruddemo.utility.AccountBasicData;
+import com.luv2code.springboot.cruddemo.utility.AccountData;
+import com.luv2code.springboot.cruddemo.utility.ImageUrl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.security.auth.login.AccountException;
 import java.util.List;
+
+
 
 public interface AccountService {
 
@@ -25,9 +28,9 @@ public interface AccountService {
 
 	public AccountData getLoggedInUserFullData(int accountIdFromToken);
 
-	public Account save(Account account) throws NotFoundException;
+	public boolean save(Account account) throws NotFoundException;
 
-	public Account updateAccount(Account account , int accountId) throws AccountException;
+	public Account updateAccount(Account account, int accountId) throws AccountException;
 
 	public void deleteById(int theId);
 

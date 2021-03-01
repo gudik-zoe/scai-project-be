@@ -1,0 +1,4 @@
+2021-02-22 21:32:22,276 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-5] invalid credentials
+2021-02-22 21:33:01,268 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-9] invalid credentials
+2021-02-22 21:33:06,641 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-8] invalid credentials
+2021-02-22 21:33:10,411 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-10] invalid credentials

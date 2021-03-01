@@ -1,19 +1,16 @@
 package com.luv2code.springboot.cruddemo.service;
-
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.luv2code.springboot.cruddemo.entity.Comment;
 import com.luv2code.springboot.cruddemo.entity.CommentLike;
 import com.luv2code.springboot.cruddemo.entity.Notification;
 import com.luv2code.springboot.cruddemo.entity.Post;
-import com.luv2code.springboot.cruddemo.jpa.repositories.CommentLikeJpaRepo;
+import com.luv2code.springboot.cruddemo.jpa.CommentLikeJpaRepo;
 
 @Service
-@Transactional
 public class CommentLikesServiceImpl implements CommentLikesService {
 
 	@Autowired

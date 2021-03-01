@@ -1,7 +1,7 @@
 package com.luv2code.springboot.cruddemo.entity;
 
+
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 @Table(name = "account")
@@ -11,54 +11,6 @@ public class Account {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id_account")
 	private int idAccount;
-
-//	@OneToMany( cascade = CascadeType.ALL)
-//	@JoinColumn(name = "post_creator_id" , referencedColumnName = "id_account", insertable = false, updatable = false, nullable = false)
-
-	@OneToMany(cascade = CascadeType.ALL)
-	@JoinColumn(name = "post_creator_id")
-	private List<Post> posts;
-
-	@OneToMany(cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
-	@JoinColumn(name = "comment_creator_id", referencedColumnName = "id_account", insertable = false, updatable = false, nullable = false )
-	private List<Comment> comments;
-
-	@OneToMany(cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
-	@JoinColumn(name = "post_like_creator_id", referencedColumnName = "id_account", insertable = false, updatable = false, nullable = false)
-	private List<PostLike> postLikes;
-
-	@OneToMany(cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
-	@JoinColumn(name = "comment_like_creator_id", referencedColumnName = "id_account", insertable = false, updatable = false, nullable = false)
-	private List<CommentLike> commentLikes;
-
-	@OneToMany(cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
-	@JoinColumn(name = "id_sender", referencedColumnName = "id_account", insertable = false, updatable = false, nullable = false)
-	private List<Message> messages;
-
-	@OneToMany(cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
-	@JoinColumn(name = "user_one_id", referencedColumnName = "id_account", insertable = false, updatable = false, nullable = false)
-	private List<Relationship> relationship;
-
-	@OneToMany(cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
-	@JoinColumn(name = "not_creator", referencedColumnName = "id_account", insertable = false, updatable = false, nullable = false)
-	private List<Notification> notification;
-	
-	@OneToMany(cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
-	@JoinColumn(name = "page_creator_id", referencedColumnName = "id_account", insertable = false, updatable = false, nullable = false)
-	private List<Page> page;
-	
-	@OneToMany(cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
-	@JoinColumn(name = "page_like_creator_id", referencedColumnName = "id_account", insertable = false, updatable = false, nullable = false)
-	private List<PageLike> pageLike;
-	
-	@OneToMany(cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
-	@JoinColumn(name = "event_creator_id", referencedColumnName = "id_account", insertable = false, updatable = false, nullable = false)
-	private List<Event> events;
-	
-	@OneToMany(cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
-	@JoinColumn(name = "event_react_creator_id", referencedColumnName = "id_account", insertable = false, updatable = false, nullable = false)
-	private List<EventReact> eventReact;
-
 
 	@Column(name = "first_name")
 	private String firstName;
@@ -90,13 +42,6 @@ public class Account {
 	@Column(name = "cover_photo")
 	private String coverPhoto;
 
-	public List<Page> getPage() {
-		return page;
-	}
-
-	public void setPage(List<Page> page) {
-		this.page = page;
-	}
 
 	public Account() {
 
@@ -104,7 +49,6 @@ public class Account {
 
 	public Account(String firstName, String lastName, String email, String password, String gender, String livesIn,
 			String study, String wentTo, String profilePhoto, String coverPhoto) {
-
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
@@ -141,53 +85,6 @@ public class Account {
 		this.idAccount = idAccount;
 	}
 
-	public List<Post> getPosts() {
-		return posts;
-	}
-
-	public void setPosts(List<Post> posts) {
-		this.posts = posts;
-	}
-
-	public List<Comment> getComments() {
-		return comments;
-	}
-
-	public void setComments(List<Comment> comments) {
-		this.comments = comments;
-	}
-
-	public List<PostLike> getPostLikes() {
-		return postLikes;
-	}
-
-	public void setPostLikes(List<PostLike> postLikes) {
-		this.postLikes = postLikes;
-	}
-
-	public List<CommentLike> getCommentLikes() {
-		return commentLikes;
-	}
-
-	public void setCommentLikes(List<CommentLike> commentLikes) {
-		this.commentLikes = commentLikes;
-	}
-
-	public List<Message> getMessages() {
-		return messages;
-	}
-
-	public void setMessages(List<Message> messages) {
-		this.messages = messages;
-	}
-
-	public List<Relationship> getRelationship() {
-		return relationship;
-	}
-
-	public void setRelationship(List<Relationship> relationship) {
-		this.relationship = relationship;
-	}
 
 	public String getFirstName() {
 		return firstName;
@@ -253,14 +150,6 @@ public class Account {
 		this.wentTo = wentTo;
 	}
 
-	@Override
-	public String toString() {
-		return "Account [idAccount=" + idAccount + ", posts=" + posts + ", comments=" + comments + ", postLikes="
-				+ postLikes + ", commentLikes=" + commentLikes + ", messages=" + messages + ", relationship="
-				+ relationship + ", notification=" + notification + ", firstName=" + firstName + ", lastName="
-				+ lastName + ", email=" + email + ", password=" + password + ", gender=" + gender + ", livesIn="
-				+ livesIn + ", study=" + study + ", wentTo=" + wentTo + ", profilePhoto=" + profilePhoto
-				+ ", coverPhoto=" + coverPhoto + "]";
-	}
+
 
 }

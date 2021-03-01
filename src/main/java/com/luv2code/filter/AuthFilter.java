@@ -1,6 +1,6 @@
 package com.luv2code.filter;
 
-import com.luv2code.exception.error.handling.NotFoundException;
+import com.luv2code.springboot.cruddemo.exceptions.NotFoundException;
 import com.luv2code.springboot.cruddemo.rest.AccountRestController;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
@@ -17,16 +17,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-
-
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class AuthFilter extends OncePerRequestFilter {
 
 	Logger logger = LoggerFactory.getLogger(AccountRestController.class);
 
 	@Override
-	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, NotFoundException, ServletException
-		 {
+	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
+			throws IOException, NotFoundException, ServletException {
 		// ignore OPTION method calls
 		if (HttpMethod.OPTIONS.name().equalsIgnoreCase(request.getMethod())) {
 			chain.doFilter(request, response);
@@ -36,7 +34,8 @@ public class AuthFilter extends OncePerRequestFilter {
 		// ignore all permitted routes
 		if (request.getRequestURI().startsWith("/files") || "/api/login".equalsIgnoreCase(request.getRequestURI())
 				|| "/api/signUp".equalsIgnoreCase(request.getRequestURI())
-				|| request.getRequestURI().startsWith("/chat") ) {
+				|| "/api/greeting".equalsIgnoreCase(request.getRequestURI())
+				|| request.getRequestURI().startsWith("/chat")) {
 			chain.doFilter(request, response);
 			return;
 		}
@@ -48,28 +47,13 @@ public class AuthFilter extends OncePerRequestFilter {
 		String token = header.replace("Bearer ", "");
 		try {
 			Jwts.parser().setSigningKey("ciao").parseClaimsJws(token).getBody();
-        }catch (ExpiredJwtException ex){
-        	 request.setAttribute("expired", ex.getMessage());
-        	 final String expiredMsg = (String) request.getAttribute("expired");
-        	 final String msg = (expiredMsg != null) ? expiredMsg : "Unauthorized";
-        	 response.sendError(HttpServletResponse.SC_UNAUTHORIZED, msg);
-        }
+		} catch (ExpiredJwtException ex) {
+			request.setAttribute("expired", ex.getMessage());
+			final String expiredMsg = (String) request.getAttribute("expired");
+			final String msg = (expiredMsg != null) ? expiredMsg : "Unauthorized";
+			response.sendError(HttpServletResponse.SC_UNAUTHORIZED, msg);
+		}
 		chain.doFilter(request, response);
 	}
-
-//	@ExceptionHandler
-//	public ResponseEntity<ErrorResponse> handleCustomeException(NotFoundException exc) {
-//		ErrorResponse error = new ErrorResponse(HttpStatus.UNAUTHORIZED.value(), exc.getMessage(),
-//				System.currentTimeMillis());
-//		logger.error(error.getMessage());
-//		return new ResponseEntity<>(error, HttpStatus.UNAUTHORIZED);
-//	}
-//	@ExceptionHandler
-//	public ResponseEntity<ErrorResponse> handlePostException(Exception exc) {
-//		ErrorResponse error = new ErrorResponse(HttpStatus.BAD_REQUEST.value(), "unknown error occured",
-//				System.currentTimeMillis());
-//		logger.error(error.getMessage());
-//		return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
-//	}
 
 }
