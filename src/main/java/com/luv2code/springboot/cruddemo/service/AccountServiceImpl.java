@@ -7,9 +7,13 @@ import com.luv2code.springboot.cruddemo.exceptions.BadRequestException;
 import com.luv2code.springboot.cruddemo.exceptions.NotFoundException;
 import com.luv2code.springboot.cruddemo.jpa.AccountJpaRepo;
 import com.luv2code.springboot.cruddemo.jpa.ProfileJpaRepo;
-import com.luv2code.springboot.cruddemo.utility.AccountBasicData;
-import com.luv2code.springboot.cruddemo.utility.AccountData;
-import com.luv2code.springboot.cruddemo.utility.ImageUrl;
+import com.luv2code.springboot.cruddemo.mappers.AccountDataMapper;
+import com.luv2code.springboot.cruddemo.mappers.AccountDataMapperImpl;
+import com.luv2code.springboot.cruddemo.mappers.AccountMapper;
+import com.luv2code.springboot.cruddemo.mappers.AccountMapperImpl;
+import com.luv2code.springboot.cruddemo.dto.AccountBasicData;
+import com.luv2code.springboot.cruddemo.dto.AccountData;
+import com.luv2code.springboot.cruddemo.dto.ImageUrl;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +46,10 @@ public class AccountServiceImpl implements AccountService {
 	@Autowired
 	private ProfileJpaRepo profileJpaRepo;
 
+	private static AccountMapper  accountBasicDataMapper = new AccountMapperImpl();
+
+	private static AccountDataMapper accountDataMapper = new AccountDataMapperImpl();
+
 	public AccountServiceImpl() {
 
 	}
@@ -54,8 +62,7 @@ public class AccountServiceImpl implements AccountService {
 		for (Account account : accounts) {
 			if (relationshipService.getStatus(accountId, account.getIdAccount()) == null
 					|| relationshipService.getStatus(accountId, account.getIdAccount()) != 1) {
-				AccountBasicData personYouMayKnow = new AccountBasicData(account.getFirstName(), account.getLastName(),
-						account.getProfilePhoto(), account.getIdAccount(), account.getCoverPhoto());
+				AccountBasicData personYouMayKnow = accountBasicDataMapper.toAccountBasicData(account);
 				peopleYouMayKnow.add(personYouMayKnow);
 			}
 		}
@@ -105,9 +112,7 @@ public class AccountServiceImpl implements AccountService {
 	@Override
 	public AccountBasicData getAccountBasicData(int accountId) {
 		Account account = findById(accountId);
-	AccountBasicData theAccount = new AccountBasicData(account.getFirstName(), account.getLastName(),
-			account.getProfilePhoto(), account.getIdAccount(), account.getCoverPhoto());
-	return theAccount;
+		return accountBasicDataMapper.toAccountBasicData(account);
 
 	}
 
@@ -134,9 +139,7 @@ public class AccountServiceImpl implements AccountService {
 	@Override
 	public AccountBasicData getLoggedInUserBasicData(int accountIdFromToken) {
 		Account account = findById(accountIdFromToken);
-		AccountBasicData theAccount = new AccountBasicData(account.getFirstName(), account.getLastName(),
-				account.getProfilePhoto(), account.getIdAccount(), account.getCoverPhoto());
-		return theAccount;
+	return accountBasicDataMapper.toAccountBasicData(account);
 	}
 
 	@Override
@@ -178,10 +181,7 @@ public class AccountServiceImpl implements AccountService {
 	@Override
 	public AccountData getLoggedInUserFullData(int accountIdFromToken) {
 		Account account = findById(accountIdFromToken);
-		AccountData theAccount = new AccountData(account.getFirstName(), account.getLastName(),
-				account.getProfilePhoto(), account.getIdAccount(), account.getCoverPhoto(), account.getLivesIn(),
-				account.getEmail(), account.getWentTo(), account.getStudy());
-		return theAccount;
+		return accountDataMapper.toAccountData(account);
 	}
 
 	@Override
@@ -190,21 +190,15 @@ public class AccountServiceImpl implements AccountService {
 		List<AccountBasicData> friends = new ArrayList<AccountBasicData>();
 		Account theAccount = null;
 		for (Relationship relationship : relationships) {
-			Optional<Account> result = accountRepoJpa
-					.findById(relationship.getUserOneId() == accountId ? relationship.getUserTwoId()
-							: relationship.getUserOneId());
-			if (result.isPresent()) {
-				theAccount = result.get();
-				friends.add(new AccountBasicData(theAccount.getFirstName(), theAccount.getLastName(),
-						theAccount.getProfilePhoto(), theAccount.getIdAccount(), theAccount.getCoverPhoto()));
-			}
+			 theAccount = findById(relationship.getUserOneId() == accountId ? relationship.getUserTwoId()
+					 : relationship.getUserOneId());
+				friends.add(accountBasicDataMapper.toAccountBasicData(theAccount));
 		}
 		return friends;
 	}
 
 	@Override
 	public ResponseEntity<Account> login(Account user) {
-
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 		Account theAccount = findByEmail(user.getEmail());
 		boolean check = encoder.matches(user.getPassword(), theAccount.getPassword());

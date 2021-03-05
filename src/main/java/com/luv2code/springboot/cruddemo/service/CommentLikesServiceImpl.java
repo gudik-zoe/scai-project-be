@@ -40,11 +40,9 @@ public class CommentLikesServiceImpl implements CommentLikesService {
 			} else {
 				CommentLike commentLikeToAdd = new CommentLike(commentId, accountId, null);
 				commentLikeJpaRepo.save(commentLikeToAdd);
-				if (theCommentToLike.getCommentCreatorId() != null) {
-					Notification theNotification = new Notification(accountId, theCommentToLike.getCommentCreatorId(),
-							"liked your comment", new Date(System.currentTimeMillis()),
-							theCommentToLike.getRelatedPostId(), false);
-					notificationService.addNotification(theNotification);
+				if (theCommentToLike.getCommentCreatorId() != null) {	
+					Post post = postService.findPostByPostId(theCommentToLike.getRelatedPostId());
+					notificationService.addNotification(notificationService.createNot(accountId, post, "liked your comment"));
 				}
 				return commentLikeToAdd;
 			}

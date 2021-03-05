@@ -39,9 +39,9 @@ public class PostLikesServiceImpl implements PostLikesService {
 			PostLike thePostLike = new PostLike(postId, accountId);
 			postLikeJpaRepo.save(thePostLike);
 			if (theRelatedPost.getPostCreatorId() != null && theRelatedPost.getPostCreatorId() != accountId) {
-				Notification likeNotification = new Notification(accountId, theRelatedPost.getPostCreatorId(),
-						"liked your post", new Date(System.currentTimeMillis()), theRelatedPost.getIdPost(), false);
-				notificationService.addNotification(likeNotification);
+				notificationService
+						.addNotification(notificationService.createNot(accountId, theRelatedPost, "liked your post"));
+
 			}
 			return thePostLike;
 		} else {

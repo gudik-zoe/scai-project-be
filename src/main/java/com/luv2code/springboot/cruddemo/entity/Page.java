@@ -1,18 +1,7 @@
 package com.luv2code.springboot.cruddemo.entity;
 
+import javax.persistence.*;
 import java.util.List;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
 
 
 
@@ -56,9 +45,9 @@ public class Page {
 	@JoinColumn(name = "page_creator_id", referencedColumnName = "id_page", insertable = false, updatable = false, nullable = false)
 	private List<CommentLike> commentLikes;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "page_creator_id", insertable = false, updatable = false, nullable = false)
-	private Account account;
+//	@ManyToOne(fetch = FetchType.LAZY)
+//	@JoinColumn(name = "page_creator_id", insertable = false, updatable = false, nullable = false)
+//	private Account account;
 
 	public Page() {
 

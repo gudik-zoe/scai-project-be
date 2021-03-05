@@ -1,7 +1,7 @@
 package com.luv2code.springboot.cruddemo.service;
 
 import com.luv2code.springboot.cruddemo.exceptions.NotFoundException;
-import com.luv2code.springboot.cruddemo.utility.ImageUrl;
+import com.luv2code.springboot.cruddemo.dto.ImageUrl;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;

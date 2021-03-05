@@ -1,13 +1,13 @@
 package com.luv2code.springboot.cruddemo.service;
 
-import java.text.ParseException;
-import java.util.List;
-
-import org.springframework.web.multipart.MultipartFile;
-
+import com.luv2code.springboot.cruddemo.dto.ReactToEvent;
+import com.luv2code.springboot.cruddemo.dto.UpdateEvent;
 import com.luv2code.springboot.cruddemo.entity.Event;
 import com.luv2code.springboot.cruddemo.entity.EventReact;
-import com.luv2code.springboot.cruddemo.utility.ReactToEvent;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.text.ParseException;
+import java.util.List;
 
 public interface EventService {
 
@@ -24,7 +24,8 @@ public interface EventService {
 	public Event createEvent(int accountId, String name, MultipartFile eventPhoto, String when, String where,
 			String description) throws Exception;
 
-	public Event updateEvent(int accountId, String eventId, String name, String when, String where, String description,
-			MultipartFile eventPhoto) throws Exception;
+	public Event updateEvent(int accountId, UpdateEvent newEvent) throws Exception;
+
+	public String checkDate(int eventId);
 
 }

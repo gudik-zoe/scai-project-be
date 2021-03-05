@@ -7,7 +7,8 @@ import com.luv2code.springboot.cruddemo.exceptions.NotFoundException;
 import com.luv2code.springboot.cruddemo.jpa.PageJpaRepo;
 import com.luv2code.springboot.cruddemo.jpa.PageLikeJpaRepo;
 import com.luv2code.springboot.cruddemo.jpa.PostJpaRepo;
-import com.luv2code.springboot.cruddemo.utility.PageBasicData;
+import com.luv2code.springboot.cruddemo.dto.PageBasicData;
+import com.luv2code.springboot.cruddemo.dto.UpdatePage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -142,23 +143,21 @@ public class PageServiceImpl implements PageService {
 	}
 
 	@Override
-	public Page updatePage(int accountId, String pageId, MultipartFile profilePhoto, MultipartFile coverPhoto,
-			String name, String description) throws Exception {
-		int idPage = Integer.parseInt(pageId);
-		Page thePage = getPageFullData(idPage);
+	public Page updatePage(int accountId, UpdatePage newPage) throws Exception {
+		Page thePage = getPageFullData(newPage.getIdPage());
 		if (thePage.getPageCreatorId() != accountId) {
 			throw new NotFoundException("cannot update a page that is not yours");
 		} else {
-			if (profilePhoto != null) {
-				String newProPhoto = storageService.pushImage(profilePhoto).getImageUrl();
+			if (newPage.getProfilePhoto() != null) {
+				String newProPhoto = storageService.pushImage(newPage.getProfilePhoto()).getImageUrl();
 				thePage.setProfilePhoto(newProPhoto);
 			}
-			if (coverPhoto != null) {
-				String newCoPhoto = storageService.pushImage(coverPhoto).getImageUrl();
+			if (newPage.getCoverPhoto() != null) {
+				String newCoPhoto = storageService.pushImage(newPage.getCoverPhoto()).getImageUrl();
 				thePage.setCoverPhoto(newCoPhoto);
 			}
-			thePage.setName(name);
-			thePage.setDescription(description);
+			thePage.setName(newPage.getName());
+			thePage.setDescription(newPage.getDescription());
 			pageJpaRepo.save(thePage);
 			return thePage;
 

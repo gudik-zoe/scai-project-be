@@ -3,7 +3,7 @@ package com.luv2code.springboot.cruddemo.rest;
 import com.luv2code.springboot.cruddemo.exceptions.NotFoundException;
 import com.luv2code.springboot.cruddemo.service.StorageService;
 import com.luv2code.springboot.cruddemo.utility.IdExtractor;
-import com.luv2code.springboot.cruddemo.utility.ImageUrl;
+import com.luv2code.springboot.cruddemo.dto.ImageUrl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;

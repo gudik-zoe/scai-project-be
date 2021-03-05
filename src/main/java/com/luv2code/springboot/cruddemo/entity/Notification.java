@@ -1,16 +1,7 @@
 package com.luv2code.springboot.cruddemo.entity;
 
+import javax.persistence.*;
 import java.util.Date;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
 
 @Entity
 @Table(name = "notification")
@@ -38,10 +29,6 @@ public class Notification {
 
 	@Column(name = "seen")
 	private boolean seen;
-
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "not_creator", insertable = false, updatable = false, nullable = false)
-	private Account account;
 
 	public Notification() {
 

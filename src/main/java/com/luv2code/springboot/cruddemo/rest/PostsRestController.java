@@ -5,8 +5,7 @@ import com.luv2code.springboot.cruddemo.exceptions.NotFoundException;
 import com.luv2code.springboot.cruddemo.service.PostService;
 import com.luv2code.springboot.cruddemo.service.StorageService;
 import com.luv2code.springboot.cruddemo.utility.IdExtractor;
-import com.luv2code.springboot.cruddemo.utility.ImageUrl;
-import com.luv2code.springboot.cruddemo.utility.UploadPost;
+import com.luv2code.springboot.cruddemo.dto.ImageUrl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -92,11 +91,7 @@ public class PostsRestController {
 
 	}
 
-	@PostMapping(value = "/newApproach")
-	public void giveMeData(@RequestParam("post") UploadPost post) throws Exception {
-		System.out.println(post.getPhoto());
 
-	}
 
 	@DeleteMapping("posts/{postId}")
 	public void deletePost(@PathVariable int postId, @RequestHeader("Authorization") String authHeader) {

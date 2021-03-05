@@ -2,7 +2,7 @@ package com.luv2code.springboot.cruddemo.service;
 
 import org.springframework.web.multipart.MultipartFile;
 
-import com.luv2code.springboot.cruddemo.utility.ImageUrl;
+import com.luv2code.springboot.cruddemo.dto.ImageUrl;
 
 public interface StorageService  {
 

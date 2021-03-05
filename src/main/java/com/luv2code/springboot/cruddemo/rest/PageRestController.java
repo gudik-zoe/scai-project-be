@@ -1,25 +1,17 @@
 package com.luv2code.springboot.cruddemo.rest;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
-
 import com.luv2code.springboot.cruddemo.entity.Page;
 import com.luv2code.springboot.cruddemo.entity.PageLike;
 import com.luv2code.springboot.cruddemo.entity.Post;
 import com.luv2code.springboot.cruddemo.service.PageService;
 import com.luv2code.springboot.cruddemo.utility.IdExtractor;
-import com.luv2code.springboot.cruddemo.utility.PageBasicData;
+import com.luv2code.springboot.cruddemo.dto.PageBasicData;
+import com.luv2code.springboot.cruddemo.dto.UpdatePage;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -91,8 +83,8 @@ public class PageRestController {
 			@RequestPart(value = "description", required = false) String description,
 			@RequestPart(value = "pageId", required = false) String pageId) throws Exception {
 		IdExtractor idExtractor = new IdExtractor(authHeader);
-		return pageService.updatePage(idExtractor.getIdFromToken(), pageId, profilePhoto, coverPhoto, name,
-				description);
+		UpdatePage updatedPage = new UpdatePage(Integer.parseInt(pageId) , name , description , profilePhoto , coverPhoto);
+		return pageService.updatePage(idExtractor.getIdFromToken(),updatedPage);
 
 	}
 
@@ -101,17 +93,5 @@ public class PageRestController {
 		return pageService.getPagePhotos(pageId);
 	}
 
-//	@ExceptionHandler
-//	public ResponseEntity<ErrorResponse> handleCustomeException(CustomeException exc) {
-//		ErrorResponse error = new ErrorResponse(HttpStatus.NOT_FOUND.value(), exc.getMessage(),
-//				System.currentTimeMillis());
-//		return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
-//	}
-//
-//	@ExceptionHandler
-//	public ResponseEntity<ErrorResponse> handleException(Exception exc) {
-//		ErrorResponse error = new ErrorResponse(HttpStatus.BAD_REQUEST.value(), "unknown error occured",
-//				System.currentTimeMillis());
-//		return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
-//	}
+
 }

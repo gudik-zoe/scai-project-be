@@ -1,0 +1,5 @@
+2021-03-03 17:21:43,575 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-8] EntityRepresentationModel not found!
+2021-03-03 17:21:46,836 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-9] EntityRepresentationModel not found!
+2021-03-03 17:21:48,348 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-7] EntityRepresentationModel not found!
+2021-03-03 17:22:06,379 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-2] EntityRepresentationModel not found!
+2021-03-03 17:54:09,043 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-3] no such id for an account

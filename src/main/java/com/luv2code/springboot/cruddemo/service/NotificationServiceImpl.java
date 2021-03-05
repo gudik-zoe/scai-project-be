@@ -1,16 +1,18 @@
 package com.luv2code.springboot.cruddemo.service;
 
 import com.luv2code.springboot.cruddemo.entity.Notification;
+import com.luv2code.springboot.cruddemo.entity.Post;
 import com.luv2code.springboot.cruddemo.exceptions.NotFoundException;
 import com.luv2code.springboot.cruddemo.jpa.NotRepoPaging;
 import com.luv2code.springboot.cruddemo.jpa.NotificationJpaRepo;
-import com.luv2code.springboot.cruddemo.utility.NotificationDetails;
+import com.luv2code.springboot.cruddemo.dto.NotificationDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,7 +20,7 @@ import java.util.Optional;
 public class NotificationServiceImpl implements NotificationService {
 	@Autowired
 	private NotificationJpaRepo notificationJpaRepo;
-	
+
 	@Autowired
 	private NotRepoPaging notRepoPaging;
 
@@ -53,6 +55,7 @@ public class NotificationServiceImpl implements NotificationService {
 	public void notificationHasBeenSeen(int notId) {
 		Notification theNotification = getNotById(notId);
 		theNotification.setSeen(true);
+		notificationJpaRepo.save(theNotification);
 
 	}
 
@@ -90,6 +93,12 @@ public class NotificationServiceImpl implements NotificationService {
 			throw new NotFoundException("no such id for a notification");
 		}
 		return theNot;
+	}
+
+	@Override
+	public Notification createNot(int accountId, Post post, String action) {
+		return new Notification(accountId, post.getPostCreatorId() == accountId ? post.getPostedOn() : post.getPostCreatorId(), action, new Date(System.currentTimeMillis()),
+				post.getIdPost(), false);
 	}
 
 }

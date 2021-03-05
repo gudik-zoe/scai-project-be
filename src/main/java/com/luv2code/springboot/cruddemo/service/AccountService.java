@@ -3,9 +3,9 @@ package com.luv2code.springboot.cruddemo.service;
 
 import com.luv2code.springboot.cruddemo.entity.Account;
 import com.luv2code.springboot.cruddemo.exceptions.NotFoundException;
-import com.luv2code.springboot.cruddemo.utility.AccountBasicData;
-import com.luv2code.springboot.cruddemo.utility.AccountData;
-import com.luv2code.springboot.cruddemo.utility.ImageUrl;
+import com.luv2code.springboot.cruddemo.dto.AccountBasicData;
+import com.luv2code.springboot.cruddemo.dto.AccountData;
+import com.luv2code.springboot.cruddemo.dto.ImageUrl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
 

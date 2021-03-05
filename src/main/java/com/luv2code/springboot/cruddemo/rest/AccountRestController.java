@@ -3,10 +3,10 @@ package com.luv2code.springboot.cruddemo.rest;
 import com.luv2code.springboot.cruddemo.entity.Account;
 import com.luv2code.springboot.cruddemo.exceptions.NotFoundException;
 import com.luv2code.springboot.cruddemo.service.AccountService;
-import com.luv2code.springboot.cruddemo.utility.AccountBasicData;
-import com.luv2code.springboot.cruddemo.utility.AccountData;
+import com.luv2code.springboot.cruddemo.dto.AccountBasicData;
+import com.luv2code.springboot.cruddemo.dto.AccountData;
 import com.luv2code.springboot.cruddemo.utility.IdExtractor;
-import com.luv2code.springboot.cruddemo.utility.ImageUrl;
+import com.luv2code.springboot.cruddemo.dto.ImageUrl;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +23,8 @@ public class AccountRestController {
 
 	@Autowired
 	private AccountService accountService;
+
+
 
 	public AccountRestController() {
 
@@ -69,8 +71,8 @@ public class AccountRestController {
 
 	@ApiOperation(value = "get a user fullData by id  ", response = Account.class)
 	@GetMapping("/accounts/{accountId}")
-	public Account getAccountById(@ApiParam(value = "account id", required = true) @PathVariable Integer accountId) {
-		return accountService.findById(accountId);
+	public AccountData getAccountById(@ApiParam(value = "account id", required = true) @PathVariable Integer accountId) {
+		return accountService.getLoggedInUserFullData(accountId);
 	}
 
 	@ApiOperation(value = "get the basic data of the Logged user", response = AccountBasicData.class)

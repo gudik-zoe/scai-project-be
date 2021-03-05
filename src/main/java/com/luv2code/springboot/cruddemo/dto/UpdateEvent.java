@@ -1,4 +1,4 @@
-package com.luv2code.springboot.cruddemo.utility;
+package com.luv2code.springboot.cruddemo.dto;
 
 import org.springframework.web.multipart.MultipartFile;
 

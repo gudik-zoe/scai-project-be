@@ -5,7 +5,7 @@ import com.luv2code.springboot.cruddemo.entity.Notification;
 import com.luv2code.springboot.cruddemo.entity.Post;
 import com.luv2code.springboot.cruddemo.exceptions.NotFoundException;
 import com.luv2code.springboot.cruddemo.jpa.CommentJpaRepo;
-import com.luv2code.springboot.cruddemo.utility.PageBasicData;
+import com.luv2code.springboot.cruddemo.dto.PageBasicData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -47,13 +47,10 @@ public class CommentServiceImpl implements CommentService {
 				if (theRelatedPost.getPageCreatorId() == null
 						&& !theComment.getCommentCreatorId().equals(theRelatedPost.getPostCreatorId())) {
 					if (theRelatedPost.getPostCreatorId() != null && theRelatedPost.getPostCreatorId() != accountId) {
-						Notification addCommentNot = new Notification(accountId, theRelatedPost.getPostCreatorId(),
-								"commented on your post", new Date(System.currentTimeMillis()),
-								theRelatedPost.getIdPost(), false);
-						notificationService.addNotification(addCommentNot);
+						notificationService.addNotification(
+								notificationService.createNot(accountId, theRelatedPost, "commented on your post"));
 					}
 				}
-
 			}
 
 		} else {

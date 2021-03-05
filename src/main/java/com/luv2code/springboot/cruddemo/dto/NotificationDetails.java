@@ -1,4 +1,4 @@
-package com.luv2code.springboot.cruddemo.utility;
+package com.luv2code.springboot.cruddemo.dto;
 
 public class NotificationDetails {
 	private Integer unseenNotsNumber;
@@ -8,15 +8,11 @@ public class NotificationDetails {
 	public NotificationDetails() {
 
 	}
-	
-	
 
 	public NotificationDetails(Integer unseenNotsNumber, Integer notificationNumber) {
 		this.unseenNotsNumber = unseenNotsNumber;
 		this.notificationNumber = notificationNumber;
 	}
-
-
 
 	public Integer getUnseenNotsNumber() {
 		return unseenNotsNumber;
@@ -33,7 +29,5 @@ public class NotificationDetails {
 	public void setNotificationNumber(Integer notificationNumber) {
 		this.notificationNumber = notificationNumber;
 	}
-
-	
 
 }

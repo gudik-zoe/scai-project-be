@@ -2,9 +2,10 @@ package com.luv2code.springboot.cruddemo.service;
 
 import com.luv2code.springboot.cruddemo.entity.Notification;
 import com.luv2code.springboot.cruddemo.entity.Post;
+import com.luv2code.springboot.cruddemo.exceptions.BadRequestException;
 import com.luv2code.springboot.cruddemo.exceptions.NotFoundException;
 import com.luv2code.springboot.cruddemo.jpa.PostJpaRepo;
-import com.luv2code.springboot.cruddemo.utility.AccountBasicData;
+import com.luv2code.springboot.cruddemo.dto.AccountBasicData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -49,11 +50,10 @@ public class PostServiceImpl implements PostService {
 			Integer relationshipStatus = relationshipService.getStatus(accountId, loggedInUserId);
 			if (relationshipStatus == null || relationshipStatus != 1) {
 				posts = postRepoJpa.getPostsOfNonFriend(accountId);
-			} else if (relationshipStatus == 1) {
+			} else {
 				posts = postRepoJpa.getPostsOfAFriend(accountId);
 			}
 		}
-
 		return posts;
 	}
 
@@ -62,10 +62,8 @@ public class PostServiceImpl implements PostService {
 		Post thePost = new Post();
 		String theImage = null;
 		if (image != null) {
-			System.out.println("here");
 			theImage = storageService.pushImage(image).getImageUrl();
 		}
-		System.out.println(theImage);
 		thePost.setImage(theImage);
 		if (postOption.equals("public")) {
 			thePost.setStatus(0);
@@ -77,8 +75,6 @@ public class PostServiceImpl implements PostService {
 		thePost.setDate(new Date(System.currentTimeMillis()));
 		thePost.setText(text);
 		thePost.setPostCreatorId(accountId);
-//		Tag theTag = new Tag("first tag");
-//		thePost.addTag(theTag);
 		postRepoJpa.save(thePost);
 
 		return thePost;
@@ -89,7 +85,7 @@ public class PostServiceImpl implements PostService {
 	public void deletePostById(int accountId, int postId) {
 		Post post = findPostByPostId(postId);
 		if (post.getPostCreatorId() != null && post.getPostCreatorId() != accountId) {
-			throw new NotFoundException("post is not yours");
+			throw new BadRequestException("post is not yours");
 		} else {
 			postRepoJpa.deleteById(postId);
 		}
@@ -119,7 +115,6 @@ public class PostServiceImpl implements PostService {
 			}
 		}
 		return totalPosts;
-
 	}
 
 	@Override
@@ -177,7 +172,8 @@ public class PostServiceImpl implements PostService {
 			if (OriginalPost.getPostCreatorId() != null) {
 				Notification sharedUrPost = new Notification(accountId, OriginalPost.getPostCreatorId(),
 						"shared your post", new Date(System.currentTimeMillis()), thePost.getIdPost(), false);
-				notificationService.addNotification(sharedUrPost);
+				notificationService
+						.addNotification(notificationService.createNot(accountId, OriginalPost, "shared your post"));
 			}
 		}
 		return thePost;
@@ -202,9 +198,8 @@ public class PostServiceImpl implements PostService {
 			thePost.setPostCreatorId(accountId);
 			thePost.setStatus(1);
 			postRepoJpa.save(thePost);
-			Notification WroteOnYourPost = new Notification(accountId, thePost.getPostedOn(), "posted on your wall",
-					new Date(System.currentTimeMillis()), thePost.getIdPost(), false);
-			notificationService.addNotification(WroteOnYourPost);
+			notificationService
+					.addNotification(notificationService.createNot(accountId, thePost, "posted on your wall"));
 			return thePost;
 		}
 	}

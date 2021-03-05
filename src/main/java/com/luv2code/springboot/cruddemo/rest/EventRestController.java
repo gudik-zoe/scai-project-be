@@ -1,26 +1,17 @@
 package com.luv2code.springboot.cruddemo.rest;
 
-import java.text.ParseException;
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
-
+import com.luv2code.springboot.cruddemo.dto.ReactToEvent;
+import com.luv2code.springboot.cruddemo.dto.UpdateEvent;
 import com.luv2code.springboot.cruddemo.entity.Event;
 import com.luv2code.springboot.cruddemo.entity.EventReact;
 import com.luv2code.springboot.cruddemo.service.EventService;
 import com.luv2code.springboot.cruddemo.utility.IdExtractor;
-import com.luv2code.springboot.cruddemo.utility.ReactToEvent;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.text.ParseException;
+import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -86,9 +77,14 @@ public class EventRestController {
 			@RequestPart(value = "where", required = false) String where,
 			@RequestPart(value = "description", required = false) String description) throws Exception {
 		IdExtractor idExtractor = new IdExtractor(authHeader);
-		return eventService.updateEvent(idExtractor.getIdFromToken(), eventId, name, when, where, description,
-				eventPhoto);
+		UpdateEvent newEvent = new UpdateEvent(Integer.parseInt(eventId) , name , eventPhoto , when , where , description);
+		return eventService.updateEvent(idExtractor.getIdFromToken(), newEvent);
 
+	}
+
+	@GetMapping("getEvDate/{id}")
+	public String getDate(@PathVariable int id){
+		return eventService.checkDate(id);
 	}
 
 //	@ExceptionHandler

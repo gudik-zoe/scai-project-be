@@ -1,17 +1,20 @@
 package com.luv2code.springboot.cruddemo.service;
 
+import com.luv2code.springboot.cruddemo.dto.ReactToEvent;
+import com.luv2code.springboot.cruddemo.dto.UpdateEvent;
 import com.luv2code.springboot.cruddemo.entity.Event;
 import com.luv2code.springboot.cruddemo.entity.EventReact;
+import com.luv2code.springboot.cruddemo.exceptions.BadRequestException;
 import com.luv2code.springboot.cruddemo.exceptions.NotFoundException;
 import com.luv2code.springboot.cruddemo.jpa.EventJpaRepo;
 import com.luv2code.springboot.cruddemo.jpa.EventReactJpaRepo;
-import com.luv2code.springboot.cruddemo.utility.ReactToEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.*;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -106,28 +109,38 @@ public class EventServiceImpl implements EventService {
 	}
 
 	@Override
-	public Event updateEvent(int accountId, String eventId, String name, String when, String where, String description,
-			MultipartFile eventPhoto) throws Exception {
-		int idEvent = Integer.parseInt(eventId);
-		Event theEvent = getEventById(idEvent);
+	public Event updateEvent(int accountId, UpdateEvent newEvent) throws Exception {
+		Event theEvent = getEventById(newEvent.getIdEvent());
 		if (theEvent.getEventCreatorId() == accountId) {
-			if (eventPhoto != null) {
-				String newImage = storageService.pushImage(eventPhoto).getImageUrl();
+			if (newEvent.getEventPhoto() != null) {
+				String newImage = storageService.pushImage(newEvent.getEventPhoto()).getImageUrl();
 				theEvent.setCoverPhoto(newImage);
 			}
-			theEvent.setName(name);
-			theEvent.setDescription(description);
-			theEvent.setLocation(where);
-			theEvent.setTime(when);
+			theEvent.setName(newEvent.getName());
+			theEvent.setDescription(newEvent.getDescription());
+			theEvent.setLocation(newEvent.getLocation());
+			theEvent.setTime(newEvent.getTime());
 			eventJpaRepo.save(theEvent);
 			return theEvent;
 		} else {
-			throw new NotFoundException("cannot update an event that is not yours");
+			throw new BadRequestException("cannot update an event that is not yours");
 		}
 
 	}
 
+	@Override
+	public String checkDate(int eventId) {
+//		System.out.println("here");
+//		Event event = getEventById(eventId);
+////		LocalDate eventData =	Instant.ofEpochMilli(Integer.parseInt(event.getTime())).atZone(ZoneId.systemDefault()).toLocalDate();
+//		System.out.println(Period.between(LocalDateTime.now() , );
+
+		return "hello world";
+	}
+
 	public boolean checkIfExpired(Event event) throws ParseException {
+	LocalDate eventData =	Instant.ofEpochMilli(Integer.parseInt(event.getTime())).atZone(ZoneId.systemDefault()).toLocalDate();
+		System.out.println(Period.between(eventData , LocalDate.now()));
 		String jsDate = event.getTime() + ":00";
 		Date javaDate = new SimpleDateFormat("yy-MM-dd HH:mm:ss").parse(jsDate);
 		if (javaDate.getTime() - new Date(System.currentTimeMillis()).getTime() < 0) {
