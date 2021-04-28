@@ -48,4 +48,5 @@ public interface AccountService {
 
 	public List<String> getAccountPhotos(int accountId);
 
+    public boolean checkTempPassword(String password);
 }

@@ -1,0 +1,48 @@
+2021-04-09 16:14:09,340 INFO org.springframework.boot.StartupInfoLogger [restartedMain] Starting CruddemoApplication on NOTB990 with PID 25896 (C:\Users\antoine.khoury\Documents\eclipse work space\scai-project\target\classes started by Antoine.Khoury in C:\Users\antoine.khoury\Documents\eclipse work space\scai-project)
+2021-04-09 16:14:09,357 DEBUG org.springframework.boot.StartupInfoLogger [restartedMain] Running with Spring Boot v2.3.3.RELEASE, Spring v5.2.8.RELEASE
+2021-04-09 16:14:09,359 INFO org.springframework.boot.SpringApplication [restartedMain] No active profile set, falling back to default profiles: default
+2021-04-09 16:14:29,081 INFO org.springframework.boot.StartupInfoLogger [restartedMain] Started CruddemoApplication in 20.686 seconds (JVM running for 22.45)
+2021-04-09 16:15:19,165 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-3] Content type 'text/plain;charset=UTF-8' not supported
+2021-04-09 16:16:23,850 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-4] Request method 'GET' not supported
+2021-04-09 16:16:31,045 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-6] Content type 'text/plain;charset=UTF-8' not supported
+2021-04-09 16:32:36,764 INFO org.springframework.boot.StartupInfoLogger [restartedMain] Starting CruddemoApplication on NOTB990 with PID 25896 (C:\Users\antoine.khoury\Documents\eclipse work space\scai-project\target\classes started by Antoine.Khoury in C:\Users\antoine.khoury\Documents\eclipse work space\scai-project)
+2021-04-09 16:32:36,769 DEBUG org.springframework.boot.StartupInfoLogger [restartedMain] Running with Spring Boot v2.3.3.RELEASE, Spring v5.2.8.RELEASE
+2021-04-09 16:32:36,770 INFO org.springframework.boot.SpringApplication [restartedMain] No active profile set, falling back to default profiles: default
+2021-04-09 16:33:32,420 INFO org.springframework.boot.StartupInfoLogger [restartedMain] Starting CruddemoApplication on NOTB990 with PID 25896 (C:\Users\antoine.khoury\Documents\eclipse work space\scai-project\target\classes started by Antoine.Khoury in C:\Users\antoine.khoury\Documents\eclipse work space\scai-project)
+2021-04-09 16:33:32,421 DEBUG org.springframework.boot.StartupInfoLogger [restartedMain] Running with Spring Boot v2.3.3.RELEASE, Spring v5.2.8.RELEASE
+2021-04-09 16:33:32,422 INFO org.springframework.boot.SpringApplication [restartedMain] No active profile set, falling back to default profiles: default
+2021-04-09 16:33:41,986 INFO org.springframework.boot.StartupInfoLogger [restartedMain] Started CruddemoApplication in 9.696 seconds (JVM running for 1175.355)
+2021-04-09 16:35:00,663 INFO org.springframework.boot.StartupInfoLogger [restartedMain] Starting CruddemoApplication on NOTB990 with PID 25896 (C:\Users\antoine.khoury\Documents\eclipse work space\scai-project\target\classes started by Antoine.Khoury in C:\Users\antoine.khoury\Documents\eclipse work space\scai-project)
+2021-04-09 16:35:00,663 DEBUG org.springframework.boot.StartupInfoLogger [restartedMain] Running with Spring Boot v2.3.3.RELEASE, Spring v5.2.8.RELEASE
+2021-04-09 16:35:00,664 INFO org.springframework.boot.SpringApplication [restartedMain] No active profile set, falling back to default profiles: default
+2021-04-09 16:35:05,026 INFO org.springframework.boot.StartupInfoLogger [restartedMain] Started CruddemoApplication in 4.437 seconds (JVM running for 1258.396)
+2021-04-09 16:42:08,478 INFO org.springframework.boot.StartupInfoLogger [restartedMain] Starting CruddemoApplication on NOTB990 with PID 25896 (C:\Users\antoine.khoury\Documents\eclipse work space\scai-project\target\classes started by Antoine.Khoury in C:\Users\antoine.khoury\Documents\eclipse work space\scai-project)
+2021-04-09 16:42:08,481 DEBUG org.springframework.boot.StartupInfoLogger [restartedMain] Running with Spring Boot v2.3.3.RELEASE, Spring v5.2.8.RELEASE
+2021-04-09 16:42:08,482 INFO org.springframework.boot.SpringApplication [restartedMain] No active profile set, falling back to default profiles: default
+2021-04-09 16:42:13,318 INFO org.springframework.boot.StartupInfoLogger [restartedMain] Started CruddemoApplication in 4.934 seconds (JVM running for 1686.688)
+2021-04-09 16:46:51,224 INFO org.springframework.boot.StartupInfoLogger [restartedMain] Starting CruddemoApplication on NOTB990 with PID 25896 (C:\Users\antoine.khoury\Documents\eclipse work space\scai-project\target\classes started by Antoine.Khoury in C:\Users\antoine.khoury\Documents\eclipse work space\scai-project)
+2021-04-09 16:46:51,225 DEBUG org.springframework.boot.StartupInfoLogger [restartedMain] Running with Spring Boot v2.3.3.RELEASE, Spring v5.2.8.RELEASE
+2021-04-09 16:46:51,225 INFO org.springframework.boot.SpringApplication [restartedMain] No active profile set, falling back to default profiles: default
+2021-04-09 16:46:55,540 INFO org.springframework.boot.StartupInfoLogger [restartedMain] Started CruddemoApplication in 4.383 seconds (JVM running for 1968.909)
+2021-04-09 16:48:01,723 INFO org.springframework.boot.StartupInfoLogger [restartedMain] Starting CruddemoApplication on NOTB990 with PID 25896 (C:\Users\antoine.khoury\Documents\eclipse work space\scai-project\target\classes started by Antoine.Khoury in C:\Users\antoine.khoury\Documents\eclipse work space\scai-project)
+2021-04-09 16:48:01,732 DEBUG org.springframework.boot.StartupInfoLogger [restartedMain] Running with Spring Boot v2.3.3.RELEASE, Spring v5.2.8.RELEASE
+2021-04-09 16:48:01,732 INFO org.springframework.boot.SpringApplication [restartedMain] No active profile set, falling back to default profiles: default
+2021-04-09 16:48:06,364 INFO org.springframework.boot.StartupInfoLogger [restartedMain] Started CruddemoApplication in 4.824 seconds (JVM running for 2039.734)
+2021-04-09 16:48:27,148 INFO org.springframework.boot.StartupInfoLogger [restartedMain] Starting CruddemoApplication on NOTB990 with PID 25896 (C:\Users\antoine.khoury\Documents\eclipse work space\scai-project\target\classes started by Antoine.Khoury in C:\Users\antoine.khoury\Documents\eclipse work space\scai-project)
+2021-04-09 16:48:27,149 DEBUG org.springframework.boot.StartupInfoLogger [restartedMain] Running with Spring Boot v2.3.3.RELEASE, Spring v5.2.8.RELEASE
+2021-04-09 16:48:27,149 INFO org.springframework.boot.SpringApplication [restartedMain] No active profile set, falling back to default profiles: default
+2021-04-09 16:50:05,696 INFO org.springframework.boot.StartupInfoLogger [restartedMain] Starting CruddemoApplication on NOTB990 with PID 25896 (C:\Users\antoine.khoury\Documents\eclipse work space\scai-project\target\classes started by Antoine.Khoury in C:\Users\antoine.khoury\Documents\eclipse work space\scai-project)
+2021-04-09 16:50:05,697 DEBUG org.springframework.boot.StartupInfoLogger [restartedMain] Running with Spring Boot v2.3.3.RELEASE, Spring v5.2.8.RELEASE
+2021-04-09 16:50:05,697 INFO org.springframework.boot.SpringApplication [restartedMain] No active profile set, falling back to default profiles: default
+2021-04-09 16:50:09,962 INFO org.springframework.boot.StartupInfoLogger [restartedMain] Started CruddemoApplication in 4.366 seconds (JVM running for 2163.332)
+2021-04-09 16:50:29,544 INFO org.springframework.boot.StartupInfoLogger [restartedMain] Starting CruddemoApplication on NOTB990 with PID 25896 (C:\Users\antoine.khoury\Documents\eclipse work space\scai-project\target\classes started by Antoine.Khoury in C:\Users\antoine.khoury\Documents\eclipse work space\scai-project)
+2021-04-09 16:50:29,544 DEBUG org.springframework.boot.StartupInfoLogger [restartedMain] Running with Spring Boot v2.3.3.RELEASE, Spring v5.2.8.RELEASE
+2021-04-09 16:50:29,545 INFO org.springframework.boot.SpringApplication [restartedMain] No active profile set, falling back to default profiles: default
+2021-04-09 16:50:33,271 INFO org.springframework.boot.StartupInfoLogger [restartedMain] Started CruddemoApplication in 3.8 seconds (JVM running for 2186.641)
+2021-04-09 16:51:37,742 INFO org.springframework.boot.StartupInfoLogger [restartedMain] Starting CruddemoApplication on NOTB990 with PID 25896 (C:\Users\antoine.khoury\Documents\eclipse work space\scai-project\target\classes started by Antoine.Khoury in C:\Users\antoine.khoury\Documents\eclipse work space\scai-project)
+2021-04-09 16:51:37,743 DEBUG org.springframework.boot.StartupInfoLogger [restartedMain] Running with Spring Boot v2.3.3.RELEASE, Spring v5.2.8.RELEASE
+2021-04-09 16:51:37,744 INFO org.springframework.boot.SpringApplication [restartedMain] No active profile set, falling back to default profiles: default
+2021-04-09 16:51:41,374 INFO org.springframework.boot.StartupInfoLogger [restartedMain] Started CruddemoApplication in 3.704 seconds (JVM running for 2254.743)
+2021-04-09 17:20:20,511 INFO org.springframework.boot.StartupInfoLogger [restartedMain] Starting CruddemoApplication on NOTB990 with PID 25896 (C:\Users\antoine.khoury\Documents\eclipse work space\scai-project\target\classes started by Antoine.Khoury in C:\Users\antoine.khoury\Documents\eclipse work space\scai-project)
+2021-04-09 17:20:20,512 DEBUG org.springframework.boot.StartupInfoLogger [restartedMain] Running with Spring Boot v2.3.3.RELEASE, Spring v5.2.8.RELEASE
+2021-04-09 17:20:20,513 INFO org.springframework.boot.SpringApplication [restartedMain] No active profile set, falling back to default profiles: default

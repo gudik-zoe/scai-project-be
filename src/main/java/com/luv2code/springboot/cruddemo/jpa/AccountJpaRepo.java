@@ -1,7 +1,6 @@
 package com.luv2code.springboot.cruddemo.jpa;
 
 
-
 import com.luv2code.springboot.cruddemo.entity.Account;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -19,7 +18,12 @@ public interface AccountJpaRepo extends JpaRepository<Account, Integer> {
 	
 	@Query("from Account as a where a.idAccount !=:accountId")
 	public List<Account> findPeopleYouMayKnow(@Param(value="accountId")int accountId);
-	
+
+	@Query("from Account as a where a.temporaryPassword =:password")
+	public Account getAccountByTempPassword(@Param(value="password")String password);
+
+//	@Query("SELECT a FROM Account as a join Relationship as r on r.userTwoId=a.accountId  where r.status = 1")
+//	public List<Account> findPeopleYouMayKnow2(@Param(value="accountId")int accountId);
 	
 
 }

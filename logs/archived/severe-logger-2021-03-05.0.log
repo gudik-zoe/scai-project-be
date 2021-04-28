@@ -1,0 +1,17 @@
+2021-03-05 15:09:28,060 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-2] null
+2021-03-05 15:10:13,721 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-5] null
+2021-03-05 15:11:31,475 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-10] null
+2021-03-05 15:11:38,796 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-5] null
+2021-03-05 15:12:08,364 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-8] null
+2021-03-05 15:27:32,765 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-4] invalid credentials
+2021-03-05 15:28:01,314 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-9] For input string: "2021-04-09 03:58"
+2021-03-05 15:28:03,637 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-1] For input string: "2021-04-09 03:58"
+2021-03-05 15:30:00,025 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-7] For input string: "2021-04-09 03:58"
+2021-03-05 15:33:18,119 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-2] For input string: "2021-04-09 03:58"
+2021-03-05 15:33:25,212 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-10] For input string: "2021-04-09 03:58"
+2021-03-05 15:34:02,649 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-8] invalid credentials
+2021-03-05 15:55:02,130 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-7] email already exist
+2021-03-05 16:05:16,421 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-5] email already exist
+2021-03-05 16:06:00,909 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-4] email already exist
+2021-03-05 16:06:26,219 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-6] email already exist
+2021-03-05 16:07:43,276 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-1] email already exist

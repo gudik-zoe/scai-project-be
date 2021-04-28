@@ -35,7 +35,7 @@ public class AuthFilter extends OncePerRequestFilter {
 		if (request.getRequestURI().startsWith("/files") || "/api/login".equalsIgnoreCase(request.getRequestURI())
 				|| "/api/signUp".equalsIgnoreCase(request.getRequestURI())
 				|| "/api/greeting".equalsIgnoreCase(request.getRequestURI())
-				|| request.getRequestURI().startsWith("/chat")) {
+				|| request.getRequestURI().startsWith("/chat")  || "/api/resetPassword".equalsIgnoreCase(request.getRequestURI())  || "/api/checkTempPassword".equalsIgnoreCase(request.getRequestURI() )  ) {
 			chain.doFilter(request, response);
 			return;
 		}

@@ -59,6 +59,7 @@ public class AccountServiceImpl implements AccountService {
 		List<Account> accounts = new ArrayList<Account>();
 		List<AccountBasicData> peopleYouMayKnow = new ArrayList<AccountBasicData>();
 		accounts = accountRepoJpa.findPeopleYouMayKnow(accountId);
+
 		for (Account account : accounts) {
 			if (relationshipService.getStatus(accountId, account.getIdAccount()) == null
 					|| relationshipService.getStatus(accountId, account.getIdAccount()) != 1) {
@@ -237,6 +238,16 @@ public class AccountServiceImpl implements AccountService {
 		photos.add(theAccount.getCoverPhoto());
 		photos.add(theAccount.getProfilePhoto());
 		return photos;
+	}
+
+	@Override
+	public boolean checkTempPassword(String password) {
+			Account theAccount = accountRepoJpa.getAccountByTempPassword(password);
+			if(theAccount != null){
+				System.out.println(new Date(System.currentTimeMillis()).getMinutes() - theAccount.getTemporaryPasswordExpiryDate().getMinutes());
+				return true;
+			}
+		return false;
 	}
 
 	@Override

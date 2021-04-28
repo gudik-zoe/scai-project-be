@@ -183,8 +183,7 @@ public class PostServiceImpl implements PostService {
 	@Override
 	public Post postOnWall(int accountId, int postedOnUserId, MultipartFile image, String text) throws Exception {
 		Post thePost = new Post();
-		Integer theRelationshipStatus = relationshipService.getStatus(accountId, postedOnUserId);
-		if (theRelationshipStatus != 1) {
+		if ( relationshipService.getStatus(accountId, postedOnUserId) != 1) {
 			throw new NotFoundException("cannot add a post on a user's wall that is not ur friend");
 		} else {
 			thePost.setPostedOn(postedOnUserId);

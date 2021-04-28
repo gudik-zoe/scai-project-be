@@ -2,6 +2,7 @@ package com.luv2code.springboot.cruddemo.entity;
 
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table(name = "account")
@@ -41,6 +42,12 @@ public class Account {
 
 	@Column(name = "cover_photo")
 	private String coverPhoto;
+
+	@Column(name = "temporary_password")
+	private String temporaryPassword;
+
+	@Column(name = "temporary_password_creation_ts")
+	private Date temporaryPasswordExpiryDate;
 
 
 	public Account() {
@@ -151,5 +158,19 @@ public class Account {
 	}
 
 
+	public String getTemporaryPassword() {
+		return temporaryPassword;
+	}
 
+	public void setTemporaryPassword(String temporaryPassword) {
+		this.temporaryPassword = temporaryPassword;
+	}
+
+	public Date getTemporaryPasswordExpiryDate() {
+		return temporaryPasswordExpiryDate;
+	}
+
+	public void setTemporaryPasswordExpiryDate(Date temporaryPasswordExpiryDate) {
+		this.temporaryPasswordExpiryDate = temporaryPasswordExpiryDate;
+	}
 }

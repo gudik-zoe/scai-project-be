@@ -5,6 +5,7 @@ import com.luv2code.springboot.cruddemo.exceptions.NotFoundException;
 import com.luv2code.springboot.cruddemo.service.AccountService;
 import com.luv2code.springboot.cruddemo.dto.AccountBasicData;
 import com.luv2code.springboot.cruddemo.dto.AccountData;
+import com.luv2code.springboot.cruddemo.service.EmailSender;
 import com.luv2code.springboot.cruddemo.utility.IdExtractor;
 import com.luv2code.springboot.cruddemo.dto.ImageUrl;
 import io.swagger.annotations.*;
@@ -13,7 +14,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.mail.MessagingException;
 import javax.security.auth.login.AccountException;
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -23,6 +26,9 @@ public class AccountRestController {
 
 	@Autowired
 	private AccountService accountService;
+
+	@Autowired
+	private EmailSender emailSender;
 
 
 
@@ -168,6 +174,28 @@ public class AccountRestController {
 	public void deleteAccount(@RequestHeader("Authorization") String authHeader) {
 		IdExtractor idExtractor = new IdExtractor(authHeader);
 		accountService.deleteById(idExtractor.getIdFromToken());
+	}
+
+	@ApiOperation(value = "resetting the password")
+	@PostMapping("/resetPassword")
+	public Account resetPassword(@RequestBody String email) throws IOException, MessagingException {
+
+			return emailSender.sendEmail(email);
+
+
+
+	}
+
+	@ApiOperation(value = "checking  the temporary password")
+	@PostMapping("/checkTempPassword")
+	public boolean checkTempPassword(@RequestBody String password)  {
+		try{
+			return	accountService.checkTempPassword(password);
+		}catch (Exception e){
+			return false;
+		}
+
+
 	}
 
 }

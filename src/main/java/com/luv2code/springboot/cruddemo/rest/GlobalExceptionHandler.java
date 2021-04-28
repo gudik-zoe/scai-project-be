@@ -39,7 +39,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler
-    public ResponseEntity<ErrorResponse> handleBadRequestException(UnauthorisedException exc) {
+    public ResponseEntity<ErrorResponse> handleUnauthorisedException(UnauthorisedException exc) {
         ErrorResponse error = new ErrorResponse(HttpStatus.UNAUTHORIZED.value(), exc.getMessage(),
                 System.currentTimeMillis());
         System.out.println("passed from unauthorised");
