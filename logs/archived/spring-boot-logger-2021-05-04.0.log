@@ -1,0 +1,37 @@
+2021-05-04 09:03:09,423 INFO org.springframework.boot.StartupInfoLogger [restartedMain] Starting CruddemoApplication on NOTB990 with PID 17160 (C:\Users\antoine.khoury\Documents\eclipse work space\scai-project\target\classes started by Antoine.Khoury in C:\Users\antoine.khoury\Documents\eclipse work space\scai-project)
+2021-05-04 09:03:09,446 DEBUG org.springframework.boot.StartupInfoLogger [restartedMain] Running with Spring Boot v2.3.3.RELEASE, Spring v5.2.8.RELEASE
+2021-05-04 09:03:09,452 INFO org.springframework.boot.SpringApplication [restartedMain] No active profile set, falling back to default profiles: default
+2021-05-04 09:04:57,912 INFO org.springframework.boot.StartupInfoLogger [restartedMain] Starting CruddemoApplication on NOTB990 with PID 19784 (C:\Users\antoine.khoury\Documents\eclipse work space\scai-project\target\classes started by Antoine.Khoury in C:\Users\antoine.khoury\Documents\eclipse work space\scai-project)
+2021-05-04 09:04:57,920 DEBUG org.springframework.boot.StartupInfoLogger [restartedMain] Running with Spring Boot v2.3.3.RELEASE, Spring v5.2.8.RELEASE
+2021-05-04 09:04:57,921 INFO org.springframework.boot.SpringApplication [restartedMain] No active profile set, falling back to default profiles: default
+2021-05-04 09:05:21,094 INFO org.springframework.boot.StartupInfoLogger [restartedMain] Started CruddemoApplication in 24.219 seconds (JVM running for 26.671)
+2021-05-04 09:12:52,860 INFO org.springframework.boot.StartupInfoLogger [restartedMain] Starting CruddemoApplication on NOTB990 with PID 19784 (C:\Users\antoine.khoury\Documents\eclipse work space\scai-project\target\classes started by Antoine.Khoury in C:\Users\antoine.khoury\Documents\eclipse work space\scai-project)
+2021-05-04 09:12:52,860 DEBUG org.springframework.boot.StartupInfoLogger [restartedMain] Running with Spring Boot v2.3.3.RELEASE, Spring v5.2.8.RELEASE
+2021-05-04 09:12:52,861 INFO org.springframework.boot.SpringApplication [restartedMain] No active profile set, falling back to default profiles: default
+2021-05-04 09:13:01,779 INFO org.springframework.boot.StartupInfoLogger [restartedMain] Started CruddemoApplication in 9.076 seconds (JVM running for 487.356)
+2021-05-04 09:21:07,712 INFO org.springframework.boot.StartupInfoLogger [restartedMain] Starting CruddemoApplication on NOTB990 with PID 19784 (C:\Users\antoine.khoury\Documents\eclipse work space\scai-project\target\classes started by Antoine.Khoury in C:\Users\antoine.khoury\Documents\eclipse work space\scai-project)
+2021-05-04 09:21:07,717 DEBUG org.springframework.boot.StartupInfoLogger [restartedMain] Running with Spring Boot v2.3.3.RELEASE, Spring v5.2.8.RELEASE
+2021-05-04 09:21:07,718 INFO org.springframework.boot.SpringApplication [restartedMain] No active profile set, falling back to default profiles: default
+2021-05-04 09:21:14,052 INFO org.springframework.boot.StartupInfoLogger [restartedMain] Started CruddemoApplication in 6.44 seconds (JVM running for 979.628)
+2021-05-04 09:21:20,195 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-1]  password  should contains at least one letter in upperCase + one digit + one alphanumeric character -/*?");
+2021-05-04 10:08:15,458 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-7]  password  should contains at least one letter in upperCase + one digit + one alphanumeric character -/*?");
+2021-05-04 10:09:31,624 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-9]  password  should contains at least one letter in upperCase + one digit + one alphanumeric character -/*?");
+2021-05-04 10:09:44,083 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-1] incorrect password or u didn't make any changes to ur currentPassword
+2021-05-04 10:10:01,009 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-2] incorrect password or u didn't make any changes to ur currentPassword
+2021-05-04 10:11:03,107 INFO org.springframework.boot.StartupInfoLogger [restartedMain] Starting CruddemoApplication on NOTB990 with PID 19784 (C:\Users\antoine.khoury\Documents\eclipse work space\scai-project\target\classes started by Antoine.Khoury in C:\Users\antoine.khoury\Documents\eclipse work space\scai-project)
+2021-05-04 10:11:03,108 DEBUG org.springframework.boot.StartupInfoLogger [restartedMain] Running with Spring Boot v2.3.3.RELEASE, Spring v5.2.8.RELEASE
+2021-05-04 10:11:03,109 INFO org.springframework.boot.SpringApplication [restartedMain] No active profile set, falling back to default profiles: default
+2021-05-04 10:11:06,480 INFO org.springframework.boot.StartupInfoLogger [restartedMain] Started CruddemoApplication in 3.559 seconds (JVM running for 3972.057)
+2021-05-04 10:11:20,973 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-1] incorrect password or u didn't make any changes to ur currentPassword
+2021-05-04 10:12:03,526 INFO org.springframework.boot.StartupInfoLogger [restartedMain] Starting CruddemoApplication on NOTB990 with PID 19784 (C:\Users\antoine.khoury\Documents\eclipse work space\scai-project\target\classes started by Antoine.Khoury in C:\Users\antoine.khoury\Documents\eclipse work space\scai-project)
+2021-05-04 10:12:03,527 DEBUG org.springframework.boot.StartupInfoLogger [restartedMain] Running with Spring Boot v2.3.3.RELEASE, Spring v5.2.8.RELEASE
+2021-05-04 10:12:03,527 INFO org.springframework.boot.SpringApplication [restartedMain] No active profile set, falling back to default profiles: default
+2021-05-04 10:12:06,743 INFO org.springframework.boot.StartupInfoLogger [restartedMain] Started CruddemoApplication in 3.282 seconds (JVM running for 4032.319)
+2021-05-04 10:12:11,215 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-1] incorrect password or u didn't make any changes to ur currentPassword
+2021-05-04 10:12:30,705 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-2] incorrect password or u didn't make any changes to ur currentPassword
+2021-05-04 10:13:20,589 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-3] incorrect password or u didn't make any changes to ur currentPassword
+2021-05-04 10:19:52,607 INFO org.springframework.boot.StartupInfoLogger [restartedMain] Starting CruddemoApplication on NOTB990 with PID 19784 (C:\Users\antoine.khoury\Documents\eclipse work space\scai-project\target\classes started by Antoine.Khoury in C:\Users\antoine.khoury\Documents\eclipse work space\scai-project)
+2021-05-04 10:19:52,612 DEBUG org.springframework.boot.StartupInfoLogger [restartedMain] Running with Spring Boot v2.3.3.RELEASE, Spring v5.2.8.RELEASE
+2021-05-04 10:19:52,613 INFO org.springframework.boot.SpringApplication [restartedMain] No active profile set, falling back to default profiles: default
+2021-05-04 10:19:56,361 INFO org.springframework.boot.StartupInfoLogger [restartedMain] Started CruddemoApplication in 3.866 seconds (JVM running for 4501.937)
+2021-05-04 10:23:10,691 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-3]  password  should contains at least one letter in upperCase + one digit + one alphanumeric character -/*?");

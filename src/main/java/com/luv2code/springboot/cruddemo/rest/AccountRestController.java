@@ -1,13 +1,11 @@
 package com.luv2code.springboot.cruddemo.rest;
 
+import com.luv2code.springboot.cruddemo.dto.*;
 import com.luv2code.springboot.cruddemo.entity.Account;
 import com.luv2code.springboot.cruddemo.exceptions.NotFoundException;
 import com.luv2code.springboot.cruddemo.service.AccountService;
-import com.luv2code.springboot.cruddemo.dto.AccountBasicData;
-import com.luv2code.springboot.cruddemo.dto.AccountData;
 import com.luv2code.springboot.cruddemo.service.EmailSender;
 import com.luv2code.springboot.cruddemo.utility.IdExtractor;
-import com.luv2code.springboot.cruddemo.dto.ImageUrl;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.mail.MessagingException;
 import javax.security.auth.login.AccountException;
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.List;
 
 @RestController
@@ -42,12 +41,11 @@ public class AccountRestController {
 			@ApiResponse(code = 404, message = "not found ", response = NotFoundException.class),
 			@ApiResponse(code = 500, message = "Internal Server Error") })
 	@ApiImplicitParams({
-			@ApiImplicitParam(name = "access-token", value = "access-token", required = true, dataType = "sting", paramType = "header") })
+			@ApiImplicitParam(name = "access-token", value = "access-token", required = false, dataType = "sting", paramType = "header") })
 
 	@PostMapping("/login")
-	public ResponseEntity<Account> login(@ApiParam(name = "Account Object") @RequestBody Account user) {
-
-		return accountService.login(user);
+	public ResponseEntity<Account> login(@ApiParam(name = "Account Object") @RequestBody LoginDTO loginDto) {
+		return accountService.login(loginDto);
 	}
 
 	@ApiOperation(value = "find all users", notes = "no need for any parameter ", response = Account.class)
@@ -153,7 +151,7 @@ public class AccountRestController {
 			@ApiParam(name = "old password", required = true) @RequestPart(value = "oldPassword", required = true) String oldPassword,
 			@ApiParam(name = "new password", required = true) @RequestPart(value = "newPassword", required = true) String newPassword) {
 		IdExtractor idExtractor = new IdExtractor(authHeader);
-		return accountService.updatePassword(idExtractor.getIdFromToken(), oldPassword, newPassword);
+		return accountService.updatePassword(idExtractor.getIdFromToken(), oldPassword, newPassword , null);
 
 	}
 
@@ -183,16 +181,17 @@ public class AccountRestController {
 			return emailSender.sendEmail(email);
 
 
-
 	}
 
 	@ApiOperation(value = "checking  the temporary password")
 	@PostMapping("/checkTempPassword")
-	public boolean checkTempPassword(@RequestBody String password)  {
+	public boolean checkTempPassword(@RequestBody ResetPasswordDTO resetPasswordDTO) throws ParseException {
+		System.out.println(resetPasswordDTO.getTempPassword() + " " + resetPasswordDTO.getNewPassword() + " " + resetPasswordDTO.getConfirmNewPassword());
 		try{
-			return	accountService.checkTempPassword(password);
+			return	accountService.checkTempPassword(resetPasswordDTO);
 		}catch (Exception e){
-			return false;
+			System.out.println(e);
+			throw e;
 		}
 
 

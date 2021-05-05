@@ -62,7 +62,6 @@ public class RelationshipServiceImpl implements RelationshipService {
 	}
 
 	@Override
-
 	public List<Relationship> getFriendRequests(int accountId) {
 		List<Relationship> myFriendRequests = relationshipJpa.getFriendRequests(accountId);
 
@@ -71,7 +70,6 @@ public class RelationshipServiceImpl implements RelationshipService {
 	}
 
 	@Override
-
 	public void cancelFriendRequest(int accountId, int userTwoId) {
 		Relationship theRelationship = relationshipJpa.createRelation(accountId, userTwoId);
 		if (theRelationship != null) {
@@ -96,8 +94,8 @@ public class RelationshipServiceImpl implements RelationshipService {
 
 	@Override
 	public List<Relationship> getMyFriends(int accountId) {
-		List<Relationship> friends = relationshipJpa.getFriends(accountId);
-		return friends;
+		List<Relationship> theFriends = relationshipJpa.getFriends(accountId);
+		return theFriends;
 	}
 
 	@Override

@@ -1,4 +1,4 @@
-2021-04-15 12:24:05,797 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-2] could not extract ResultSet; SQL [n/a]; nested exception is org.hibernate.exception.SQLGrammarException: could not extract ResultSet
-2021-04-15 17:14:28,028 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-1] email doesn't exist
-2021-04-15 17:15:18,319 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-2] email doesn't exist
-2021-04-15 17:44:57,691 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-3] email doesn't exist
+2021-05-05 12:38:09,613 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-8]  password  should contains at least one letter in upperCase + one digit + one alphanumeric character -/*?");
+2021-05-05 12:38:30,088 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-10] invalid credentials
+2021-05-05 12:44:10,058 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-7] temp password expired
+2021-05-05 12:58:17,174 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-4] temp password expired

@@ -1,19 +1,18 @@
 package com.luv2code.springboot.cruddemo.service;
 
+import com.luv2code.springboot.cruddemo.dto.*;
 import com.luv2code.springboot.cruddemo.entity.Account;
 import com.luv2code.springboot.cruddemo.entity.Profile;
 import com.luv2code.springboot.cruddemo.entity.Relationship;
 import com.luv2code.springboot.cruddemo.exceptions.BadRequestException;
 import com.luv2code.springboot.cruddemo.exceptions.NotFoundException;
+import com.luv2code.springboot.cruddemo.exceptions.UnauthorisedException;
 import com.luv2code.springboot.cruddemo.jpa.AccountJpaRepo;
 import com.luv2code.springboot.cruddemo.jpa.ProfileJpaRepo;
 import com.luv2code.springboot.cruddemo.mappers.AccountDataMapper;
 import com.luv2code.springboot.cruddemo.mappers.AccountDataMapperImpl;
 import com.luv2code.springboot.cruddemo.mappers.AccountMapper;
 import com.luv2code.springboot.cruddemo.mappers.AccountMapperImpl;
-import com.luv2code.springboot.cruddemo.dto.AccountBasicData;
-import com.luv2code.springboot.cruddemo.dto.AccountData;
-import com.luv2code.springboot.cruddemo.dto.ImageUrl;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.security.auth.login.AccountException;
+import java.text.ParseException;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -59,11 +59,12 @@ public class AccountServiceImpl implements AccountService {
 		List<Account> accounts = new ArrayList<Account>();
 		List<AccountBasicData> peopleYouMayKnow = new ArrayList<AccountBasicData>();
 		accounts = accountRepoJpa.findPeopleYouMayKnow(accountId);
-
+		System.out.println(accounts.size());
 		for (Account account : accounts) {
 			if (relationshipService.getStatus(accountId, account.getIdAccount()) == null
 					|| relationshipService.getStatus(accountId, account.getIdAccount()) != 1) {
 				AccountBasicData personYouMayKnow = accountBasicDataMapper.toAccountBasicData(account);
+
 				peopleYouMayKnow.add(personYouMayKnow);
 			}
 		}
@@ -159,21 +160,27 @@ public class AccountServiceImpl implements AccountService {
 	}
 
 	@Override
-	public Account updatePassword(int accountId, String oldPassword, String newPassword) {
+	public Account updatePassword(int accountId, String oldPassword, String newPassword , String tempPassword) {
+		System.out.println("in update password" + oldPassword + " " + newPassword);
 		String passwordPattern = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{8,}$";
 		if (!newPassword.matches(passwordPattern)) {
-			throw new NotFoundException(
+			throw new BadRequestException(
 					" password  should contains at least one letter in upperCase + one digit + one alphanumeric character -/*?\");");
 		} else {
 			Account theAccount = findById(accountId);
 			BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+			if(tempPassword != null) {
+				theAccount.setPassword(encoder.encode(newPassword));
+				accountRepoJpa.save(theAccount);
+				return theAccount;
+			}
 			boolean check = encoder.matches(oldPassword, theAccount.getPassword());
 			if (check && !oldPassword.equals(newPassword)) {
 				theAccount.setPassword(encoder.encode(newPassword));
 				accountRepoJpa.save(theAccount);
 				return theAccount;
 			} else {
-				throw new NotFoundException("incorrect password or u didn't make any changes to ur currentPassword");
+				throw new BadRequestException("incorrect password or u didn't make any changes to ur currentPassword");
 			}
 		}
 
@@ -199,10 +206,10 @@ public class AccountServiceImpl implements AccountService {
 	}
 
 	@Override
-	public ResponseEntity<Account> login(Account user) {
+	public ResponseEntity<Account> login(LoginDTO loginDTO) {
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-		Account theAccount = findByEmail(user.getEmail());
-		boolean check = encoder.matches(user.getPassword(), theAccount.getPassword());
+		Account theAccount = findByEmail(loginDTO.getEmail());
+		boolean check = encoder.matches(loginDTO.getPassword(), theAccount.getPassword());
 		if (theAccount != null && check) {
 			HttpHeaders headers = new HttpHeaders();
 			HashMap<String, Object> addedValues = new HashMap<String, Object>();
@@ -241,13 +248,21 @@ public class AccountServiceImpl implements AccountService {
 	}
 
 	@Override
-	public boolean checkTempPassword(String password) {
-			Account theAccount = accountRepoJpa.getAccountByTempPassword(password);
-			if(theAccount != null){
-				System.out.println(new Date(System.currentTimeMillis()).getMinutes() - theAccount.getTemporaryPasswordExpiryDate().getMinutes());
-				return true;
+	public boolean checkTempPassword(ResetPasswordDTO resetPasswordDTO) throws ParseException {
+			Account theAccount = accountRepoJpa.getAccountByTempPassword(resetPasswordDTO.getTempPassword());
+			if(theAccount != null ){
+				long diffInMinutes = (new Date(System.currentTimeMillis()).getTime() - theAccount.getTemporaryPasswordExpiryDate().getTime()) / 60000;
+				if(diffInMinutes < 5){
+					if(updatePassword(theAccount.getIdAccount() ,theAccount.getPassword() , resetPasswordDTO.getConfirmNewPassword() , resetPasswordDTO.getTempPassword()) != null ){
+						theAccount.setTemporaryPasswordExpiryDate(null);
+						theAccount.setTemporaryPassword(null);
+						accountRepoJpa.save(theAccount);
+						return true;
+					}
+				}
+				throw new UnauthorisedException("temp password expired");
 			}
-		return false;
+			throw new NotFoundException("invalid temporary password");
 	}
 
 	@Override

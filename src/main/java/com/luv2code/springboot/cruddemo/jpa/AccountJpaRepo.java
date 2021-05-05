@@ -22,7 +22,8 @@ public interface AccountJpaRepo extends JpaRepository<Account, Integer> {
 	@Query("from Account as a where a.temporaryPassword =:password")
 	public Account getAccountByTempPassword(@Param(value="password")String password);
 
-//	@Query("SELECT a FROM Account as a join Relationship as r on r.userTwoId=a.accountId  where r.status = 1")
+	//da aggiustare
+//	@Query("SELECT a FROM Account as a join Relationship as r on r.userOneId=:accountId and r.userTwoId !=:accountId and r.status = 1")
 //	public List<Account> findPeopleYouMayKnow2(@Param(value="accountId")int accountId);
 	
 

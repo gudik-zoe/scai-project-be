@@ -1,8 +1,8 @@
 package com.luv2code.springboot.cruddemo.service;
 
-import java.util.List;
-
 import com.luv2code.springboot.cruddemo.entity.Relationship;
+
+import java.util.List;
 
 public interface RelationshipService {
 

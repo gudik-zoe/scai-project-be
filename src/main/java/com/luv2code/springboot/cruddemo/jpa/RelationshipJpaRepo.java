@@ -1,13 +1,12 @@
 package com.luv2code.springboot.cruddemo.jpa;
 
-import java.util.List;
-
+import com.luv2code.springboot.cruddemo.entity.Relationship;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import com.luv2code.springboot.cruddemo.entity.Relationship;
+import java.util.List;
 
 @Repository
 public interface RelationshipJpaRepo extends JpaRepository<Relationship, Integer> {

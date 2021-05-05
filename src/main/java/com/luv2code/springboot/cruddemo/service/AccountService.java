@@ -1,15 +1,14 @@
 package com.luv2code.springboot.cruddemo.service;
 
 
+import com.luv2code.springboot.cruddemo.dto.*;
 import com.luv2code.springboot.cruddemo.entity.Account;
 import com.luv2code.springboot.cruddemo.exceptions.NotFoundException;
-import com.luv2code.springboot.cruddemo.dto.AccountBasicData;
-import com.luv2code.springboot.cruddemo.dto.AccountData;
-import com.luv2code.springboot.cruddemo.dto.ImageUrl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.security.auth.login.AccountException;
+import java.text.ParseException;
 import java.util.List;
 
 
@@ -42,11 +41,11 @@ public interface AccountService {
 
 	public Account updateEmail(int accountId, String email, String password);
 
-	public Account updatePassword(int accountId, String oldPassword, String newPassword);
+	public Account updatePassword(int accountId, String oldPassword, String newPassword , String tempPassword);
 
-	public ResponseEntity<Account> login(Account user);
+	public ResponseEntity<Account> login(LoginDTO loginDTO);
 
 	public List<String> getAccountPhotos(int accountId);
 
-    public boolean checkTempPassword(String password);
+    public boolean checkTempPassword(ResetPasswordDTO resetPasswordDTO) throws ParseException;
 }
