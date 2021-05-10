@@ -1,0 +1,8 @@
+2021-05-06 12:43:02,692 INFO org.springframework.boot.StartupInfoLogger [restartedMain] Starting CruddemoApplication on NOTB990 with PID 10820 (C:\Users\antoine.khoury\Documents\eclipse work space\scai-project\target\classes started by Antoine.Khoury in C:\Users\antoine.khoury\Documents\eclipse work space\scai-project)
+2021-05-06 12:43:02,703 DEBUG org.springframework.boot.StartupInfoLogger [restartedMain] Running with Spring Boot v2.3.3.RELEASE, Spring v5.2.8.RELEASE
+2021-05-06 12:43:02,704 INFO org.springframework.boot.SpringApplication [restartedMain] No active profile set, falling back to default profiles: default
+2021-05-06 12:43:22,499 INFO org.springframework.boot.StartupInfoLogger [restartedMain] Started CruddemoApplication in 20.797 seconds (JVM running for 22.396)
+2021-05-06 14:24:17,164 INFO org.springframework.boot.StartupInfoLogger [restartedMain] Starting CruddemoApplication on NOTB990 with PID 19848 (C:\Users\antoine.khoury\Documents\eclipse work space\scai-project\target\classes started by Antoine.Khoury in C:\Users\antoine.khoury\Documents\eclipse work space\scai-project)
+2021-05-06 14:24:17,171 DEBUG org.springframework.boot.StartupInfoLogger [restartedMain] Running with Spring Boot v2.3.3.RELEASE, Spring v5.2.8.RELEASE
+2021-05-06 14:24:17,172 INFO org.springframework.boot.SpringApplication [restartedMain] No active profile set, falling back to default profiles: default
+2021-05-06 14:24:35,268 INFO org.springframework.boot.StartupInfoLogger [restartedMain] Started CruddemoApplication in 19.538 seconds (JVM running for 23.133)

@@ -1,0 +1,16 @@
+2021-05-05 12:38:09,613 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-8]  password  should contains at least one letter in upperCase + one digit + one alphanumeric character -/*?");
+2021-05-05 12:38:30,088 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-10] invalid credentials
+2021-05-05 12:44:10,058 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-7] temp password expired
+2021-05-05 12:58:17,174 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-4] temp password expired
+2021-05-05 14:08:05,977 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-6] Required request body is missing: public com.luv2code.springboot.cruddemo.entity.Account com.luv2code.springboot.cruddemo.rest.AccountRestController.resetPassword(java.lang.String) throws java.io.IOException,javax.mail.MessagingException
+2021-05-05 14:10:47,293 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-8] email doesn't exist
+2021-05-05 15:58:52,789 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-7]  password  should contains at least one letter in upperCase + one digit + one alphanumeric character -/*?");
+2021-05-05 16:00:47,628 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-1] invalid temporary password
+2021-05-05 16:24:41,198 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-4]  password  should contains at least one letter in upperCase + one digit + one alphanumeric character -/*?");
+2021-05-05 16:24:59,223 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-3] invalid credentials
+2021-05-05 16:32:30,517 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-1] null
+2021-05-05 16:32:58,704 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-4] null
+2021-05-05 16:36:21,388 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-3] invalid temporary password
+2021-05-05 16:36:30,721 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-7] invalid temporary password
+2021-05-05 16:36:47,190 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-6] invalid temporary password
+2021-05-05 16:37:09,923 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-9] invalid temporary password

@@ -1,0 +1,4 @@
+2021-05-09 12:19:35,256 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-2] invalid credentials
+2021-05-09 13:19:44,172 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-3] JWT expired at 2021-05-09T13:19:39Z. Current time: 2021-05-09T13:19:44Z, a difference of 5170 milliseconds.  Allowed clock skew: 0 milliseconds.
+2021-05-09 13:19:44,172 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-10] JWT expired at 2021-05-09T13:19:39Z. Current time: 2021-05-09T13:19:44Z, a difference of 5170 milliseconds.  Allowed clock skew: 0 milliseconds.
+2021-05-09 16:24:54,804 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-5] JWT expired at 2021-05-09T16:24:42Z. Current time: 2021-05-09T16:24:54Z, a difference of 12804 milliseconds.  Allowed clock skew: 0 milliseconds.

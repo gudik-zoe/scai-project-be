@@ -1,15 +1,21 @@
 package com.luv2code.springboot.cruddemo.service;
 
+import com.itextpdf.text.DocumentException;
+import com.luv2code.springboot.cruddemo.dto.AccountBasicData;
+import com.luv2code.springboot.cruddemo.dto.Base64DTO;
+import com.luv2code.springboot.cruddemo.entity.Account;
 import com.luv2code.springboot.cruddemo.entity.Notification;
 import com.luv2code.springboot.cruddemo.entity.Post;
 import com.luv2code.springboot.cruddemo.exceptions.BadRequestException;
 import com.luv2code.springboot.cruddemo.exceptions.NotFoundException;
 import com.luv2code.springboot.cruddemo.jpa.PostJpaRepo;
-import com.luv2code.springboot.cruddemo.dto.AccountBasicData;
+import com.luv2code.springboot.cruddemo.utility.ExcelCreator;
+import com.luv2code.springboot.cruddemo.utility.PdfCreator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -36,6 +42,10 @@ public class PostServiceImpl implements PostService {
 	@Autowired
 	private NotificationService notificationService;
 
+	@Autowired
+	private EmailSender emailSender;
+
+
 	public PostServiceImpl() {
 
 	}
@@ -60,6 +70,7 @@ public class PostServiceImpl implements PostService {
 	@Override
 	public Post savePost(int accountId, String text, MultipartFile image, String postOption) throws Exception {
 		Post thePost = new Post();
+		Account theAccount = accountService.findById(accountId);
 		String theImage = null;
 		if (image != null) {
 			theImage = storageService.pushImage(image).getImageUrl();
@@ -77,6 +88,7 @@ public class PostServiceImpl implements PostService {
 		thePost.setPostCreatorId(accountId);
 		postRepoJpa.save(thePost);
 
+		 emailSender.sendEmailWithAttachment(theAccount.getEmail() ,"shared a post" , thePost.getText() );
 		return thePost;
 
 	}
@@ -211,6 +223,22 @@ public class PostServiceImpl implements PostService {
 			photos.add(post.getImage());
 		}
 		return photos;
+	}
+
+	@Override
+	public Base64DTO getMyPostsInExcel(int idFromToken) throws IOException {
+			List<Post> listPosts = postRepoJpa.getMyPosts(idFromToken);
+		ExcelCreator excelCreator = new ExcelCreator(listPosts);
+		return	excelCreator.exportToBase64("listPosts");
+
+
+	}
+
+	@Override
+	public Base64DTO getMyPostsInPdf(int idFromToken) throws DocumentException {
+		List<Post> listPosts = postRepoJpa.getMyPosts(idFromToken);
+		PdfCreator pdfCreator = new PdfCreator(listPosts);
+		return pdfCreator.pdfCreatorInBase64();
 	}
 
 }

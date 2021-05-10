@@ -1,15 +1,18 @@
 package com.luv2code.springboot.cruddemo.rest;
 
+import com.itextpdf.text.DocumentException;
+import com.luv2code.springboot.cruddemo.dto.Base64DTO;
+import com.luv2code.springboot.cruddemo.dto.ImageUrl;
 import com.luv2code.springboot.cruddemo.entity.Post;
 import com.luv2code.springboot.cruddemo.exceptions.NotFoundException;
 import com.luv2code.springboot.cruddemo.service.PostService;
 import com.luv2code.springboot.cruddemo.service.StorageService;
 import com.luv2code.springboot.cruddemo.utility.IdExtractor;
-import com.luv2code.springboot.cruddemo.dto.ImageUrl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -30,6 +33,18 @@ public class PostsRestController {
 	public List<Post> getHomePagePosts(@RequestHeader("Authorization") String authHeader) {
 		IdExtractor idExtractor = new IdExtractor(authHeader);
 		return postService.getHomePagePosts(idExtractor.getIdFromToken());
+	}
+
+	@GetMapping("/getMyPostsInExcel")
+	public Base64DTO getMyPostsInExcel(@RequestHeader("Authorization") String authHeader) throws IOException {
+		IdExtractor idExtractor = new IdExtractor(authHeader);
+		return postService.getMyPostsInExcel(idExtractor.getIdFromToken());
+	}
+
+	@GetMapping("/getMyPostsInPdf")
+	public Base64DTO getMyPostsInPdf(@RequestHeader("Authorization") String authHeader) throws IOException, DocumentException {
+		IdExtractor idExtractor = new IdExtractor(authHeader);
+		return postService.getMyPostsInPdf(idExtractor.getIdFromToken());
 	}
 
 	@GetMapping("/posts/accountId/{accountId}")

@@ -1,10 +1,12 @@
 package com.luv2code.springboot.cruddemo.service;
 
-import java.util.List;
-
+import com.itextpdf.text.DocumentException;
+import com.luv2code.springboot.cruddemo.dto.Base64DTO;
+import com.luv2code.springboot.cruddemo.entity.Post;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.luv2code.springboot.cruddemo.entity.Post;
+import java.io.IOException;
+import java.util.List;
 
 public interface PostService {
 
@@ -26,7 +28,9 @@ public interface PostService {
 	
 	
 	public List<String> getAccountPhotos(int accountId);
-	
-	
 
+
+    public Base64DTO getMyPostsInExcel(int idFromToken) throws IOException;
+
+	public Base64DTO getMyPostsInPdf(int idFromToken) throws DocumentException;
 }

@@ -1,0 +1,36 @@
+2021-05-05 12:31:03,721 INFO org.springframework.boot.StartupInfoLogger [restartedMain] Starting CruddemoApplication on NOTB990 with PID 11376 (C:\Users\antoine.khoury\Documents\eclipse work space\scai-project\target\classes started by Antoine.Khoury in C:\Users\antoine.khoury\Documents\eclipse work space\scai-project)
+2021-05-05 12:31:03,744 DEBUG org.springframework.boot.StartupInfoLogger [restartedMain] Running with Spring Boot v2.3.3.RELEASE, Spring v5.2.8.RELEASE
+2021-05-05 12:31:03,746 INFO org.springframework.boot.SpringApplication [restartedMain] No active profile set, falling back to default profiles: default
+2021-05-05 12:31:28,622 INFO org.springframework.boot.StartupInfoLogger [restartedMain] Started CruddemoApplication in 26.304 seconds (JVM running for 36.706)
+2021-05-05 12:38:09,613 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-8]  password  should contains at least one letter in upperCase + one digit + one alphanumeric character -/*?");
+2021-05-05 12:38:30,088 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-10] invalid credentials
+2021-05-05 12:41:36,979 INFO org.springframework.boot.StartupInfoLogger [restartedMain] Starting CruddemoApplication on NOTB990 with PID 11376 (C:\Users\antoine.khoury\Documents\eclipse work space\scai-project\target\classes started by Antoine.Khoury in C:\Users\antoine.khoury\Documents\eclipse work space\scai-project)
+2021-05-05 12:41:36,979 DEBUG org.springframework.boot.StartupInfoLogger [restartedMain] Running with Spring Boot v2.3.3.RELEASE, Spring v5.2.8.RELEASE
+2021-05-05 12:41:36,980 INFO org.springframework.boot.SpringApplication [restartedMain] No active profile set, falling back to default profiles: default
+2021-05-05 12:41:41,230 INFO org.springframework.boot.StartupInfoLogger [restartedMain] Started CruddemoApplication in 4.34 seconds (JVM running for 649.314)
+2021-05-05 12:44:10,058 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-7] temp password expired
+2021-05-05 12:45:05,187 INFO org.springframework.boot.StartupInfoLogger [restartedMain] Starting CruddemoApplication on NOTB990 with PID 11376 (C:\Users\antoine.khoury\Documents\eclipse work space\scai-project\target\classes started by Antoine.Khoury in C:\Users\antoine.khoury\Documents\eclipse work space\scai-project)
+2021-05-05 12:45:05,188 DEBUG org.springframework.boot.StartupInfoLogger [restartedMain] Running with Spring Boot v2.3.3.RELEASE, Spring v5.2.8.RELEASE
+2021-05-05 12:45:05,188 INFO org.springframework.boot.SpringApplication [restartedMain] No active profile set, falling back to default profiles: default
+2021-05-05 12:45:11,120 INFO org.springframework.boot.StartupInfoLogger [restartedMain] Started CruddemoApplication in 6.017 seconds (JVM running for 859.203)
+2021-05-05 12:58:17,174 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-4] temp password expired
+2021-05-05 14:02:23,842 INFO org.springframework.boot.StartupInfoLogger [restartedMain] Starting CruddemoApplication on NOTB990 with PID 11376 (C:\Users\antoine.khoury\Documents\eclipse work space\scai-project\target\classes started by Antoine.Khoury in C:\Users\antoine.khoury\Documents\eclipse work space\scai-project)
+2021-05-05 14:02:23,845 DEBUG org.springframework.boot.StartupInfoLogger [restartedMain] Running with Spring Boot v2.3.3.RELEASE, Spring v5.2.8.RELEASE
+2021-05-05 14:02:23,845 INFO org.springframework.boot.SpringApplication [restartedMain] No active profile set, falling back to default profiles: default
+2021-05-05 14:02:29,630 INFO org.springframework.boot.StartupInfoLogger [restartedMain] Started CruddemoApplication in 5.978 seconds (JVM running for 5497.724)
+2021-05-05 14:08:05,977 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-6] Required request body is missing: public com.luv2code.springboot.cruddemo.entity.Account com.luv2code.springboot.cruddemo.rest.AccountRestController.resetPassword(java.lang.String) throws java.io.IOException,javax.mail.MessagingException
+2021-05-05 14:10:47,293 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-8] email doesn't exist
+2021-05-05 15:39:51,763 INFO org.springframework.boot.StartupInfoLogger [restartedMain] Starting CruddemoApplication on NOTB990 with PID 17232 (C:\Users\antoine.khoury\Documents\eclipse work space\scai-project\target\classes started by Antoine.Khoury in C:\Users\antoine.khoury\Documents\eclipse work space\scai-project)
+2021-05-05 15:39:51,770 DEBUG org.springframework.boot.StartupInfoLogger [restartedMain] Running with Spring Boot v2.3.3.RELEASE, Spring v5.2.8.RELEASE
+2021-05-05 15:39:51,771 INFO org.springframework.boot.SpringApplication [restartedMain] No active profile set, falling back to default profiles: default
+2021-05-05 15:40:09,694 INFO org.springframework.boot.StartupInfoLogger [restartedMain] Started CruddemoApplication in 18.965 seconds (JVM running for 21.007)
+2021-05-05 15:58:52,789 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-7]  password  should contains at least one letter in upperCase + one digit + one alphanumeric character -/*?");
+2021-05-05 16:00:47,628 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-1] invalid temporary password
+2021-05-05 16:24:41,198 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-4]  password  should contains at least one letter in upperCase + one digit + one alphanumeric character -/*?");
+2021-05-05 16:24:59,223 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-3] invalid credentials
+2021-05-05 16:32:30,517 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-1] null
+2021-05-05 16:32:58,704 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-4] null
+2021-05-05 16:36:21,388 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-3] invalid temporary password
+2021-05-05 16:36:30,721 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-7] invalid temporary password
+2021-05-05 16:36:47,190 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-6] invalid temporary password
+2021-05-05 16:37:09,923 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-9] invalid temporary password

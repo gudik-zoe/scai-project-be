@@ -1,0 +1,8 @@
+2021-05-09 12:09:34,044 INFO org.springframework.boot.StartupInfoLogger [restartedMain] Starting CruddemoApplication on NOTB990 with PID 22788 (C:\Users\antoine.khoury\Documents\eclipse work space\scai-project\target\classes started by Antoine.Khoury in C:\Users\antoine.khoury\Documents\eclipse work space\scai-project)
+2021-05-09 12:09:34,081 DEBUG org.springframework.boot.StartupInfoLogger [restartedMain] Running with Spring Boot v2.3.3.RELEASE, Spring v5.2.8.RELEASE
+2021-05-09 12:09:34,083 INFO org.springframework.boot.SpringApplication [restartedMain] No active profile set, falling back to default profiles: default
+2021-05-09 12:10:42,710 INFO org.springframework.boot.StartupInfoLogger [restartedMain] Started CruddemoApplication in 71.151 seconds (JVM running for 82.712)
+2021-05-09 12:19:35,256 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-2] invalid credentials
+2021-05-09 13:19:44,172 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-3] JWT expired at 2021-05-09T13:19:39Z. Current time: 2021-05-09T13:19:44Z, a difference of 5170 milliseconds.  Allowed clock skew: 0 milliseconds.
+2021-05-09 13:19:44,172 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-10] JWT expired at 2021-05-09T13:19:39Z. Current time: 2021-05-09T13:19:44Z, a difference of 5170 milliseconds.  Allowed clock skew: 0 milliseconds.
+2021-05-09 16:24:54,804 ERROR com.luv2code.springboot.cruddemo.rest.GlobalExceptionHandler [http-nio-8080-exec-5] JWT expired at 2021-05-09T16:24:42Z. Current time: 2021-05-09T16:24:54Z, a difference of 12804 milliseconds.  Allowed clock skew: 0 milliseconds.
